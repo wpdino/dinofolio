@@ -28,18 +28,18 @@ For WordPress.org-style installation and FAQ text, see [`readme.txt`](readme.txt
 
 - Node.js >= 14.15.0
 - npm >= 6.14.8
-- WordPress 5.0+
-- PHP 7.4+
+- WordPress 6.6+
+- PHP 7.0+
 
 ### Getting Started
 
 1. Clone or download the plugin to your WordPress plugins directory
 2. Navigate to the plugin directory:
    ```bash
-   cd wp-content/plugins/wpdino-portfolio
+   cd wp-content/plugins/dinofolio
    ```
 
-3. Install dependencies:
+3. Install dependencies (optional, for `@wordpress/scripts` tooling):
    ```bash
    npm install
    ```
@@ -72,65 +72,58 @@ npm run format     # Format code according to WordPress standards
 ### File Structure
 
 ```
-wpdino-portfolio/
+dinofolio/
+├── dinofolio.php                    # Main plugin bootstrap
+├── readme.txt                       # WordPress.org plugin readme
 ├── includes/
-│   ├── blocks/
-│   │   └── portfolio-listing/
-│   │       ├── src/                    # Source files (for development)
-│   │       │   ├── index.js           # Main block registration
-│   │       │   ├── editor.scss        # Editor-specific styles
-│   │       │   └── style.scss         # Frontend styles
-│   │       ├── block.json             # Block configuration
-│   │       ├── portfolio-listing.js   # Built JavaScript (generated)
-│   │       ├── portfolio-listing.css  # Built editor styles (generated)
-│   │       ├── style-portfolio-listing.css # Built frontend styles (generated)
-│   │       └── assets.php            # WordPress dependencies (generated)
-│   ├── admin/                        # Admin interface
-│   └── classes/                      # PHP classes
-├── assets/                          # Static assets
-├── templates/                       # Template files
-├── package.json                     # Node.js dependencies
-├── webpack.config.js               # Build configuration
-└── README.md                       # This file
+│   ├── class-dinofolio-*.php        # Core: CPT, display, util, meta boxes, menus
+│   ├── components/                  # Shared component params (portfolio listing)
+│   ├── integrations/
+│   │   ├── gutenberg/blocks/portfolio/block.js
+│   │   ├── elementor/widgets/portfolio/
+│   │   └── wpbakery/                # WPBakery module base
+│   ├── elementor/                   # Legacy Elementor widgets & controls
+│   └── admin/                       # Settings UI, metabox assets
+├── assets/css/                      # Front-end listing & single styles
+├── templates/                       # Single portfolio & related project templates
+├── languages/dinofolio.pot          # Translation template
+├── package.json                     # Optional Node tooling
+└── webpack.config.js                # Optional build config
 ```
 
 ### Block Development
 
-The Portfolio Listing block is built using modern React/JSX with WordPress components:
+The Portfolio Listing Gutenberg block (`dinofolio/portfolio`) is registered from PHP and edited in JavaScript:
 
-- **Source**: `includes/blocks/portfolio-listing/src/index.js`
-- **Editor Styles**: `includes/blocks/portfolio-listing/src/editor.scss`
-- **Frontend Styles**: `includes/blocks/portfolio-listing/src/style.scss`
+- **Block script**: `includes/integrations/gutenberg/blocks/portfolio/block.js`
+- **Editor styles**: `assets/css/portfolio-listing-editor.css`
+- **Frontend styles**: `assets/css/portfolio-listing.css`
+- **Render / query**: `includes/class-dinofolio-display.php` and `includes/components/items/portfolio/class-dinofolio-portfolio-component.php`
 
 #### Block Features
 
-- **Inspector Controls**: Layout options, display settings, sorting
-- **Toolbar Controls**: Quick layout switching
-- **Server-Side Rendering**: Dynamic content with WordPress query
-- **Responsive Design**: Mobile-first approach
+- **Inspector controls**: Display and Query sections (layout, filters, sorting)
+- **Server-side render**: Live preview via `@wordpress/server-side-render`
+- **REST taxonomies**: Category and tag filters in the block sidebar
 
 ### WordPress Integration
 
 The plugin integrates with WordPress through:
 
-1. **Custom Post Type**: Portfolio items (`portfolio`)
-2. **Settings Page**: Admin configuration panel
-3. **Gutenberg Block**: Modern block editor integration
-4. **Shortcodes**: Legacy support for older themes
+1. **Custom post type**: `wpdino_portfolio` (admin label: Portfolio Items)
+2. **Taxonomies**: `wpdino_portfolio_category`, `wpdino_portfolio_tag`
+3. **Settings page**: **DinoFolio** under the portfolio admin menu
+4. **Gutenberg block**: `dinofolio/portfolio` (block category: DinoFolio)
+5. **Elementor widget**, **WPBakery module**, and shortcodes `[dinofolio]` / `[dinofolio_portfolio]`
 
 ### Customization
 
-#### Adding New Layouts
-
-1. Add layout option to `src/index.js`
-2. Add corresponding styles to `src/style.scss`
-3. Update PHP render logic if needed
-
 #### Styling
 
-- **Editor styles**: Edit `src/editor.scss`
-- **Frontend styles**: Edit `src/style.scss`
-- **Admin styles**: Edit `includes/admin/assets/css/admin.css`
+- **Listing (front end)**: `assets/css/portfolio-listing.css`
+- **Listing (editor preview)**: `assets/css/portfolio-listing-editor.css`
+- **Admin / settings**: `includes/admin/assets/css/admin.css`
+- **Portfolio metabox**: `includes/admin/assets/css/admin-portfolio-meta.css`
 
 #### Single Portfolio Meta Template Override
 
@@ -151,16 +144,16 @@ For styling changes, add CSS in your theme stylesheet or dequeue/override the pl
 
 ### WordPress Compatibility
 
-- WordPress 5.0+
-- PHP 7.4+
-- Gutenberg editor
-- Classic editor (via shortcodes)
+- WordPress 6.6+
+- PHP 7.0+
+- Block editor (Gutenberg)
+- Shortcodes for classic layouts or page builders without blocks
 
 ## Usage
 
 ### Adding Portfolio Items
 
-1. Go to Portfolio > Add New in your WordPress admin
+1. Go to **DinoFolio** > **Portfolio Items** > **Add New** in your WordPress admin
 2. Add title, content, featured image, and portfolio details
 3. Assign categories and tags as needed
 4. Publish the portfolio item

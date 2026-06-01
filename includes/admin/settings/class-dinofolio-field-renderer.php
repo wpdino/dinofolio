@@ -383,20 +383,22 @@ class DinoFolio_Field_Renderer {
 	 */
 	private function render_toggle_radio_field( $field, $field_id, $field_name, $value, $field_class ) {
 		?>
-		<div class="wpdino-field-group">
+		<div class="wpdino-field-group wpdino-field-group--toggle">
 			<label class="wpdino-label">
 				<?php echo esc_html( $field['label'] ); ?>
 			</label>
-			<div class="wpdino-toggle-group <?php echo esc_attr( $field_class ); ?>">
-				<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
-					<label class="<?php echo ( (string) $value === (string) $option_value ) ? 'is-checked' : ''; ?>">
-						<input type="radio"
-							   name="<?php echo esc_attr( $field_name ); ?>"
-							   value="<?php echo esc_attr( $option_value ); ?>"
-							   <?php checked( $value, $option_value ); ?> />
-						<?php echo esc_html( $option_label ); ?>
-					</label>
-				<?php endforeach; ?>
+			<div class="wpdino-field-control">
+				<div class="wpdino-toggle-group <?php echo esc_attr( $field_class ); ?>">
+					<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
+						<label class="<?php echo ( (string) $value === (string) $option_value ) ? 'is-checked' : ''; ?>">
+							<input type="radio"
+								   name="<?php echo esc_attr( $field_name ); ?>"
+								   value="<?php echo esc_attr( $option_value ); ?>"
+								   <?php checked( $value, $option_value ); ?> />
+							<?php echo esc_html( $option_label ); ?>
+						</label>
+					<?php endforeach; ?>
+				</div>
 			</div>
 			<?php $this->render_field_description( $field ); ?>
 		</div>
@@ -468,20 +470,31 @@ class DinoFolio_Field_Renderer {
 	 * Render range field
 	 */
 	private function render_range_field( $field, $field_id, $field_name, $value, $field_class ) {
-		$min = isset( $field['min'] ) ? intval( $field['min'] ) : 0;
-		$max = isset( $field['max'] ) ? intval( $field['max'] ) : 100;
+		$min  = isset( $field['min'] ) ? intval( $field['min'] ) : 0;
+		$max  = isset( $field['max'] ) ? intval( $field['max'] ) : 100;
 		$step = isset( $field['step'] ) ? floatval( $field['step'] ) : 1;
+		$value_id = $field_id . '-value';
 		?>
-		<div class="wpdino-field-group">
+		<div class="wpdino-field-group wpdino-field-group--range">
 			<label for="<?php echo esc_attr( $field_id ); ?>" class="wpdino-label">
 				<?php echo esc_html( $field['label'] ); ?>
-				<span class="wpdino-range-value" id="<?php echo esc_attr( $field_id ); ?>-value"><?php echo esc_html( $value ); ?></span>
 			</label>
-			<input type="range" id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $field_name ); ?>" 
-				   value="<?php echo esc_attr( $value ); ?>" 
-				   min="<?php echo esc_attr( $min ); ?>" max="<?php echo esc_attr( $max ); ?>" step="<?php echo esc_attr( $step ); ?>"
-				   class="wpdino-range <?php echo esc_attr( $field_class ); ?>" 
-				   oninput="document.getElementById('<?php echo esc_attr( $field_id ); ?>-value').textContent = this.value" />
+			<div class="wpdino-field-control">
+				<div class="wpdino-range-control">
+					<input
+						type="range"
+						id="<?php echo esc_attr( $field_id ); ?>"
+						name="<?php echo esc_attr( $field_name ); ?>"
+						class="wpdino-related-projects-range <?php echo esc_attr( $field_class ); ?>"
+						value="<?php echo esc_attr( $value ); ?>"
+						min="<?php echo esc_attr( $min ); ?>"
+						max="<?php echo esc_attr( $max ); ?>"
+						step="<?php echo esc_attr( $step ); ?>"
+						oninput="document.getElementById('<?php echo esc_attr( $value_id ); ?>').textContent = this.value"
+					/>
+					<span class="wpdino-range-value" id="<?php echo esc_attr( $value_id ); ?>"><?php echo esc_html( $value ); ?></span>
+				</div>
+			</div>
 			<?php $this->render_field_description( $field ); ?>
 		</div>
 		<?php

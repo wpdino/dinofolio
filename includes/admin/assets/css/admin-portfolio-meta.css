@@ -424,6 +424,14 @@
 	margin-bottom: 18px;
 }
 
+.wpdino-settings-wrap .wpdino-field-group--toggle:has([name*="portfolio_meta_default_"]) {
+	align-items: center;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--range:has([name*="portfolio_meta_default_"]) {
+	align-items: center;
+}
+
 .wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) > .wpdino-label {
 	margin-bottom: 0;
 	max-width: 150px;
@@ -433,4 +441,102 @@
 .wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-field-description {
 	grid-column: 2;
 	margin-top: -4px;
+}
+
+/* Toggle controls: compact width (do not stretch like text inputs) */
+.wpdino-settings-wrap .wpdino-field-group--toggle > .wpdino-field-control {
+	grid-column: 2;
+	justify-self: start;
+	width: auto;
+	max-width: 100%;
+}
+
+/* Range controls: match portfolio metabox, same width as text inputs */
+.wpdino-settings-wrap .wpdino-field-group--range > .wpdino-field-control {
+	grid-column: 2;
+	justify-self: start;
+	width: 100%;
+	max-width: 45%;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--range .wpdino-range-control {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	max-width: 100%;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--range input[type="range"],
+.wpdino-settings-wrap .wpdino-field-group--range .wpdino-related-projects-range {
+	flex: 1;
+	min-width: 0;
+	width: auto;
+	max-width: none;
+	margin: 0;
+	accent-color: #6f9c50;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--range .wpdino-range-value {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 28px;
+	height: 28px;
+	padding: 0 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #14694a;
+	background: #e9f6f0;
+	border: 1px solid #c5e6d8;
+	border-radius: 6px;
+	flex-shrink: 0;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group {
+	display: inline-flex;
+	width: auto;
+	max-width: 100%;
+	flex: 0 0 auto;
+	justify-self: start;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #f8f9fa;
+	box-shadow: none;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group label,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label {
+	flex: 0 0 auto;
+	min-width: 1.5rem;
+	justify-content: center;
+	padding: 8px 16px;
+	background: #f8f9fa;
+	border-right: 1px solid #e0e0e0;
+	color: #23282d;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group label:last-child,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label:last-child {
+	border-right: 0;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group label:hover,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label:hover {
+	background: #f0f0f0;
+	color: #23282d;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group label.is-checked,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label.is-checked {
+	background: #1A8960;
+	border-color: transparent;
+	color: #fff;
+}
+
+.wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group label.is-checked:hover,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label.is-checked:hover {
+	color: #fff;
 }
