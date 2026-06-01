@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140" role="img" aria-label="None style">
+  <rect width="240" height="140" fill="#f2f5f4"/>
+  <rect x="24" y="24" width="192" height="92" rx="8" fill="#ffffff" stroke="#d6e1dc" stroke-width="2"/>
+  <line x1="42" y1="42" x2="198" y2="98" stroke="#c85454" stroke-width="4"/>
+  <line x1="198" y1="42" x2="42" y2="98" stroke="#c85454" stroke-width="4"/>
+  <text x="120" y="126" text-anchor="middle" font-size="12" fill="#5a6660" font-family="Arial, sans-serif">No related works</text>
+</svg>

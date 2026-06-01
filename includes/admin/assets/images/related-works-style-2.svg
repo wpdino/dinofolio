@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" role="img" aria-label="Carousel">
+  <rect width="240" height="100" fill="#f2f5f4" rx="6"/>
+  <circle cx="22" cy="50" r="14" fill="#e9f6f0" stroke="#1a8960" stroke-width="1.5"/>
+  <path d="M18 45 L24 50 L18 55" fill="none" stroke="#1a8960" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="46" y="28" width="48" height="44" rx="6" fill="#9ac7b6"/>
+  <rect x="96" y="28" width="48" height="44" rx="6" fill="#7bb3a0"/>
+  <rect x="146" y="28" width="48" height="44" rx="6" fill="#5f9f8a"/>
+  <circle cx="218" cy="50" r="14" fill="#e9f6f0" stroke="#1a8960" stroke-width="1.5"/>
+  <path d="M214 45 L220 50 L214 55" fill="none" stroke="#1a8960" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

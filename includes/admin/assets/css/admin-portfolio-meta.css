@@ -1,0 +1,436 @@
+.wpdino-portfolio-meta-table {
+	border: 1px solid #d6e1dc;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.wpdino-portfolio-meta-table tbody tr {
+	border-bottom: 1px solid #e8efec;
+}
+
+.wpdino-portfolio-meta-table tbody tr:last-child {
+	border-bottom: 0;
+}
+
+.wpdino-portfolio-meta-table th {
+	width: 150px;
+	max-width: 150px;
+	padding: 16px 14px;
+	vertical-align: top;
+	color: #1f2933;
+	background: #f8fbfa;
+}
+
+.wpdino-portfolio-meta-table td {
+	padding: 14px;
+	vertical-align: top;
+}
+
+.wpdino-range-control {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	max-width: 320px;
+}
+
+.wpdino-related-projects-count-control .wpdino-related-projects-range {
+	flex: 1;
+	min-width: 160px;
+	max-width: 240px;
+	margin: 0;
+	accent-color: #1a8960;
+}
+
+.wpdino-range-control .wpdino-range-value {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 28px;
+	height: 28px;
+	padding: 0 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #14694a;
+	background: #e9f6f0;
+	border: 1px solid #c5e6d8;
+	border-radius: 6px;
+}
+
+.wpdino-portfolio-meta-table input[type="text"],
+.wpdino-portfolio-meta-table input[type="url"],
+.wpdino-portfolio-meta-table input[type="number"],
+.wpdino-portfolio-meta-table input[type="range"],
+.wpdino-portfolio-meta-table select {
+	border-color: #c8d5cf;
+	border-radius: 6px;
+}
+
+.wpdino-portfolio-meta-table input[type="text"]:focus,
+.wpdino-portfolio-meta-table input[type="url"]:focus,
+.wpdino-portfolio-meta-table input[type="number"]:focus,
+.wpdino-portfolio-meta-table select:focus {
+	border-color: #1a8960;
+	box-shadow: 0 0 0 1px #1a8960;
+}
+
+.wpdino-toggle-group {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	gap: 0;
+	overflow: hidden;
+	border: 1px solid #d5e2dc;
+	border-radius: 8px;
+}
+
+.wpdino-toggle-group label {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0;
+	padding: 8px 14px;
+	font-weight: 500;
+	background: #f4f8f6;
+	border-right: 1px solid #d5e2dc;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+	user-select: none;
+}
+
+.wpdino-toggle-group label:last-child {
+	border-right: 0;
+}
+
+.wpdino-toggle-group label:first-child {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+.wpdino-toggle-group label:last-child {
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.wpdino-toggle-group input[type="radio"] {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	border: 0;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.wpdino-toggle-group label:hover {
+	background: #e9f6f0;
+}
+
+.wpdino-toggle-group label.is-checked {
+	color: #fff;
+	background: #1a8960;
+}
+
+.wpdino-toggle-group label.is-checked:hover {
+	background: #14694a;
+}
+
+.wpdino-attr-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 10px;
+	padding: 8px;
+	background: #f9fbfa;
+	border: 1px solid #e1ebe6;
+	border-radius: 6px;
+}
+
+.wpdino-attr-row input[type="text"] {
+	min-width: 180px;
+	flex: 1 1 180px;
+}
+
+.wpdino-attr-row .button-link-delete {
+	color: #b32d2e;
+	text-decoration: none;
+}
+
+.wpdino-attr-row .button-link-delete:hover,
+.wpdino-attr-row .button-link-delete:focus {
+	color: #8f2424;
+	text-decoration: underline;
+}
+
+.wpdino-image-select-group {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 12px;
+	margin-top: 4px;
+}
+
+.wpdino-image-select-group--compact {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	gap: 10px;
+	width: auto;
+	max-width: none;
+	margin-top: 0;
+}
+
+.wpdino-image-select-group--compact .wpdino-image-select-option {
+	flex: 0 0 112px;
+	width: 112px;
+	padding: 8px;
+}
+
+.wpdino-image-select-option {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+	padding: 10px;
+	text-align: center;
+	background: #fff;
+	border: 2px solid #d6e1dc;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.wpdino-image-select-option:hover {
+	border-color: #1a8960;
+	box-shadow: 0 2px 8px rgba(26, 137, 96, 0.15);
+	transform: translateY(-1px);
+}
+
+.wpdino-image-select-option input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.wpdino-image-select-option img {
+	display: block;
+	width: 100%;
+	height: 80px;
+	object-fit: cover;
+	border: 2px solid #eef3f1;
+	border-radius: 6px;
+}
+
+.wpdino-image-select-group--compact .wpdino-image-select-option img {
+	height: 64px;
+	object-fit: contain;
+	background: #f2f5f4;
+}
+
+.wpdino-image-select-label {
+	font-size: 12px;
+	font-weight: 500;
+	color: #4a5560;
+}
+
+.wpdino-image-select-option.selected,
+.wpdino-image-select-option:has(input[type="radio"]:checked) {
+	border-color: #1a8960;
+	background: rgba(26, 137, 96, 0.06);
+}
+
+.wpdino-image-select-option.selected img,
+.wpdino-image-select-option input[type="radio"]:checked + img {
+	border-color: #1a8960;
+}
+
+.wpdino-image-select-option.selected .wpdino-image-select-label,
+.wpdino-image-select-option input[type="radio"]:checked ~ .wpdino-image-select-label {
+	color: #14694a;
+	font-weight: 600;
+}
+
+#wpdino-add-attribute.button-secondary {
+	color: #1a8960;
+	border-color: #1a8960;
+}
+
+#wpdino-add-attribute.button-secondary:hover,
+#wpdino-add-attribute.button-secondary:focus {
+	color: #fff;
+	background: #1a8960;
+	border-color: #1a8960;
+}
+
+#ui-datepicker-div {
+	z-index: 100000 !important;
+	display: none;
+	width: 272px;
+	padding: 8px;
+	background: #fff;
+	border: 1px solid #c3d7cf;
+	border-radius: 6px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.ui-datepicker {
+	width: 100%;
+	padding: 0;
+	background: transparent;
+	border: 0;
+}
+
+.ui-datepicker .ui-datepicker-header {
+	position: relative;
+	padding: 8px 34px;
+	margin-bottom: 8px;
+	color: #fff;
+	background: #1a8960;
+	border: 1px solid #14694a;
+	border-radius: 4px;
+}
+
+.ui-datepicker .ui-datepicker-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	margin: 0;
+	font-weight: 600;
+}
+
+.ui-datepicker .ui-datepicker-title select {
+	height: 28px;
+	min-height: 28px;
+	padding: 2px 24px 2px 8px;
+	margin: 0;
+	font-size: 13px;
+	line-height: 1;
+	color: #1d2327;
+	background-color: #fff;
+	border-color: #8c8f94;
+	border-radius: 3px;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 8px;
+	width: 22px;
+	height: 22px;
+	overflow: hidden;
+	text-indent: -9999px;
+	text-decoration: none;
+	cursor: pointer;
+	background: rgba(255, 255, 255, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: 50%;
+}
+
+.ui-datepicker .ui-datepicker-prev {
+	left: 8px;
+}
+
+.ui-datepicker .ui-datepicker-next {
+	right: 8px;
+}
+
+.ui-datepicker .ui-datepicker-prev::before,
+.ui-datepicker .ui-datepicker-next::before {
+	position: absolute;
+	top: 6px;
+	left: 8px;
+	width: 6px;
+	height: 6px;
+	content: "";
+	border-top: 2px solid #fff;
+	border-right: 2px solid #fff;
+	transform: rotate(225deg);
+}
+
+.ui-datepicker .ui-datepicker-next::before {
+	left: 6px;
+	transform: rotate(45deg);
+}
+
+.ui-datepicker table {
+	width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+.ui-datepicker th {
+	padding: 4px 0 6px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #2c3338;
+	text-align: center;
+}
+
+.ui-datepicker td {
+	padding: 1px;
+	text-align: center;
+}
+
+.ui-datepicker td a,
+.ui-datepicker td span {
+	display: block;
+	padding: 6px 0;
+	font-size: 13px;
+	line-height: 1.3;
+	text-decoration: none;
+	border-radius: 3px;
+}
+
+.ui-datepicker td a {
+	color: #1a8960;
+}
+
+.ui-datepicker td a:hover,
+.ui-datepicker td a:focus {
+	color: #135e96;
+	background: #e9f6f0;
+	outline: none;
+}
+
+.ui-datepicker td .ui-state-active {
+	color: #fff;
+	font-weight: 600;
+	background: #1a8960;
+}
+
+.ui-datepicker td .ui-state-highlight {
+	box-shadow: inset 0 0 0 1px #1a8960;
+}
+
+.ui-datepicker td.ui-datepicker-unselectable span,
+.ui-datepicker td .ui-state-disabled {
+	color: #a7aaad;
+}
+
+/* Settings page: default portfolio meta fields (label left, control right) */
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) {
+	display: grid;
+	grid-template-columns: 150px minmax(0, 1fr);
+	gap: 12px 16px;
+	align-items: start;
+	margin-bottom: 18px;
+}
+
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) > .wpdino-label {
+	margin-bottom: 0;
+	max-width: 150px;
+}
+
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-description,
+.wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-field-description {
+	grid-column: 2;
+	margin-top: -4px;
+}

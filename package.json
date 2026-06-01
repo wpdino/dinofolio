@@ -1,0 +1,77 @@
+{
+	"name": "dinofolio",
+	"version": "1.0.0",
+	"description": "DinoFolio plugin for WordPress with modern Gutenberg blocks and Elementor support",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:md:js": "wp-scripts lint-md-js",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start",
+		"test:e2e": "wp-scripts test-e2e",
+		"test:unit": "wp-scripts test-unit-js"
+	},
+	"keywords": [
+		"wordpress",
+		"gutenberg",
+		"blocks",
+		"portfolio",
+		"gallery",
+		"projects"
+	],
+	"author": "WPDINO",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://www.wpdino.com/plugins/dinofolio/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wpdino/dinofolio.git"
+	},
+	"bugs": {
+		"url": "https://github.com/wpdino/dinofolio/issues"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^24.6.0"
+	},
+	"dependencies": {
+		"@wordpress/api-fetch": "^6.0.1",
+		"@wordpress/block-editor": "^9.0.0",
+		"@wordpress/blocks": "^11.0.0",
+		"@wordpress/components": "^19.0.0",
+		"@wordpress/compose": "^5.0.0",
+		"@wordpress/core-data": "^4.0.0",
+		"@wordpress/data": "^6.0.0",
+		"@wordpress/date": "^4.0.0",
+		"@wordpress/edit-post": "^5.0.0",
+		"@wordpress/element": "^4.0.0",
+		"@wordpress/html-entities": "^3.0.0",
+		"@wordpress/i18n": "^4.0.0",
+		"@wordpress/icons": "^8.0.0",
+		"@wordpress/notices": "^3.0.0",
+		"@wordpress/plugins": "^4.0.0",
+		"@wordpress/primitives": "^3.0.0",
+		"@wordpress/rich-text": "^5.0.0",
+		"@wordpress/server-side-render": "^3.0.0",
+		"@wordpress/url": "^3.0.0"
+	},
+	"engines": {
+		"node": ">=14.15.0",
+		"npm": ">=6.14.8"
+	},
+	"browserslist": [
+		"extends @wordpress/browserslist-config"
+	],
+	"wp-scripts": {
+		"entry": {
+			"index": "./src/index.js",
+			"dinofolio": "./src/blocks/dinofolio/index.js"
+		}
+	}
+}

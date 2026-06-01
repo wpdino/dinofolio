@@ -1,0 +1,2619 @@
+# Copyright (C) 2024 wpdino.com
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: DinoPack for Elementor 1.0.4\n"
+"Report-Msgid-Bugs-To: https://wpdino.com/support\n"
+"POT-Creation-Date: 2025-10-01 10:34+0300\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: WPDINO Team <support@wpdino.com>\n"
+"Language-Team: WPDINO <support@wpdino.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: xgettext\n"
+"X-Domain: dinopack-for-elementor\n"
+
+#: inc/admin/settings/class-dinopack-settings-page.php:269
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:283
+#: inc/admin/settings/class-dinopack-settings-page.php:340
+#: inc/admin/settings/class-dinopack-settings-page.php:364
+msgid "Settings have been reset to defaults."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:338
+msgid ""
+"Are you sure you want to reset all settings to defaults? This action cannot "
+"be undone."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:339
+msgid ""
+"Are you sure you want to import these settings? This will overwrite your "
+"current settings."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:341
+msgid "Settings exported successfully!"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:342
+#: inc/admin/settings/class-dinopack-settings-page.php:409
+msgid "Settings imported successfully!"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:343
+msgid "System info copied to clipboard!"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:344
+msgid "Failed to copy. Please select and copy manually."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:345
+msgid "An error occurred. Please try again."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:346
+msgid "Please select a valid JSON file."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:358
+#: inc/admin/settings/class-dinopack-settings-page.php:376
+#: inc/admin/settings/class-dinopack-settings-page.php:392
+msgid "You do not have sufficient permissions."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:402
+msgid "Invalid JSON format."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:553
+msgid "General"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:554
+msgid "Configure basic DinoPack settings."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:562
+msgid "MailChimp API Key"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:564
+#, php-format
+msgid ""
+"To use Newsletter widget enter your MailChimp API key. You can find it in "
+"your MailChimp account under <a target=\"_blank\" href=\"%s\">Account > "
+"Extras > API keys</a>."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:571
+msgid "Tools"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:572
+msgid ""
+"Import, export, and manage your DinoPack settings with powerful backup and "
+"restore tools."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:604
+#: inc/admin/settings/class-dinopack-settings-page.php:608
+msgid "Export Settings"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:605
+msgid "Download your current settings as a JSON file."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:618
+msgid "Import Settings"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:619
+msgid "Upload a settings file to restore your configuration."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:624
+msgid "Choose File"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:635
+msgid "System Information"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:637
+msgid ""
+"Copy this information when contacting support for faster troubleshooting."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:643
+msgid "Copy System Info"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:751
+msgid "Lite"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:753
+msgid "v"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:767
+msgid "Settings tabs"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:831
+msgid "Save Changes"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:837
+msgid "Reset to Defaults"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:854
+#, php-format
+msgid "DinoPack v%1$s by %2$s"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:861
+msgid "WPDINO.com"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:863
+msgid "Documentation"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:865
+msgid "Support"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-field-renderer.php:396
+#: inc/admin/settings/class-dinopack-field-renderer.php:438
+msgid "Select Image"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-field-renderer.php:397
+msgid "Use This Image"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-field-renderer.php:410
+msgid "Selected image"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-field-renderer.php:417
+msgid "Change"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-field-renderer.php:422
+msgid "Remove"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-field-renderer.php:432
+msgid "No image selected"
+msgstr ""
+
+#: inc/elementor/class-dinopack-elementor-widgets.php:112
+msgid "WPDINO - DinoPack"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:79
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:174
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:570
+msgid "Advanced Heading"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:182
+msgid "Heading Text"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:190
+msgid "Enter your heading text"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:191
+msgid "Advanced Heading Text"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:202
+msgid "Use"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:203
+msgid "[ROTATOR]"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:204
+msgid "to add rotating words in your heading text."
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:215
+msgid "Heading Tag"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:234
+#: inc/elementor/widgets/button/button.php:210
+#: inc/elementor/widgets/icon-box/icon-box.php:262
+msgid "Link"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:251
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:735
+msgid "Word Rotator"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:259
+msgid "Enable Word Rotator"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:261
+#: inc/elementor/widgets/popup/popup.php:325
+#: inc/elementor/widgets/popup/popup.php:337
+#: inc/elementor/widgets/gallery/gallery.php:348
+#: inc/elementor/widgets/gallery/gallery.php:493
+#: inc/elementor/widgets/gallery/gallery.php:508
+#: inc/elementor/widgets/gallery/gallery.php:523
+#: inc/elementor/widgets/gallery/gallery.php:538
+#: inc/elementor/widgets/gallery/gallery.php:553
+#: inc/elementor/widgets/gallery/gallery.php:568
+#: inc/elementor/widgets/gallery/gallery.php:583
+#: inc/elementor/widgets/price-table/price-table.php:306
+#: inc/elementor/widgets/button/button.php:314
+#: inc/elementor/widgets/woo-products/woo-products.php:342
+#: inc/elementor/widgets/woo-products/woo-products.php:355
+msgid "Yes"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:262
+#: inc/elementor/widgets/popup/popup.php:326
+#: inc/elementor/widgets/popup/popup.php:338
+#: inc/elementor/widgets/gallery/gallery.php:349
+#: inc/elementor/widgets/gallery/gallery.php:494
+#: inc/elementor/widgets/gallery/gallery.php:509
+#: inc/elementor/widgets/gallery/gallery.php:524
+#: inc/elementor/widgets/gallery/gallery.php:539
+#: inc/elementor/widgets/gallery/gallery.php:554
+#: inc/elementor/widgets/gallery/gallery.php:569
+#: inc/elementor/widgets/gallery/gallery.php:584
+#: inc/elementor/widgets/price-table/price-table.php:307
+#: inc/elementor/widgets/button/button.php:315
+#: inc/elementor/widgets/woo-products/woo-products.php:343
+#: inc/elementor/widgets/woo-products/woo-products.php:356
+msgid "No"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:275
+#, php-format
+msgid ""
+"Insert %1$s%3$s%2$s in your heading text where you want the rotating words "
+"to appear."
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:292
+msgid "Word"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:294
+msgid "Amazing"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:302
+msgid "Rotating Words"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:307
+msgid "Creative"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:310
+msgid "Strong"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:313
+msgid "Dynamic"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:327
+#: inc/elementor/widgets/popup/popup.php:357
+msgid "Animation Type"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:331
+msgid "Blur"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:332
+msgid "Typing"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:333
+msgid "Shuffle"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:345
+msgid "Animation Speed"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:371
+msgid "Mask"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:378
+msgid "Enable Mask"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:380
+msgid "On"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:381
+msgid "Off"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:389
+msgid "Mask Image"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:407
+msgid "Mask Background Size"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:410
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:533
+#: inc/elementor/widgets/gallery/gallery.php:295
+#: inc/elementor/widgets/icon-box/icon-box.php:204
+msgid "Default"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:411
+#: inc/elementor/widgets/popup/popup.php:727
+msgid "Cover"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:412
+#: inc/elementor/widgets/popup/popup.php:728
+msgid "Contain"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:427
+#: inc/elementor/widgets/gallery/gallery.php:798
+#: inc/elementor/widgets/button/button.php:222
+msgid "Position"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:430
+msgid "Center Center"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:431
+msgid "Center Left"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:432
+msgid "Center Right"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:433
+msgid "Top Center"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:434
+msgid "Top Left"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:435
+msgid "Top Right"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:436
+msgid "Bottom Center"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:437
+msgid "Bottom Left"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:438
+msgid "Bottom Right"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:439
+msgid "Custom"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:454
+msgid "X Position"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:492
+msgid "Y Position"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:530
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:535
+msgid "Repeat"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:534
+msgid "No-repeat"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:536
+msgid "Repeat-x"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:537
+msgid "Repeat-y"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:538
+msgid "Round"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:539
+msgid "Space"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:578
+#: inc/elementor/widgets/gallery/gallery.php:813
+#: inc/elementor/widgets/button/button.php:250
+#: inc/elementor/widgets/icon-box/icon-box.php:519
+msgid "Alignment"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:582
+#: inc/elementor/widgets/gallery/gallery.php:817
+#: inc/elementor/widgets/blog/blog.php:288
+#: inc/elementor/widgets/blog/blog.php:320
+#: inc/elementor/widgets/button/button.php:226
+#: inc/elementor/widgets/icon-box/icon-box.php:280
+#: inc/elementor/widgets/icon-box/icon-box.php:523
+#: inc/elementor/widgets/woo-products/woo-products.php:369
+msgid "Left"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:586
+#: inc/elementor/widgets/gallery/gallery.php:821
+#: inc/elementor/widgets/blog/blog.php:289
+#: inc/elementor/widgets/blog/blog.php:321
+#: inc/elementor/widgets/button/button.php:230
+#: inc/elementor/widgets/button/button.php:258
+#: inc/elementor/widgets/icon-box/icon-box.php:527
+#: inc/elementor/widgets/woo-products/woo-products.php:373
+msgid "Center"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:590
+#: inc/elementor/widgets/gallery/gallery.php:825
+#: inc/elementor/widgets/blog/blog.php:290
+#: inc/elementor/widgets/blog/blog.php:322
+#: inc/elementor/widgets/button/button.php:234
+#: inc/elementor/widgets/icon-box/icon-box.php:288
+#: inc/elementor/widgets/icon-box/icon-box.php:531
+#: inc/elementor/widgets/woo-products/woo-products.php:377
+msgid "Right"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:594
+#: inc/elementor/widgets/icon-box/icon-box.php:535
+msgid "Justified"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:636
+msgid "Blend Mode"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:639
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:671
+#: inc/elementor/widgets/popup/popup.php:795
+#: inc/elementor/widgets/gallery/gallery.php:630
+#: inc/elementor/widgets/blog/blog.php:748
+#: inc/elementor/widgets/price-table/price-table.php:569
+#: inc/elementor/widgets/button/button.php:358
+#: inc/elementor/widgets/icon-box/icon-box.php:343
+#: inc/elementor/widgets/newsletter/newsletter.php:650
+#: inc/elementor/widgets/woo-products/woo-products.php:482
+msgid "Normal"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:640
+msgid "Multiply"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:641
+msgid "Screen"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:642
+#: inc/elementor/widgets/gallery/gallery.php:296
+#: inc/elementor/widgets/gallery/gallery.php:802
+msgid "Overlay"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:643
+msgid "Darken"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:644
+msgid "Lighten"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:645
+msgid "Color Dodge"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:646
+msgid "Saturation"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:647
+#: inc/elementor/widgets/gallery/gallery.php:882
+#: inc/elementor/widgets/gallery/gallery.php:920
+#: inc/elementor/widgets/blog/blog.php:581
+#: inc/elementor/widgets/price-table/price-table.php:418
+#: inc/elementor/widgets/price-table/price-table.php:461
+#: inc/elementor/widgets/button/button.php:579
+#: inc/elementor/widgets/icon-box/icon-box.php:575
+#: inc/elementor/widgets/icon-box/icon-box.php:604
+#: inc/elementor/widgets/newsletter/newsletter.php:439
+#: inc/elementor/widgets/newsletter/newsletter.php:482
+msgid "Color"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:648
+msgid "Difference"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:649
+msgid "Exclusion"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:650
+msgid "Hue"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:651
+msgid "Luminosity"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:678
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:746
+#: inc/elementor/widgets/popup/popup.php:802
+#: inc/elementor/widgets/popup/popup.php:840
+#: inc/elementor/widgets/progress-bar/progress-bar.php:397
+#: inc/elementor/widgets/blog/blog.php:646
+#: inc/elementor/widgets/blog/blog.php:755
+#: inc/elementor/widgets/blog/blog.php:786
+#: inc/elementor/widgets/blog/blog.php:902
+#: inc/elementor/widgets/blog/blog.php:1037
+#: inc/elementor/widgets/price-table/price-table.php:576
+#: inc/elementor/widgets/price-table/price-table.php:616
+#: inc/elementor/widgets/button/button.php:365
+#: inc/elementor/widgets/button/button.php:398
+#: inc/elementor/widgets/newsletter/newsletter.php:657
+#: inc/elementor/widgets/newsletter/newsletter.php:697
+#: inc/elementor/widgets/woo-products/woo-products.php:500
+#: inc/elementor/widgets/woo-products/woo-products.php:531
+#: inc/elementor/widgets/woo-products/woo-products.php:602
+#: inc/elementor/widgets/woo-products/woo-products.php:668
+#: inc/elementor/widgets/woo-products/woo-products.php:898
+msgid "Text Color"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:694
+#: inc/elementor/widgets/popup/popup.php:833
+#: inc/elementor/widgets/gallery/gallery.php:668
+#: inc/elementor/widgets/blog/blog.php:779
+#: inc/elementor/widgets/price-table/price-table.php:609
+#: inc/elementor/widgets/button/button.php:391
+#: inc/elementor/widgets/icon-box/icon-box.php:381
+#: inc/elementor/widgets/newsletter/newsletter.php:690
+#: inc/elementor/widgets/woo-products/woo-products.php:513
+msgid "Hover"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:701
+#: inc/elementor/widgets/blog/blog.php:657
+msgid "Link Color"
+msgstr ""
+
+#: inc/elementor/widgets/advanced-heading/advanced-heading.php:712
+#: inc/elementor/widgets/button/button.php:442
+msgid "Transition Duration"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:79
+msgid "Modal Popup"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:152
+#: inc/elementor/widgets/popup/popup.php:170
+msgid "Popup Content"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:159
+#: inc/elementor/widgets/popup/popup.php:161
+msgid "Popup Title"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:162
+msgid "Enter popup title"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:172
+msgid "Content goes here!"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:173
+msgid "Enter your content"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:183
+#: inc/elementor/widgets/popup/popup.php:514
+msgid "Trigger"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:190
+msgid "Trigger Type"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:194
+#: inc/elementor/widgets/price-table/price-table.php:504
+#: inc/elementor/widgets/button/button.php:84
+#: inc/elementor/widgets/button/button.php:165
+#: inc/elementor/widgets/button/button.php:331
+#: inc/elementor/widgets/newsletter/newsletter.php:585
+msgid "Button"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:195
+msgid "Image"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:196
+#: inc/elementor/widgets/popup/popup.php:218
+#: inc/elementor/widgets/price-table/price-table.php:221
+#: inc/elementor/widgets/button/button.php:283
+#: inc/elementor/widgets/icon-box/icon-box.php:171
+#: inc/elementor/widgets/icon-box/icon-box.php:333
+#: inc/elementor/widgets/newsletter/newsletter.php:284
+msgid "Icon"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:197
+#: inc/elementor/widgets/button/button.php:200
+msgid "Text"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:198
+msgid "Auto (Time Delay)"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:206
+#: inc/elementor/widgets/price-table/price-table.php:282
+#: inc/elementor/widgets/newsletter/newsletter.php:249
+msgid "Button Text"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:208
+msgid "Open Popup"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:234
+msgid "Choose Image"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:248
+msgid "Trigger Text"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:250
+msgid "Click here to open popup"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:260
+msgid "Delay Time (ms)"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:278
+msgid "Popup Settings"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:285
+#: inc/elementor/widgets/popup/popup.php:658
+#: inc/elementor/widgets/gallery/gallery.php:425
+msgid "Width"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:311
+msgid "Close Button"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:313
+#: inc/elementor/widgets/gallery/gallery.php:264
+#: inc/elementor/widgets/gallery/gallery.php:277
+#: inc/elementor/widgets/gallery/gallery.php:322
+#: inc/elementor/widgets/progress-bar/progress-bar.php:203
+#: inc/elementor/widgets/blog/blog.php:349
+#: inc/elementor/widgets/blog/blog.php:361
+#: inc/elementor/widgets/blog/blog.php:373
+#: inc/elementor/widgets/blog/blog.php:399
+#: inc/elementor/widgets/blog/blog.php:430
+#: inc/elementor/widgets/newsletter/newsletter.php:274
+#: inc/elementor/widgets/woo-products/woo-products.php:252
+msgid "Show"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:314
+#: inc/elementor/widgets/gallery/gallery.php:265
+#: inc/elementor/widgets/gallery/gallery.php:278
+#: inc/elementor/widgets/gallery/gallery.php:323
+#: inc/elementor/widgets/progress-bar/progress-bar.php:204
+#: inc/elementor/widgets/blog/blog.php:350
+#: inc/elementor/widgets/blog/blog.php:362
+#: inc/elementor/widgets/blog/blog.php:374
+#: inc/elementor/widgets/blog/blog.php:400
+#: inc/elementor/widgets/blog/blog.php:431
+#: inc/elementor/widgets/newsletter/newsletter.php:275
+#: inc/elementor/widgets/woo-products/woo-products.php:253
+msgid "Hide"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:323
+msgid "Close on ESC Key"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:335
+msgid "Close on Overlay Click"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:350
+msgid "Animation"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:361
+#: inc/elementor/widgets/popup/popup.php:469
+#: inc/elementor/widgets/popup/popup.php:761
+#: inc/elementor/widgets/gallery/gallery.php:294
+#: inc/elementor/widgets/blog/blog.php:274
+#: inc/elementor/widgets/woo-products/woo-products.php:277
+msgid "None"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:362
+#: inc/elementor/widgets/popup/popup.php:470
+msgid "Fade In"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:363
+#: inc/elementor/widgets/popup/popup.php:471
+msgid "Slide Down"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:364
+#: inc/elementor/widgets/popup/popup.php:472
+msgid "Slide Up"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:365
+msgid "Slide Left"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:366
+msgid "Slide Right"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:367
+msgid "Zoom In"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:368
+msgid "Zoom Out"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:369
+msgid "Bounce In"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:370
+msgid "Flip Horizontal"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:371
+msgid "Flip Vertical"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:379
+#: inc/elementor/widgets/progress-bar/progress-bar.php:226
+#: inc/elementor/widgets/button/button.php:674
+msgid "Animation Duration"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:410
+msgid "Animation Delay"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:441
+msgid "Animation Easing"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:445
+msgid "Ease"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:446
+msgid "Ease In"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:447
+msgid "Ease Out"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:448
+msgid "Ease In Out"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:449
+msgid "Linear"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:450
+msgid "Bounce"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:451
+msgid "Smooth"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:465
+msgid "Overlay Animation"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:480
+msgid "Overlay Animation Duration"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:534
+msgid "Button Styling"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:546
+#: inc/elementor/widgets/popup/popup.php:615
+#: inc/elementor/widgets/popup/popup.php:778
+#: inc/elementor/widgets/popup/popup.php:899
+#: inc/elementor/widgets/popup/popup.php:965
+#: inc/elementor/widgets/gallery/gallery.php:851
+#: inc/elementor/widgets/blog/blog.php:555
+#: inc/elementor/widgets/blog/blog.php:812
+#: inc/elementor/widgets/blog/blog.php:969
+#: inc/elementor/widgets/blog/blog.php:1081
+#: inc/elementor/widgets/price-table/price-table.php:383
+#: inc/elementor/widgets/price-table/price-table.php:521
+#: inc/elementor/widgets/button/button.php:525
+#: inc/elementor/widgets/icon-box/icon-box.php:444
+#: inc/elementor/widgets/newsletter/newsletter.php:404
+#: inc/elementor/widgets/newsletter/newsletter.php:602
+#: inc/elementor/widgets/woo-products/woo-products.php:546
+#: inc/elementor/widgets/woo-products/woo-products.php:636
+#: inc/elementor/widgets/woo-products/woo-products.php:713
+#: inc/elementor/widgets/woo-products/woo-products.php:839
+#: inc/elementor/widgets/woo-products/woo-products.php:930
+msgid "Padding"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:561
+#: inc/elementor/widgets/popup/popup.php:630
+#: inc/elementor/widgets/popup/popup.php:708
+#: inc/elementor/widgets/popup/popup.php:884
+#: inc/elementor/widgets/popup/popup.php:945
+#: inc/elementor/widgets/gallery/gallery.php:607
+#: inc/elementor/widgets/blog/blog.php:535
+#: inc/elementor/widgets/blog/blog.php:836
+#: inc/elementor/widgets/blog/blog.php:993
+#: inc/elementor/widgets/blog/blog.php:1105
+#: inc/elementor/widgets/price-table/price-table.php:395
+#: inc/elementor/widgets/price-table/price-table.php:554
+#: inc/elementor/widgets/button/button.php:479
+#: inc/elementor/widgets/icon-box/icon-box.php:493
+#: inc/elementor/widgets/newsletter/newsletter.php:416
+#: inc/elementor/widgets/newsletter/newsletter.php:635
+#: inc/elementor/widgets/woo-products/woo-products.php:437
+#: inc/elementor/widgets/woo-products/woo-products.php:570
+#: inc/elementor/widgets/woo-products/woo-products.php:818
+#: inc/elementor/widgets/woo-products/woo-products.php:918
+msgid "Border Radius"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:577
+msgid "Icon Styling"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:589
+#: inc/elementor/widgets/progress-bar/progress-bar.php:300
+#: inc/elementor/widgets/icon-box/icon-box.php:421
+msgid "Size"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:646
+msgid "Image Styling"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:683
+#: inc/elementor/widgets/gallery/gallery.php:458
+msgid "Height"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:723
+msgid "Object Fit"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:729
+#: inc/elementor/widgets/button/button.php:182
+msgid "Fill"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:730
+msgid "Scale Down"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:745
+msgid "Text Styling"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:757
+msgid "Text Decoration"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:762
+msgid "Underline"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:763
+msgid "Overline"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:764
+msgid "Line Through"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:817
+#: inc/elementor/widgets/popup/popup.php:854
+#: inc/elementor/widgets/popup/popup.php:925
+#: inc/elementor/widgets/gallery/gallery.php:655
+#: inc/elementor/widgets/gallery/gallery.php:693
+#: inc/elementor/widgets/gallery/gallery.php:839
+#: inc/elementor/widgets/progress-bar/progress-bar.php:262
+#: inc/elementor/widgets/blog/blog.php:516
+#: inc/elementor/widgets/blog/blog.php:766
+#: inc/elementor/widgets/blog/blog.php:797
+#: inc/elementor/widgets/blog/blog.php:913
+#: inc/elementor/widgets/blog/blog.php:1048
+#: inc/elementor/widgets/price-table/price-table.php:587
+#: inc/elementor/widgets/price-table/price-table.php:627
+#: inc/elementor/widgets/button/button.php:377
+#: inc/elementor/widgets/button/button.php:409
+#: inc/elementor/widgets/button/button.php:635
+#: inc/elementor/widgets/newsletter/newsletter.php:668
+#: inc/elementor/widgets/newsletter/newsletter.php:708
+#: inc/elementor/widgets/woo-products/woo-products.php:489
+#: inc/elementor/widgets/woo-products/woo-products.php:520
+#: inc/elementor/widgets/woo-products/woo-products.php:798
+#: inc/elementor/widgets/woo-products/woo-products.php:887
+msgid "Background Color"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:917
+msgid "Popup"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:977
+#: inc/elementor/widgets/gallery/gallery.php:305
+msgid "Overlay Color"
+msgstr ""
+
+#: inc/elementor/widgets/popup/popup.php:1066
+msgid "Popup Trigger"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:92
+#: inc/elementor/widgets/gallery/gallery.php:165
+msgid "Gallery"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:172
+msgid "Gallery Images"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:175
+msgid "Select multiple images from the media library"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:192
+msgid "Gallery Type"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:196
+#: inc/elementor/widgets/blog/blog.php:187
+msgid "Grid"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:197
+#: inc/elementor/widgets/blog/blog.php:189
+msgid "Masonry"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:206
+#: inc/elementor/widgets/blog/blog.php:210
+#: inc/elementor/widgets/woo-products/woo-products.php:227
+msgid "Columns"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:232
+#: inc/elementor/widgets/woo-products/woo-products.php:405
+msgid "Spacing"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:262
+#: inc/elementor/widgets/blog/blog.php:359
+msgid "Show Title"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:275
+msgid "Show Caption"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:290
+msgid "Hover Effect"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:320
+msgid "Show Zoom Icon"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:338
+msgid "Lightbox"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:346
+msgid "Enable Lightbox"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:358
+msgid "Skin"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:362
+msgid "Clean"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:363
+msgid "Modern"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:364
+msgid "Minimal"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:375
+msgid "Open Effect"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:379
+#: inc/elementor/widgets/gallery/gallery.php:396
+#: inc/elementor/widgets/gallery/gallery.php:414
+msgid "Fade"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:380
+#: inc/elementor/widgets/gallery/gallery.php:397
+msgid "Zoom"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:381
+#: inc/elementor/widgets/gallery/gallery.php:398
+#: inc/elementor/widgets/gallery/gallery.php:413
+msgid "Slide"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:392
+msgid "Close Effect"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:409
+msgid "Slide Effect"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:491
+msgid "Loop Gallery"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:506
+msgid "Keyboard Navigation"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:521
+msgid "Touch Navigation"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:536
+msgid "Close on Outside Click"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:551
+msgid "Zoomable"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:566
+msgid "Draggable"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:581
+msgid "Preload Images"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:599
+msgid "Items"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:637
+#: inc/elementor/widgets/gallery/gallery.php:675
+msgid "Opacity"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:704
+msgid "Scale"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:727
+msgid "Zoom Icon"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:740
+#: inc/elementor/widgets/blog/blog.php:679
+#: inc/elementor/widgets/price-table/price-table.php:240
+#: inc/elementor/widgets/newsletter/newsletter.php:336
+msgid "Icon Color"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:756
+#: inc/elementor/widgets/button/button.php:499
+#: inc/elementor/widgets/newsletter/newsletter.php:299
+msgid "Icon Size"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:786
+#: inc/elementor/widgets/icon-box/icon-box.php:511
+msgid "Content"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:803
+msgid "Below Image"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:870
+#: inc/elementor/widgets/progress-bar/progress-bar.php:155
+#: inc/elementor/widgets/blog/blog.php:246
+#: inc/elementor/widgets/blog/blog.php:570
+#: inc/elementor/widgets/price-table/price-table.php:159
+#: inc/elementor/widgets/price-table/price-table.php:410
+#: inc/elementor/widgets/icon-box/icon-box.php:233
+#: inc/elementor/widgets/icon-box/icon-box.php:566
+#: inc/elementor/widgets/newsletter/newsletter.php:219
+#: inc/elementor/widgets/newsletter/newsletter.php:431
+#: inc/elementor/widgets/woo-products/woo-products.php:292
+msgid "Title"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:908
+msgid "Caption"
+msgstr ""
+
+#: inc/elementor/widgets/gallery/gallery.php:960
+msgid "Please select images from the media library"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:79
+#: inc/elementor/widgets/progress-bar/progress-bar.php:148
+#: inc/elementor/widgets/progress-bar/progress-bar.php:241
+msgid "Progress Bar"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:157
+msgid "Skill Name"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:158
+msgid "Enter progress bar title"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:166
+msgid "Progress Value"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:179
+msgid "Progress Prefix"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:182
+msgid "e.g., $"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:190
+msgid "Progress Suffix"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:193
+msgid "e.g., %"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:201
+msgid "Show Progress Value"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:213
+#: inc/elementor/widgets/button/button.php:172
+msgid "Type"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:217
+msgid "Line"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:218
+#: inc/elementor/widgets/icon-box/icon-box.php:219
+msgid "Circle"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:231
+msgid "Animation duration in milliseconds"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:249
+msgid "Progress Color"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:275
+#: inc/elementor/widgets/progress-bar/progress-bar.php:322
+#: inc/elementor/widgets/button/button.php:552
+msgid "Thickness"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:344
+msgid "Roundness"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:374
+#: inc/elementor/widgets/price-table/price-table.php:375
+#: inc/elementor/widgets/newsletter/newsletter.php:396
+#: inc/elementor/widgets/woo-products/woo-products.php:450
+#: inc/elementor/widgets/woo-products/woo-products.php:831
+#: inc/elementor/widgets/woo-products/woo-products.php:943
+msgid "Box Shadow"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:389
+msgid "Title & Percentage"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:417
+msgid "Label Color"
+msgstr ""
+
+#: inc/elementor/widgets/progress-bar/progress-bar.php:444
+#: inc/elementor/widgets/blog/blog.php:611
+#: inc/elementor/widgets/blog/blog.php:711
+#: inc/elementor/widgets/blog/blog.php:824
+#: inc/elementor/widgets/blog/blog.php:981
+#: inc/elementor/widgets/blog/blog.php:1093
+#: inc/elementor/widgets/price-table/price-table.php:438
+#: inc/elementor/widgets/price-table/price-table.php:533
+#: inc/elementor/widgets/newsletter/newsletter.php:459
+#: inc/elementor/widgets/newsletter/newsletter.php:502
+#: inc/elementor/widgets/newsletter/newsletter.php:614
+#: inc/elementor/widgets/woo-products/woo-products.php:558
+#: inc/elementor/widgets/woo-products/woo-products.php:624
+#: inc/elementor/widgets/woo-products/woo-products.php:701
+#: inc/elementor/widgets/woo-products/woo-products.php:775
+#: inc/elementor/widgets/woo-products/woo-products.php:851
+msgid "Margin"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:103
+msgid "Blog"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:176
+msgid "Blog Settings"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:183
+#: inc/elementor/widgets/newsletter/newsletter.php:351
+msgid "Layout"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:188
+msgid "List"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:199
+msgid "Posts Per Page"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:231
+msgid "Post Type"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:241
+#: inc/elementor/widgets/woo-products/woo-products.php:287
+msgid "Order By"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:245
+#: inc/elementor/widgets/blog/blog.php:414
+#: inc/elementor/widgets/woo-products/woo-products.php:291
+msgid "Date"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:247
+#: inc/elementor/widgets/woo-products/woo-products.php:296
+msgid "Random"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:248
+msgid "Comment Count"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:249
+msgid "Last Modified"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:257
+#: inc/elementor/widgets/woo-products/woo-products.php:305
+msgid "Order"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:261
+msgid "Descending"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:262
+msgid "Ascending"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:270
+msgid "Pagination Type"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:275
+#: inc/elementor/widgets/blog/blog.php:882
+#: inc/elementor/widgets/woo-products/woo-products.php:353
+msgid "Pagination"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:276
+#: inc/elementor/widgets/blog/blog.php:1017
+msgid "Load More Button"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:284
+#: inc/elementor/widgets/woo-products/woo-products.php:365
+msgid "Pagination Position"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:304
+msgid "Load More Text"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:306
+#: inc/elementor/widgets/blog/blog.php:1359
+msgid "Load More"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:316
+msgid "Load More Position"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:340
+msgid "Post Content"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:347
+msgid "Show Image"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:371
+msgid "Show Excerpt"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:383
+msgid "Excerpt Length"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:397
+msgid "Show Meta"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:409
+#: inc/elementor/widgets/blog/blog.php:626
+msgid "Meta Data"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:415
+msgid "Author"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:416
+#: inc/elementor/widgets/woo-products/woo-products.php:203
+msgid "Categories"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:417
+msgid "Comments"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:428
+msgid "Show Read More"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:440
+msgid "Read More Text"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:442
+msgid "Read More"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:452
+msgid "Read More Icon"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:467
+#: inc/elementor/widgets/button/button.php:296
+#: inc/elementor/widgets/icon-box/icon-box.php:275
+msgid "Icon Position"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:471
+msgid "Before Text"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:472
+msgid "After Text"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:486
+msgid "Posts"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:494
+msgid "Columns Gap"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:592
+#: inc/elementor/widgets/woo-products/woo-products.php:613
+msgid "Hover Color"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:638
+#: inc/elementor/widgets/blog/blog.php:738
+#: inc/elementor/widgets/blog/blog.php:894
+#: inc/elementor/widgets/blog/blog.php:1029
+#: inc/elementor/widgets/price-table/price-table.php:430
+#: inc/elementor/widgets/price-table/price-table.php:473
+#: inc/elementor/widgets/price-table/price-table.php:513
+#: inc/elementor/widgets/newsletter/newsletter.php:451
+#: inc/elementor/widgets/newsletter/newsletter.php:494
+#: inc/elementor/widgets/newsletter/newsletter.php:594
+#: inc/elementor/widgets/woo-products/woo-products.php:472
+#: inc/elementor/widgets/woo-products/woo-products.php:594
+#: inc/elementor/widgets/woo-products/woo-products.php:660
+#: inc/elementor/widgets/woo-products/woo-products.php:879
+msgid "Typography"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:668
+msgid "Link Hover Color"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:690
+msgid "Spacing Between Items"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:726
+msgid "Read More Button"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:849
+#: inc/elementor/widgets/blog/blog.php:1006
+#: inc/elementor/widgets/blog/blog.php:1118
+#: inc/elementor/widgets/price-table/price-table.php:366
+#: inc/elementor/widgets/price-table/price-table.php:546
+#: inc/elementor/widgets/button/button.php:178
+#: inc/elementor/widgets/button/button.php:470
+#: inc/elementor/widgets/newsletter/newsletter.php:387
+#: inc/elementor/widgets/newsletter/newsletter.php:627
+#: inc/elementor/widgets/woo-products/woo-products.php:429
+#: inc/elementor/widgets/woo-products/woo-products.php:810
+#: inc/elementor/widgets/woo-products/woo-products.php:910
+msgid "Border"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:857
+msgid "Icon Spacing"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:925
+#: inc/elementor/widgets/blog/blog.php:1059
+msgid "Hover Text Color"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:936
+#: inc/elementor/widgets/blog/blog.php:1070
+msgid "Hover Background Color"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:947
+msgid "Current Page Text Color"
+msgstr ""
+
+#: inc/elementor/widgets/blog/blog.php:958
+msgid "Current Page Background Color"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:79
+msgid "Price Table"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:152
+msgid "Price Table Content"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:161
+msgid "Basic Plan"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:162
+#: inc/elementor/widgets/icon-box/icon-box.php:239
+#: inc/elementor/widgets/newsletter/newsletter.php:222
+msgid "Enter your title"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:169
+#: inc/elementor/widgets/icon-box/icon-box.php:247
+#: inc/elementor/widgets/icon-box/icon-box.php:595
+#: inc/elementor/widgets/newsletter/newsletter.php:229
+#: inc/elementor/widgets/newsletter/newsletter.php:474
+msgid "Description"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:171
+msgid "Perfect for small businesses"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:172
+#: inc/elementor/widgets/icon-box/icon-box.php:253
+#: inc/elementor/widgets/newsletter/newsletter.php:232
+msgid "Enter your description"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:179
+#: inc/elementor/widgets/price-table/price-table.php:453
+#: inc/elementor/widgets/woo-products/woo-products.php:293
+msgid "Price"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:182
+msgid "Enter price"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:189
+msgid "Currency"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:192
+msgid "Enter currency symbol"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:199
+msgid "Period"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:201
+msgid "/year"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:202
+msgid "Enter period"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:209
+msgid "Features"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:214
+msgid "Feature Text"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:216
+msgid "Feature item"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:217
+msgid "Enter feature text"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:251
+msgid "10 Projects"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:259
+msgid "5GB Storage"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:267
+msgid "Email Support"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:284
+msgid "Get Started"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:285
+#: inc/elementor/widgets/newsletter/newsletter.php:252
+msgid "Enter button text"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:292
+msgid "Button URL"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:294
+#: inc/elementor/widgets/button/button.php:212
+#: inc/elementor/widgets/icon-box/icon-box.php:267
+msgid "https://your-link.com"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:304
+msgid "Popular"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:316
+msgid "Popular Text"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:318
+msgid "Most Popular"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:319
+msgid "Enter popular text"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:332
+#: inc/elementor/widgets/newsletter/newsletter.php:368
+msgid "Style"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:356
+#: inc/elementor/widgets/newsletter/newsletter.php:377
+msgid "Background"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:481
+msgid "Currency Color"
+msgstr ""
+
+#: inc/elementor/widgets/price-table/price-table.php:493
+msgid "Currency Typography"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:186
+msgid "Half"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:190
+msgid "Label"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:202
+#: inc/elementor/widgets/button/button.php:203
+msgid "Click Here"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:238
+msgid "Stretch"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:254
+msgid "Start"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:262
+msgid "End"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:266
+msgid "Space between"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:300
+msgid "Before"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:301
+msgid "After"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:312
+msgid "Enable Animated Underline"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:321
+msgid "Enable animated underline effect for label button type."
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:420
+msgid "Border Color"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:457
+#: inc/elementor/widgets/icon-box/icon-box.php:321
+msgid "Hover Animation"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:539
+msgid "Animated Underline"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:595
+msgid "Spacing from Text"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:623
+msgid "Half Background"
+msgstr ""
+
+#: inc/elementor/widgets/button/button.php:650
+msgid "Background Opacity"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:83
+#: inc/elementor/widgets/icon-box/icon-box.php:164
+msgid "Icon Box"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:201
+msgid "View"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:205
+#: inc/elementor/widgets/newsletter/newsletter.php:356
+msgid "Stacked"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:206
+msgid "Framed"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:216
+msgid "Shape"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:220
+msgid "Square"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:238
+msgid "This is the heading"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:252
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, "
+"luctus nec ullamcorper mattis, pulvinar dapibus leo."
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:284
+#: inc/elementor/widgets/icon-box/icon-box.php:551
+msgid "Top"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:301
+msgid "Title HTML Tag"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:350
+#: inc/elementor/widgets/icon-box/icon-box.php:388
+msgid "Primary Color"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:363
+#: inc/elementor/widgets/icon-box/icon-box.php:401
+msgid "Secondary Color"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:464
+msgid "Rotate"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:479
+msgid "Border Width"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:548
+msgid "Vertical Alignment"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:552
+msgid "Middle"
+msgstr ""
+
+#: inc/elementor/widgets/icon-box/icon-box.php:553
+msgid "Bottom"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:82
+msgid "Newsletter"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:151
+msgid "Select a list..."
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:158
+msgid "Please configure MailChimp API key in DinoPack Settings"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:173
+msgid "Error loading lists. Please check your API key."
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:191
+msgid "MailChimp API"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:198
+msgid "MailChimp List"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:200
+msgid ""
+"Select your MailChimp list. Make sure to configure your API key in DinoPack "
+"Settings first."
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:212
+msgid "Newsletter Content"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:221
+msgid "Subscribe to Our Newsletter"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:231
+msgid "Get the latest updates and news delivered to your inbox."
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:239
+msgid "Email Placeholder"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:241
+msgid "Enter your email address"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:242
+msgid "Enter placeholder text"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:251
+msgid "Subscribe"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:259
+msgid "Form Action URL"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:261
+msgid "https://your-mailchimp-url.com"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:265
+msgid "Enter your MailChimp or email service form action URL"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:272
+msgid "Show Icon"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:355
+msgid "Inline"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:517
+msgid "Form"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:525
+msgid "Input Text Color"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:536
+msgid "Input Background"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:547
+msgid "Input Border Color"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:558
+msgid "Input Padding"
+msgstr ""
+
+#: inc/elementor/widgets/newsletter/newsletter.php:570
+msgid "Input Border Radius"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:96
+msgid "WooCommerce Products"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:178
+msgid "Products Settings"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:185
+msgid "Products Source"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:189
+msgid "All Products"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:190
+msgid "Recent Products"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:191
+msgid "Featured Products"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:192
+msgid "Sale Products"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:193
+msgid "Best Selling"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:194
+msgid "Top Rated"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:195
+msgid "Specific Categories"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:216
+msgid "Products Per Page"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:250
+msgid "Show Sale Badge"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:265
+msgid "Query Settings"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:273
+msgid "Filter By"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:278
+msgid "Featured"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:279
+msgid "Sale"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:294
+msgid "Popularity"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:295
+msgid "Rating"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:297
+msgid "Menu Order"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:309
+msgid "ASC"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:310
+msgid "DESC"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:318
+msgid "Product Tags"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:329
+msgid "Offset"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:333
+msgid "Number of products to skip."
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:340
+msgid "Exclude Current Product"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:346
+msgid "Exclude current product from the query."
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:397
+msgid "Products"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:463
+msgid "Add to Cart Button"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:585
+msgid "Product Title"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:651
+msgid "Product Price"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:679
+msgid "Sale Price Color"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:690
+msgid "Regular Price Color"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:728
+msgid "Product Rating"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:736
+msgid "Star Color"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:747
+msgid "Star Size"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:790
+msgid "Product Container"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:867
+msgid "Sale Badge"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:1014
+msgid "Error!"
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:1015
+msgid ""
+"The WooCommerce plugin could not be found. Please install/activate it in "
+"order to use this feature."
+msgstr ""
+
+#: inc/elementor/widgets/woo-products/woo-products.php:1026
+msgid "No products found."
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:47
+msgid "DinoPack Settings Page"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:52
+msgid "DinoPack"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:63 inc/class-dinopack-admin-menus.php:103
+msgid "Settings"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:102
+msgid "Go to DinoPack Settings page"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:121
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:796
+msgid "AI Content Generator"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:797
+msgid "Generate blog posts and articles using AI."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:800
+msgid "AI Content Summarizer"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:801
+msgid "Automatically summarize your content using AI."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:804
+msgid "AI FAQ Generator"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:805
+msgid "Generate FAQs from blog content using AI."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:808
+msgid "AI Image Generator"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:809
+msgid "Generate images using DALL-E API."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:812
+msgid "AI SEO Optimizer"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:813
+msgid "Optimize your content for SEO using AI."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:816
+msgid "AI Social Media Post Generator"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:817
+msgid "Create social media posts from blog content."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:820
+msgid "Audio Playlist"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:821
+msgid "Display audio files in a beautiful playlist format."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:824
+msgid "Before After"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:825
+msgid "Compare images with a before/after slider."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:828
+msgid "Chart Visualizer"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:829
+msgid "Create beautiful charts and graphs for data visualization."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:832
+msgid "Countdown Timer"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:833
+msgid "Display a countdown to a target date/time."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:836
+msgid "CTA Box"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:837
+msgid "Create compelling call-to-action boxes."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:840
+msgid "Image Accordion"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:841
+msgid "Display images in an interactive accordion layout."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:844
+msgid "Lottie Gallery"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:845
+msgid "Showcase Lottie animations in a gallery format."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:848
+msgid "Offcanvas Bar"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:849
+msgid "Create slide-in sidebars and panels."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:852
+msgid "Reading Time Calculator"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:853
+msgid "Display estimated reading time for your content."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:856
+msgid "Related Posts"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:857
+msgid "Display related posts suggestions."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:860
+msgid "Review Carousel"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:861
+msgid "Showcase reviews in a beautiful carousel."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:864
+msgid "Smart Testimonials Slider"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:865
+msgid "Display testimonials in a modern slider/carousel layout with ratings."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:868
+msgid "Tilt Card"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:869
+msgid "Create interactive 3D tilt effect cards."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:872
+msgid "Video Gallery"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:873
+msgid "Display videos in a beautiful gallery with lightbox."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:960
+msgid "PRO Widgets"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:962
+#, php-format
+msgid "These widgets are available in <a href=\"%s\" target=\"_blank\">DinoPack PRO</a>. Upgrade to unlock these powerful features."
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:1391
+#, php-format
+msgid "DinoPack For Elementor v%1$s by %2$s"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:1428
+msgid "Follow WPDINO on Facebook"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:1429
+msgid "Follow WPDINO on X (Twitter)"
+msgstr ""
+
+#: inc/admin/settings/class-dinopack-settings-page.php:1430
+msgid "Follow WPDINO on Instagram"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:113
+msgid "Get DinoPack PRO"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:130
+msgid "Docs"
+msgstr ""
+
+#: inc/class-dinopack-admin-menus.php:147
+msgid "Upgrade to PRO"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:107
+msgid "AI Product Image"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:188
+msgid "Select Product"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:192
+msgid "Select a WooCommerce product to generate image for."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:199
+msgid "Image Style"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:202
+msgid "Photorealistic"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:203
+msgid "Illustration"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:204
+msgid "3D Render"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:205
+msgid "Lifestyle"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:206
+msgid "Product Shot"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:207
+msgid "Minimal"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:216
+msgid "Image Size"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:219
+msgid "Square (1024x1024)"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:220
+msgid "Portrait (1024x1792)"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:221
+msgid "Landscape (1792x1024)"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:230
+msgid "Custom Instructions"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:233
+msgid "Add any specific instructions for the image generation..."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:234
+msgid "Optional: Add custom instructions to guide the AI image generation."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:243
+msgid "Generate Image"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:253
+msgid "Generated Image"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:259
+msgid "AI-generated image will appear here. You can set it as the product featured image."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:266
+msgid "Set as Product Featured Image"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:271
+msgid "Automatically set the generated image as the product featured image."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:339
+msgid "Object Fit"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:342
+msgid "Cover"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:343
+msgid "Contain"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:344
+msgid "Fill"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:345
+msgid "None"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:346
+msgid "Scale Down"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:488
+msgid "Use the widget settings to generate an AI-powered product image."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:491
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:494
+msgid "Please select a product and use the widget settings to generate image."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:521
+msgid "Generating image..."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-image/ai-product-image.php:529
+msgid "Use the widget settings to generate an AI-powered product image."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:107
+msgid "AI Product SEO"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:188
+msgid "Select Product"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:192
+msgid "Select a WooCommerce product to generate SEO meta for."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:199
+msgid "SEO Type"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:202
+msgid "All (Title, Description, Keywords)"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:203
+msgid "SEO Title Only"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:204
+msgid "Meta Description Only"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:205
+msgid "Focus Keywords Only"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:214
+msgid "Custom Instructions"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:217
+msgid "Add any specific SEO instructions..."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:218
+msgid "Optional: Add custom instructions to guide the AI SEO generation."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:227
+msgid "Generate SEO Meta"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:237
+msgid "SEO Title"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:240
+msgid "Optimized SEO title (50-60 characters recommended)."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:251
+msgid "Meta Description"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:255
+msgid "SEO meta description (150-160 characters recommended)."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:266
+msgid "Focus Keywords"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:269
+msgid "Comma-separated list of focus keywords."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:279
+msgid "Auto-save to Product"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:284
+msgid "Automatically save generated SEO meta to the product."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:294
+msgid "Display"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:302
+msgid "Show SEO Title"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:313
+msgid "Show Meta Description"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:324
+msgid "Show Focus Keywords"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:346
+msgid "Title Color"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:365
+msgid "Description Color"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:384
+msgid "Keywords Color"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:535
+msgid "SEO Title:"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:537
+#, php-format
+msgid "(%d characters)"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:543
+msgid "Meta Description:"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:551
+msgid "Focus Keywords:"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:558
+msgid "Use the widget settings to generate AI-powered SEO meta for your product."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:585
+msgid "Generating SEO meta..."
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:591
+msgid "SEO Title:"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:599
+msgid "Meta Description:"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:607
+msgid "Focus Keywords:"
+msgstr ""
+
+#: inc/elementor/widgets/ai-product-seo/ai-product-seo.php:614
+msgid "Use the widget settings to generate AI-powered SEO meta for your product."
+msgstr ""

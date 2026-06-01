@@ -1,0 +1,503 @@
+/**
+ * Portfolio listing (grid, list, masonry) — used by shortcode, Elementor, Gutenberg, WPBakery.
+ */
+
+.wpdino-blocks_portfolio-block {
+	--dinofolio-portfolio-gap: 24px;
+	--dinofolio-portfolio-radius: 8px;
+	--dinofolio-portfolio-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+	--dinofolio-portfolio-accent: #6f9c50;
+	--dinofolio-portfolio-text: #333;
+	--dinofolio-portfolio-muted: #666;
+	margin: 0 0 2rem;
+}
+
+.wpdino-blocks_portfolio-block_items-list {
+	gap: var(--dinofolio-portfolio-gap);
+}
+
+/* Grid layout */
+.wpdino-blocks_portfolio-block.layout-grid .wpdino-blocks_portfolio-block_items-list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wpdino-blocks_portfolio-block.layout-grid.columns-2 .wpdino-blocks_portfolio-block_items-list {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wpdino-blocks_portfolio-block.layout-grid.columns-3 .wpdino-blocks_portfolio-block_items-list {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* List layout */
+.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_items-list {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Masonry layout (CSS columns — natural image heights create stagger) */
+.wpdino-blocks_portfolio-block.layout-masonry .wpdino-blocks_portfolio-block_items-list {
+	display: block;
+	column-count: 3;
+	column-gap: var(--dinofolio-portfolio-gap);
+	column-fill: balance;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry.columns-2 .wpdino-blocks_portfolio-block_items-list {
+	column-count: 2;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry.columns-3 .wpdino-blocks_portfolio-block_items-list {
+	column-count: 3;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	column-count: 4;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item {
+	break-inside: avoid;
+	page-break-inside: avoid;
+	-webkit-column-break-inside: avoid;
+	display: inline-block;
+	width: 100%;
+	margin: 0 0 var(--dinofolio-portfolio-gap);
+	vertical-align: top;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item .wpdino-blocks_portfolio-block_item-image {
+	width: 100%;
+	height: auto;
+	object-fit: unset;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item .wpdino-blocks_portfolio-block_item-details {
+	padding: 1rem 1.15rem 1.2rem;
+}
+
+.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item .wpdino-blocks_portfolio-block_item-excerpt {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.wpdino-blocks_portfolio-block_item {
+	background: #fff;
+	border-radius: var(--dinofolio-portfolio-radius);
+	box-shadow: var(--dinofolio-portfolio-shadow);
+	overflow: hidden;
+}
+
+.wpdino-blocks_portfolio-block_item-thumbnail {
+	position: relative;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.wpdino-blocks_portfolio-block_item-thumbnail a {
+	display: block;
+}
+
+/* Lightbox zoom icon on hover */
+.wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	opacity: 0;
+	background: rgba(0, 0, 0, 0.4);
+	transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.wpdino-blocks_portfolio-block_item-thumbnail.lightbox:hover .dinofolio-lightbox-zoom-icon,
+.wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
+	opacity: 1;
+}
+
+.dinofolio-lightbox-zoom-icon .dinofolio-zoom-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	color: #fff;
+	filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+	transform: scale(0.92);
+	transition: transform 0.3s ease;
+}
+
+.wpdino-blocks_portfolio-block_item-thumbnail.lightbox:hover .dinofolio-zoom-icon,
+.wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-zoom-icon {
+	transform: scale(1);
+}
+
+.wpdino-blocks_portfolio-block_item-image {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform 0.35s ease;
+}
+
+.wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-image {
+	transform: scale(1.04);
+}
+
+.wpdino-blocks_portfolio-block_item-details {
+	padding: 1.25rem 1.35rem 1.4rem;
+}
+
+.wpdino-blocks_portfolio-block_item-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.15rem;
+	line-height: 1.35;
+}
+
+.wpdino-blocks_portfolio-block_item-title a {
+	color: var(--dinofolio-portfolio-text);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.wpdino-blocks_portfolio-block_item-title a:hover {
+	color: var(--dinofolio-portfolio-accent);
+}
+
+.wpdino-blocks_portfolio-block_item-categories {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.8rem;
+	color: var(--dinofolio-portfolio-muted);
+	margin-bottom: 0.65rem;
+}
+
+.dinofolio-category-icon {
+	flex-shrink: 0;
+	width: 0.95rem;
+	height: 0.95rem;
+	color: var(--dinofolio-portfolio-accent);
+	opacity: 0.9;
+}
+
+.wpdino-blocks_portfolio-block_item-categories-list {
+	display: inline;
+	line-height: 1.4;
+}
+
+.wpdino-blocks_portfolio-block_item-categories a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.wpdino-blocks_portfolio-block_item-categories a:hover {
+	color: var(--dinofolio-portfolio-accent);
+}
+
+.wpdino-category-sep {
+	color: var(--dinofolio-portfolio-muted);
+}
+
+.wpdino-blocks_portfolio-block_item-excerpt {
+	color: var(--dinofolio-portfolio-muted);
+	font-size: 0.92rem;
+	line-height: 1.6;
+	margin-bottom: 0.85rem;
+}
+
+.wpdino-blocks_portfolio-block_item-excerpt p {
+	margin: 0;
+}
+
+.wpdino-blocks_portfolio-block_item-button {
+	margin-top: 0.25rem;
+}
+
+.wpz-portfolio-button__link {
+	display: inline-block;
+	padding: 0.55rem 1.1rem;
+	border-radius: 4px;
+	background: var(--dinofolio-portfolio-accent);
+	color: #fff !important;
+	text-decoration: none !important;
+	font-size: 0.88rem;
+	font-weight: 500;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+.wpz-portfolio-button__link:hover {
+	background: #5a833f;
+	color: #fff !important;
+}
+
+/* View All footer CTA */
+.wpdino-portfolio-view-all {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 2rem;
+	padding-top: 0.25rem;
+	text-align: center;
+	width: 100%;
+}
+
+.wpdino-portfolio-view-all .wpdino-view-all-btn {
+	display: inline-block;
+	min-width: 10rem;
+	padding: 0.65rem 1.75rem;
+	border-radius: 4px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-align: center;
+	text-decoration: none !important;
+	box-shadow: 0 2px 8px rgba(111, 156, 80, 0.25);
+	transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.wpdino-portfolio-view-all .wpdino-view-all-btn:hover {
+	box-shadow: 0 4px 14px rgba(111, 156, 80, 0.35);
+	transform: translateY(-1px);
+}
+
+.wpdino-portfolio-view-all .wpdino-view-all-btn:focus-visible {
+	outline: 2px solid var(--dinofolio-portfolio-accent);
+	outline-offset: 3px;
+}
+
+/* List layout items */
+.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+}
+
+.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-thumbnail {
+	flex: 0 0 38%;
+	max-width: 38%;
+}
+
+.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-details {
+	flex: 1 1 62%;
+	max-width: 62%;
+}
+
+/* Overlay style */
+.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail,
+.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail[style*="background-image"] {
+	min-height: 260px;
+	background-size: cover;
+	background-position: center;
+}
+
+.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail > a {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+
+.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
+	z-index: 3;
+}
+
+.wpdino-blocks_portfolio-block_item-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 1.25rem;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.15) 55%, transparent 100%);
+	color: #fff;
+	z-index: 2;
+	pointer-events: none;
+}
+
+.wpdino-blocks_portfolio-block_item-overlay a {
+	pointer-events: auto;
+	color: #fff;
+}
+
+.wpdino-blocks_portfolio-block_item-overlay .wpdino-blocks_portfolio-block_item-excerpt {
+	color: rgba(255, 255, 255, 0.88);
+}
+
+/* Category filter */
+.wpdino-blocks_portfolio-block_filter {
+	margin-bottom: 1.25rem;
+}
+
+.wpdino-blocks_portfolio-block_filter ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 0.75rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wpdino-blocks_portfolio-block_filter a {
+	display: inline-block;
+	padding: 0.4rem 0.85rem;
+	border-radius: 999px;
+	border: 1px solid #ddd;
+	color: var(--dinofolio-portfolio-text);
+	text-decoration: none;
+	font-size: 0.85rem;
+	transition: all 0.2s ease;
+}
+
+.wpdino-blocks_portfolio-block_filter .current-cat a,
+.wpdino-blocks_portfolio-block_filter a:hover {
+	background: var(--dinofolio-portfolio-accent);
+	border-color: var(--dinofolio-portfolio-accent);
+	color: #fff;
+}
+
+/* Pagination */
+.wpdino-portfolio-pagination {
+	margin-top: 2rem;
+	text-align: center;
+}
+
+.wpdino-portfolio-pagination .pagination-wrapper {
+	display: block;
+}
+
+.wpdino-portfolio-pagination .pagination-items,
+.wpdino-portfolio-pagination .pagination-wrapper > .page-numbers,
+.wpdino-portfolio-pagination ul.page-numbers {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	box-shadow: none;
+}
+
+.wpdino-portfolio-pagination ul.page-numbers li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wpdino-portfolio-pagination .pagination-items > a.page-numbers,
+.wpdino-portfolio-pagination .pagination-items > span.page-numbers,
+.wpdino-portfolio-pagination .pagination-wrapper > a.page-numbers,
+.wpdino-portfolio-pagination .pagination-wrapper > span.page-numbers,
+.wpdino-portfolio-pagination ul.page-numbers a.page-numbers,
+.wpdino-portfolio-pagination ul.page-numbers span.page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.25rem;
+	min-height: 2.25rem;
+	padding: 0.45rem 0.75rem;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #fff;
+	text-decoration: none !important;
+	color: var(--dinofolio-portfolio-text);
+	font-size: 0.9rem;
+	line-height: 1.2;
+	box-sizing: border-box;
+	transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.wpdino-portfolio-pagination .pagination-items > span.page-numbers.current,
+.wpdino-portfolio-pagination .pagination-wrapper > span.page-numbers.current,
+.wpdino-portfolio-pagination ul.page-numbers span.page-numbers.current {
+	background: var(--dinofolio-portfolio-accent);
+	border-color: var(--dinofolio-portfolio-accent);
+	color: #fff;
+}
+
+.wpdino-portfolio-pagination .pagination-items > span.page-numbers.dots,
+.wpdino-portfolio-pagination .pagination-wrapper > span.page-numbers.dots,
+.wpdino-portfolio-pagination ul.page-numbers span.page-numbers.dots {
+	min-width: auto;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+	border: none;
+	background: transparent;
+	color: var(--dinofolio-portfolio-muted);
+}
+
+.wpdino-portfolio-pagination .pagination-items > a.page-numbers:hover,
+.wpdino-portfolio-pagination .pagination-wrapper > a.page-numbers:hover,
+.wpdino-portfolio-pagination ul.page-numbers a.page-numbers:hover {
+	border-color: var(--dinofolio-portfolio-accent);
+	color: var(--dinofolio-portfolio-accent);
+}
+
+.wpdino-portfolio-pagination .pagination-items > a.page-numbers:focus-visible,
+.wpdino-portfolio-pagination .pagination-wrapper > a.page-numbers:focus-visible,
+.wpdino-portfolio-pagination ul.page-numbers a.page-numbers:focus-visible {
+	outline: 2px solid var(--dinofolio-portfolio-accent);
+	outline-offset: 2px;
+}
+
+.wpdino-portfolio-pagination .pagination-prev,
+.wpdino-portfolio-pagination .pagination-next {
+	display: inline;
+}
+
+/* Empty state */
+.wpdino-portfolio-no-posts {
+	padding: 2rem;
+	text-align: center;
+	color: var(--dinofolio-portfolio-muted);
+}
+
+@media (max-width: 1024px) {
+	.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.wpdino-blocks_portfolio-block.layout-masonry.columns-4 .wpdino-blocks_portfolio-block_items-list {
+		column-count: 3;
+	}
+}
+
+@media (max-width: 767px) {
+	.wpdino-blocks_portfolio-block.layout-grid .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-grid.columns-3 .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.wpdino-blocks_portfolio-block.layout-masonry .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-masonry.columns-3 .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-masonry.columns-4 .wpdino-blocks_portfolio-block_items-list {
+		column-count: 2;
+	}
+
+	.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-thumbnail,
+	.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-details {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 480px) {
+	.wpdino-blocks_portfolio-block.layout-grid .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-grid.columns-2 .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-grid.columns-3 .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+		grid-template-columns: 1fr;
+	}
+
+	.wpdino-blocks_portfolio-block.layout-masonry .wpdino-blocks_portfolio-block_items-list {
+		column-count: 1;
+	}
+}
