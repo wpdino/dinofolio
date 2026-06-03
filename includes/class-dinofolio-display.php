@@ -44,6 +44,27 @@ class WPDINO_Portfolio_Display {
 	private static $instance = null;
 
 	/**
+	 * Whether the current request rendered a listing with lightbox enabled.
+	 *
+	 * @var bool
+	 */
+	private static $needs_lightbox = false;
+
+	/**
+	 * Whether the current request rendered a listing with category filter enabled.
+	 *
+	 * @var bool
+	 */
+	private static $needs_category_filter = false;
+
+	/**
+	 * Gallery group id for the listing currently being rendered.
+	 *
+	 * @var string
+	 */
+	private static $listing_gallery_id = '';
+
+	/**
 	 * Get the singleton instance
 	 *
 	 * @return WPDINO_Portfolio_Display
@@ -70,6 +91,44 @@ class WPDINO_Portfolio_Display {
 
 		// Enqueue frontend assets only when needed
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
+		add_action( 'wp_footer', array( $this, 'enqueue_lightbox_assets' ), 5 );
+		add_action( 'wp_footer', array( $this, 'enqueue_category_filter_assets' ), 5 );
+	}
+
+	/**
+	 * GLightbox style handle.
+	 *
+	 * @return string
+	 */
+	public static function get_glightbox_style_handle() {
+		return 'dinofolio-glightbox';
+	}
+
+	/**
+	 * GLightbox script handle.
+	 *
+	 * @return string
+	 */
+	public static function get_glightbox_script_handle() {
+		return 'dinofolio-glightbox';
+	}
+
+	/**
+	 * Portfolio lightbox initializer script handle.
+	 *
+	 * @return string
+	 */
+	public static function get_portfolio_lightbox_script_handle() {
+		return 'dinofolio-portfolio-lightbox';
+	}
+
+	/**
+	 * Portfolio category filter script handle.
+	 *
+	 * @return string
+	 */
+	public static function get_portfolio_filter_script_handle() {
+		return 'dinofolio-portfolio-filter';
 	}
 
 	/**
@@ -100,6 +159,100 @@ class WPDINO_Portfolio_Display {
 			array( self::get_listing_style_handle() ),
 			DINOFOLIO_VERSION
 		);
+
+		wp_register_style(
+			self::get_glightbox_style_handle(),
+			DINOFOLIO_URL . 'assets/vendor/glightbox/glightbox.min.css',
+			array(),
+			'3.3.0'
+		);
+
+		wp_register_script(
+			self::get_glightbox_script_handle(),
+			DINOFOLIO_URL . 'assets/vendor/glightbox/glightbox.min.js',
+			array(),
+			'3.3.0',
+			true
+		);
+
+		wp_register_script(
+			self::get_portfolio_lightbox_script_handle(),
+			DINOFOLIO_URL . 'assets/js/portfolio-lightbox.js',
+			array( self::get_glightbox_script_handle() ),
+			DINOFOLIO_VERSION,
+			true
+		);
+
+		wp_register_script(
+			self::get_portfolio_filter_script_handle(),
+			DINOFOLIO_URL . 'assets/js/portfolio-filter.js',
+			array(),
+			DINOFOLIO_VERSION,
+			true
+		);
+	}
+
+	/**
+	 * Mark that category filter assets should load on this request.
+	 *
+	 * @return void
+	 */
+	public static function flag_category_filter_assets() {
+		self::$needs_category_filter = true;
+	}
+
+	/**
+	 * Enqueue category filter script when the filter bar was rendered.
+	 *
+	 * @return void
+	 */
+	public function enqueue_category_filter_assets() {
+		if ( ! self::$needs_category_filter || self::is_block_editor_preview() ) {
+			return;
+		}
+
+		if ( ! wp_script_is( self::get_portfolio_filter_script_handle(), 'registered' ) ) {
+			$this->register_listing_assets();
+		}
+
+		wp_enqueue_script( self::get_portfolio_filter_script_handle() );
+	}
+
+	/**
+	 * Mark that GLightbox assets should load on this request.
+	 *
+	 * @return void
+	 */
+	public static function flag_lightbox_assets() {
+		self::$needs_lightbox = true;
+	}
+
+	/**
+	 * Whether GLightbox should be enqueued for the current request.
+	 *
+	 * @return bool
+	 */
+	public static function needs_lightbox_assets() {
+		return self::$needs_lightbox;
+	}
+
+	/**
+	 * Enqueue GLightbox when a listing with lightbox was rendered (runs in footer).
+	 *
+	 * @return void
+	 */
+	public function enqueue_lightbox_assets() {
+		if ( ! self::$needs_lightbox || self::is_block_editor_preview() ) {
+			return;
+		}
+
+		if ( ! wp_style_is( self::get_glightbox_style_handle(), 'registered' ) ) {
+			$this->register_listing_assets();
+		}
+
+		wp_enqueue_style( self::get_glightbox_style_handle() );
+		wp_enqueue_script( self::get_glightbox_script_handle() );
+		wp_enqueue_script( self::get_portfolio_lightbox_script_handle() );
 	}
 
 	/**
@@ -474,20 +627,41 @@ class WPDINO_Portfolio_Display {
 			$container_classes[] = $attributes['className'];
 		}
 
+		$gallery_attr = '';
+
 		if ( $attributes['lightbox'] ) {
 			$container_classes[] = 'lightbox-enabled';
+			self::flag_lightbox_assets();
+			self::$listing_gallery_id = 'dinofolio-gallery-' . wp_unique_id();
+
+			if ( ! self::is_block_editor_preview() ) {
+				$this->enqueue_lightbox_assets();
+			}
+
+			$gallery_attr = ' data-dinofolio-gallery="' . esc_attr( self::$listing_gallery_id ) . '"';
+		} else {
+			self::$listing_gallery_id = '';
 		}
 
 		if ( self::is_block_editor_preview() ) {
 			$container_classes[] = 'dinofolio-listing--editor-preview';
 		}
 
+		if ( $attributes['showFilter'] ) {
+			$container_classes[] = 'has-category-filter';
+			self::flag_category_filter_assets();
+
+			if ( ! self::is_block_editor_preview() ) {
+				$this->enqueue_category_filter_assets();
+			}
+		}
+
 		// Start container
-		$output .= '<div class="' . esc_attr( implode( ' ', $container_classes ) ) . '">';
+		$output .= '<div class="' . esc_attr( implode( ' ', $container_classes ) ) . '"' . $gallery_attr . '>';
 
 		// Add filter if enabled
 		if ( $attributes['showFilter'] ) {
-			$output .= $this->get_filter_html( $attributes );
+			$output .= $this->get_filter_html( $attributes, $query );
 		}
 
 		// Add portfolio items wrapper - match SCSS structure
@@ -557,15 +731,14 @@ class WPDINO_Portfolio_Display {
 			}
 			$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 			$output .= '<div class="' . esc_attr( implode( ' ', $thumb_classes ) ) . '" style="background-image:url(' . esc_url( $bg_url ) . ');">';
-			if ( ! empty( $attributes['lightbox'] ) ) {
-				$output .= $this->get_lightbox_zoom_icon_html();
-			}
 			// Link wrapper according to lightbox setting
 			if ( ! empty( $attributes['lightbox'] ) ) {
 				$full_image = wp_get_attachment_image_src( $thumb_id, 'full' );
-				$output .= '<a href="' . esc_url( $full_image[0] ) . '" class="portfolio-lightbox-link" data-glightbox aria-label="' . esc_attr( get_the_title() ) . '"></a>';
+				$output    .= '<a ' . $this->get_lightbox_link_attributes( $full_image[0], get_the_title() ) . '>';
+				$output    .= $this->get_lightbox_zoom_icon_html();
+				$output    .= '</a>';
 			} else {
-				$output .= '<a href="' . esc_url( get_permalink() ) . '" aria-label="' . esc_attr( get_the_title() ) . '"></a>';
+				$output .= '<a href="' . esc_url( get_permalink() ) . '" class="portfolio-item-cover-link" aria-label="' . esc_attr( get_the_title() ) . '"></a>';
 			}
 			$output .= '<div class="wpdino-blocks_portfolio-block_item-overlay">';
 			// Title
@@ -641,9 +814,54 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	private function get_lightbox_zoom_icon_html() {
+		if ( self::is_block_editor_preview() ) {
+			return '';
+		}
+
 		$svg = '<svg class="dinofolio-zoom-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>';
 
-		return '<span class="dinofolio-lightbox-zoom-icon">' . $svg . '</span>';
+		return '<span class="dinofolio-lightbox-zoom-icon" aria-hidden="true">' . $svg . '</span>';
+	}
+
+	/**
+	 * Build attributes for a GLightbox-enabled anchor.
+	 *
+	 * @param string $image_url Full-size image URL.
+	 * @param string $title     Accessible label / lightbox title.
+	 * @return string HTML attributes.
+	 */
+	private function get_lightbox_link_attributes( $image_url, $title = '' ) {
+		$gallery_id = self::$listing_gallery_id ? self::$listing_gallery_id : 'dinofolio-gallery';
+
+		$atts = array(
+			'href'          => esc_url( $image_url ),
+			'class'         => 'glightbox portfolio-lightbox-link',
+			'data-glightbox' => '',
+			'data-gallery'  => esc_attr( $gallery_id ),
+			'data-type'     => 'image',
+			'aria-label'    => esc_attr( $title ? $title : __( 'View image in lightbox', 'dinofolio' ) ),
+		);
+
+		if ( $title ) {
+			$atts['data-title'] = esc_attr( $title );
+		}
+
+		$html = '';
+
+		foreach ( $atts as $name => $value ) {
+			if ( '' === $value && 'data-glightbox' !== $name ) {
+				continue;
+			}
+
+			if ( 'data-glightbox' === $name ) {
+				$html .= ' data-glightbox';
+				continue;
+			}
+
+			$html .= sprintf( ' %s="%s"', $name, $value );
+		}
+
+		return trim( $html );
 	}
 
 	/**
@@ -707,23 +925,33 @@ class WPDINO_Portfolio_Display {
 		}
 
 		$output = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
-		
-		if ( $attributes['lightbox'] ) {
-			$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
-			$output .= '<a href="' . esc_url( $full_image[0] ) . '" class="portfolio-lightbox-link" data-glightbox>';
-		} else {
-			$output .= '<a href="' . esc_url( get_permalink() ) . '">';
-		}
-		
-		$output .= wp_get_attachment_image( $thumbnail_id, $image_size, false, array(
-			'class' => 'wpdino-blocks_portfolio-block_item-image',
-			'alt'   => esc_attr( get_the_title() ),
-		) );
-		
-		$output .= '</a>';
 
 		if ( $attributes['lightbox'] ) {
+			$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+			$output    .= '<a ' . $this->get_lightbox_link_attributes( $full_image[0], get_the_title() ) . '>';
+			$output    .= wp_get_attachment_image(
+				$thumbnail_id,
+				$image_size,
+				false,
+				array(
+					'class' => 'wpdino-blocks_portfolio-block_item-image',
+					'alt'   => esc_attr( get_the_title() ),
+				)
+			);
 			$output .= $this->get_lightbox_zoom_icon_html();
+			$output .= '</a>';
+		} else {
+			$output .= '<a href="' . esc_url( get_permalink() ) . '">';
+			$output .= wp_get_attachment_image(
+				$thumbnail_id,
+				$image_size,
+				false,
+				array(
+					'class' => 'wpdino-blocks_portfolio-block_item-image',
+					'alt'   => esc_attr( get_the_title() ),
+				)
+			);
+			$output .= '</a>';
 		}
 
 		$output .= '</div>';
@@ -732,36 +960,79 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Collect category terms used by posts in a listing query.
+	 *
+	 * @param WP_Query $query Portfolio query.
+	 * @return array<int, WP_Term>
+	 */
+	private function get_filter_terms_for_query( $query ) {
+		$terms_by_id = array();
+
+		if ( ! $query instanceof WP_Query || empty( $query->posts ) ) {
+			return array();
+		}
+
+		foreach ( $query->posts as $post ) {
+			$post_terms = get_the_terms( $post->ID, $this->taxonomies[0] );
+
+			if ( ! $post_terms || is_wp_error( $post_terms ) ) {
+				continue;
+			}
+
+			foreach ( $post_terms as $term ) {
+				$terms_by_id[ $term->term_id ] = $term;
+			}
+		}
+
+		$terms = array_values( $terms_by_id );
+
+		usort(
+			$terms,
+			static function ( $a, $b ) {
+				return strcasecmp( $a->name, $b->name );
+			}
+		);
+
+		return $terms;
+	}
+
+	/**
 	 * Get filter HTML
 	 *
-	 * @param array $attributes The merged attributes
+	 * @param array    $attributes The merged attributes.
+	 * @param WP_Query $query      Portfolio query (limits tabs to categories in this listing).
 	 * @return string Filter HTML
 	 */
-	private function get_filter_html( $attributes ) {
-		
-		$terms = get_terms( array(
-			'taxonomy'   => $this->taxonomies[0],
-			'hide_empty' => true,
-		) );
+	private function get_filter_html( $attributes, $query = null ) {
+		$terms = $this->get_filter_terms_for_query( $query );
+
+		if ( empty( $terms ) ) {
+			$terms = get_terms(
+				array(
+					'taxonomy'   => $this->taxonomies[0],
+					'hide_empty' => true,
+				)
+			);
+		}
 
 		if ( is_wp_error( $terms ) || empty( $terms ) ) {
 			return '';
 		}
 
-		$output = '<div class="wpdino-blocks_portfolio-block_filter">';
-		$output .= '<ul>';
-		
+		$output  = '<nav class="wpdino-blocks_portfolio-block_filter" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
+		$output .= '<ul role="list">';
+
 		// All filter
-		$output .= '<li class="current-cat"><a href="#" data-filter="*">' . esc_html__( 'All', 'dinofolio' ) . '</a></li>';
-		
+		$output .= '<li class="current-cat" role="listitem"><a href="#" data-filter="*">' . esc_html__( 'All', 'dinofolio' ) . '</a></li>';
+
 		// Category filters
 		foreach ( $terms as $term ) {
-			$output .= '<li><a href="#" data-filter=".portfolio-cat-' . esc_attr( $term->slug ) . '">' . esc_html( $term->name ) . '</a></li>';
+			$output .= '<li role="listitem"><a href="#" data-filter=".portfolio-cat-' . esc_attr( $term->slug ) . '">' . esc_html( $term->name ) . '</a></li>';
 		}
-		
+
 		$output .= '</ul>';
-		$output .= '</div>';
-		
+		$output .= '</nav>';
+
 		return $output;
 	}
 

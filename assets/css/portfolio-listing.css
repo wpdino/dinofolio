@@ -92,6 +92,11 @@
 	border-radius: var(--dinofolio-portfolio-radius);
 	box-shadow: var(--dinofolio-portfolio-shadow);
 	overflow: hidden;
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+	display: none !important;
 }
 
 .wpdino-blocks_portfolio-block_item-thumbnail {
@@ -101,6 +106,11 @@
 }
 
 .wpdino-blocks_portfolio-block_item-thumbnail a {
+	display: block;
+}
+
+.wpdino-blocks_portfolio-block_item-thumbnail.lightbox > a.glightbox.portfolio-lightbox-link {
+	position: relative;
 	display: block;
 }
 
@@ -299,10 +309,6 @@
 	position: absolute;
 	inset: 0;
 	z-index: 1;
-}
-
-.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
-	z-index: 3;
 }
 
 .wpdino-blocks_portfolio-block_item-overlay {

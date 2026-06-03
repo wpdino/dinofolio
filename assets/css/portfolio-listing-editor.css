@@ -24,8 +24,9 @@
 	transform: scale(1.04);
 }
 
-.dinofolio-listing--editor-preview .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
-	opacity: 1;
+/* No zoom icon in editor preview (lightbox is front-end only) */
+.dinofolio-listing--editor-preview .dinofolio-lightbox-zoom-icon {
+	display: none !important;
 }
 
 .dinofolio-listing--editor-preview .wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-title a {

@@ -145,36 +145,27 @@ class WPDINO_Portfolio_Block {
 		
 		// === FRONTEND ONLY ASSETS ===
 		
-		// GLightbox CSS - loads only on frontend when block is used
-		wp_register_style(
-			'wpdino-portfolio-glightbox',
-			DINOFOLIO_URL . 'assets/vendor/glightbox/glightbox.min.css',
-			array(),
-			'3.3.0'
-		);
-		
+		// GLightbox + listing scripts are registered in WPDINO_Portfolio_Display::register_listing_assets().
+		if ( class_exists( 'WPDINO_Portfolio_Display' ) ) {
+			WPDINO_Portfolio_Display::get_instance()->register_listing_assets();
+		}
+
+		$glightbox_style  = WPDINO_Portfolio_Display::get_glightbox_style_handle();
+		$lightbox_script  = WPDINO_Portfolio_Display::get_portfolio_lightbox_script_handle();
+
 		// Frontend styles (compiled from style.scss) - loads only on frontend when block is used
 		wp_register_style(
 			'wpdino-portfolio-dinofolio-style',
 			DINOFOLIO_URL . 'build/dinofolio.css',
-			array( 'wpdino-portfolio-glightbox' ),
+			array( $glightbox_style ),
 			DINOFOLIO_VERSION
 		);
-		
-		// GLightbox JS - loads only on frontend when block is used
-		wp_register_script(
-			'wpdino-portfolio-glightbox',
-			DINOFOLIO_URL . 'assets/vendor/glightbox/glightbox.min.js',
-			array(),
-			'3.3.0',
-			true
-		);
-		
-		// Frontend script (interactions, lightbox, filtering) - loads only on frontend when block is used
+
+		// Frontend script (lightbox) - loads only on frontend when block is used
 		wp_register_script(
 			'wpdino-portfolio-dinofolio-frontend',
-			DINOFOLIO_URL . 'assets/js/frontend.js',
-			array( 'jquery', 'wpdino-portfolio-glightbox' ),
+			DINOFOLIO_URL . 'assets/js/portfolio-lightbox.js',
+			array( WPDINO_Portfolio_Display::get_glightbox_script_handle() ),
 			DINOFOLIO_VERSION,
 			true
 		);
