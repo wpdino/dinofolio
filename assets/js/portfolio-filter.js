@@ -1,5 +1,5 @@
 /**
- * Portfolio listing category filter (show/hide items by taxonomy class).
+ * Portfolio listing category filter — toggles classes; animations are CSS-only.
  */
 ( function () {
 	'use strict';

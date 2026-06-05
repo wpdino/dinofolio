@@ -551,8 +551,9 @@ class WPDINO_Portfolio_Display {
 			'order'          => 'desc',
 			'categories'     => array(),
 			'tags'           => array(),
-			'showFilter'     => false,
-			'filterDynamic'  => false,
+			'showFilter'      => false,
+			'showFilterCount' => false,
+			'filterDynamic'   => false,
 			'showViewAll'    => false,
 			'viewAllText'    => esc_html__( 'View All', 'dinofolio' ),
 			'viewAllLink'    => '',
@@ -577,7 +578,8 @@ class WPDINO_Portfolio_Display {
 		$merged['showReadMore'] = (bool) $merged['showReadMore'];
 		$merged['showTitle']    = (bool) $merged['showTitle'];
 		$merged['showCategories'] = (bool) $merged['showCategories'];
-		$merged['showFilter']   = (bool) $merged['showFilter'];
+		$merged['showFilter']      = (bool) $merged['showFilter'];
+		$merged['showFilterCount'] = (bool) $merged['showFilterCount'];
 		$merged['showViewAll']  = (bool) $merged['showViewAll'];
 		$merged['showPagination'] = (bool) $merged['showPagination'];
 		$merged['lightbox']     = (bool) $merged['lightbox'];
@@ -649,6 +651,11 @@ class WPDINO_Portfolio_Display {
 
 		if ( $attributes['showFilter'] ) {
 			$container_classes[] = 'has-category-filter';
+
+			if ( ! empty( $attributes['showFilterCount'] ) ) {
+				$container_classes[] = 'show-filter-count';
+			}
+
 			self::flag_category_filter_assets();
 
 			if ( ! self::is_block_editor_preview() ) {
@@ -997,6 +1004,66 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Count portfolio items per category slug in a listing query.
+	 *
+	 * @param WP_Query $query Portfolio query.
+	 * @return array{__all__: int, string: int}
+	 */
+	private function get_category_counts_for_query( $query ) {
+		$counts = array(
+			'__all__' => 0,
+		);
+
+		if ( ! $query instanceof WP_Query || empty( $query->posts ) ) {
+			return $counts;
+		}
+
+		$counts['__all__'] = count( $query->posts );
+
+		foreach ( $query->posts as $post ) {
+			$post_terms = get_the_terms( $post->ID, $this->taxonomies[0] );
+
+			if ( ! $post_terms || is_wp_error( $post_terms ) ) {
+				continue;
+			}
+
+			foreach ( $post_terms as $term ) {
+				if ( ! isset( $counts[ $term->slug ] ) ) {
+					$counts[ $term->slug ] = 0;
+				}
+
+				++$counts[ $term->slug ];
+			}
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * Build a single category filter link.
+	 *
+	 * @param string   $label       Link label.
+	 * @param string   $filter      data-filter value (* or .portfolio-cat-slug).
+	 * @param int|null $count       Item count for this tab.
+	 * @param bool     $show_count  Whether to output the count badge.
+	 * @return string
+	 */
+	private function get_filter_link_html( $label, $filter, $count, $show_count ) {
+		$output  = '<a href="#" data-filter="' . esc_attr( $filter ) . '">';
+		$output .= '<span class="dinofolio-filter-label">' . esc_html( $label ) . '</span>';
+
+		if ( $show_count && null !== $count ) {
+			/* translators: %d: number of portfolio items in this category */
+			$count_label = sprintf( _n( '%d item', '%d items', (int) $count, 'dinofolio' ), (int) $count );
+			$output     .= '<span class="dinofolio-filter-count" aria-label="' . esc_attr( $count_label ) . '">' . esc_html( (string) (int) $count ) . '</span>';
+		}
+
+		$output .= '</a>';
+
+		return $output;
+	}
+
+	/**
 	 * Get filter HTML
 	 *
 	 * @param array    $attributes The merged attributes.
@@ -1019,15 +1086,35 @@ class WPDINO_Portfolio_Display {
 			return '';
 		}
 
-		$output  = '<nav class="wpdino-blocks_portfolio-block_filter" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
+		$show_count = ! empty( $attributes['showFilterCount'] );
+		$counts     = $show_count ? $this->get_category_counts_for_query( $query ) : array();
+
+		$filter_classes = array( 'wpdino-blocks_portfolio-block_filter' );
+
+		if ( $show_count ) {
+			$filter_classes[] = 'show-filter-count';
+		}
+
+		$output  = '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
 		$output .= '<ul role="list">';
 
-		// All filter
-		$output .= '<li class="current-cat" role="listitem"><a href="#" data-filter="*">' . esc_html__( 'All', 'dinofolio' ) . '</a></li>';
+		$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
 
-		// Category filters
+		$output .= '<li class="current-cat" role="listitem">';
+		$output .= $this->get_filter_link_html( __( 'All', 'dinofolio' ), '*', $all_count, $show_count );
+		$output .= '</li>';
+
 		foreach ( $terms as $term ) {
-			$output .= '<li role="listitem"><a href="#" data-filter=".portfolio-cat-' . esc_attr( $term->slug ) . '">' . esc_html( $term->name ) . '</a></li>';
+			$term_count = isset( $counts[ $term->slug ] ) ? (int) $counts[ $term->slug ] : 0;
+
+			$output .= '<li role="listitem">';
+			$output .= $this->get_filter_link_html(
+				$term->name,
+				'.portfolio-cat-' . $term->slug,
+				$term_count,
+				$show_count
+			);
+			$output .= '</li>';
 		}
 
 		$output .= '</ul>';
@@ -1245,7 +1332,8 @@ class WPDINO_Portfolio_Display {
 			'order_by'       => 'date',
 			'order'          => 'desc',
 			'categories'     => '',
-			'show_filter'    => 'false',
+			'show_filter'       => 'false',
+			'show_filter_count' => 'false',
 			'show_view_all'  => 'false',
 			'view_all_text'  => 'View All',
 			'view_all_link'  => '',
@@ -1269,7 +1357,8 @@ class WPDINO_Portfolio_Display {
 			'imageSize'      => sanitize_text_field( $attributes['image_size'] ),
 			'orderBy'        => sanitize_text_field( $attributes['order_by'] ),
 			'order'          => sanitize_text_field( $attributes['order'] ),
-			'showFilter'     => filter_var( $attributes['show_filter'], FILTER_VALIDATE_BOOLEAN ),
+			'showFilter'      => filter_var( $attributes['show_filter'], FILTER_VALIDATE_BOOLEAN ),
+			'showFilterCount' => filter_var( $attributes['show_filter_count'], FILTER_VALIDATE_BOOLEAN ),
 			'showViewAll'    => filter_var( $attributes['show_view_all'], FILTER_VALIDATE_BOOLEAN ),
 			'viewAllText'    => sanitize_text_field( $attributes['view_all_text'] ),
 			'viewAllLink'    => esc_url_raw( $attributes['view_all_link'] ),

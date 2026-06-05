@@ -52,7 +52,7 @@ class Admin_Menus {
 		// Add Go Pro link if the plugin is not active
 		if( ! defined( 'DINOFOLIO_PRO_VERSION' ) ) {
 			$custom['dinofolio-pro'] = sprintf( 
-				'<a href="%1$s" aria-label="%2$s" target="_blank" rel="noopener noreferrer" class="wpdino-dinofolio-gopro" style="color:#6F9C50;font-weight:bold;">%3$s</a>',
+				'<a href="%1$s" aria-label="%2$s" target="_blank" rel="noopener noreferrer" class="wpdino-dinofolio-gopro" style="color:#1A8960;font-weight:bold;">%3$s</a>',
 				esc_url( self::$goProLink ),
 				esc_attr__( 'Upgrade to PRO', 'dinofolio' ),
 				esc_html__( 'Get DinoFolio PRO', 'dinofolio' )
@@ -131,7 +131,7 @@ class Admin_Menus {
 		?>
 		<style>
 			#adminmenu #menu-posts-wpdino_portfolio a[href="<?php echo self::$goProLink; ?>"] {
-				background-color: #6F9C50;
+				background-color: #1A8960;
 				color: #fff;
 				font-weight: bold;
 			}

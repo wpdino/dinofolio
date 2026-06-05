@@ -92,11 +92,71 @@
 	border-radius: var(--dinofolio-portfolio-radius);
 	box-shadow: var(--dinofolio-portfolio-shadow);
 	overflow: hidden;
-	transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+/* Category filter — CSS-only transitions (JS only toggles .dinofolio-filter-hidden) */
+.wpdino-blocks_portfolio-block.has-category-filter {
+	--dinofolio-filter-duration: 0.42s;
+	--dinofolio-filter-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--dinofolio-filter-max-height: 3200px;
+}
+
+.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_items-list {
+	transition: gap var(--dinofolio-filter-duration) var(--dinofolio-filter-ease);
+}
+
+.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item {
+	transform-origin: center top;
+	overflow: hidden;
+	max-height: var(--dinofolio-filter-max-height);
+	opacity: 1;
+	transform: scale(1) translateY(0);
+	visibility: visible;
+	pointer-events: auto;
+	transition:
+		opacity var(--dinofolio-filter-duration) var(--dinofolio-filter-ease),
+		transform var(--dinofolio-filter-duration) var(--dinofolio-filter-ease),
+		max-height calc(var(--dinofolio-filter-duration) + 0.06s) var(--dinofolio-filter-ease),
+		margin var(--dinofolio-filter-duration) var(--dinofolio-filter-ease),
+		visibility 0s linear 0s,
+		box-shadow var(--dinofolio-filter-duration) var(--dinofolio-filter-ease);
+}
+
+.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+	max-height: 0;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	opacity: 0;
+	transform: scale(0.94) translateY(18px);
+	visibility: hidden;
+	pointer-events: none;
+	box-shadow: none;
+	transition:
+		opacity calc(var(--dinofolio-filter-duration) - 0.06s) var(--dinofolio-filter-ease),
+		transform calc(var(--dinofolio-filter-duration) - 0.06s) var(--dinofolio-filter-ease),
+		max-height var(--dinofolio-filter-duration) var(--dinofolio-filter-ease),
+		margin var(--dinofolio-filter-duration) var(--dinofolio-filter-ease),
+		visibility 0s linear var(--dinofolio-filter-duration),
+		box-shadow calc(var(--dinofolio-filter-duration) - 0.06s) var(--dinofolio-filter-ease);
+}
+
+.wpdino-blocks_portfolio-block.has-category-filter.layout-masonry .wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
 	display: none !important;
+	max-height: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item,
+	.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_items-list,
+	.wpdino-blocks_portfolio-block_filter a {
+		transition: none !important;
+	}
+
+	.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+		display: none !important;
+	}
 }
 
 .wpdino-blocks_portfolio-block_item-thumbnail {
@@ -348,14 +408,24 @@
 }
 
 .wpdino-blocks_portfolio-block_filter a {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
 	padding: 0.4rem 0.85rem;
 	border-radius: 999px;
 	border: 1px solid #ddd;
 	color: var(--dinofolio-portfolio-text);
 	text-decoration: none;
 	font-size: 0.85rem;
-	transition: all 0.2s ease;
+	transition:
+		background-color 0.25s ease,
+		border-color 0.25s ease,
+		color 0.25s ease,
+		transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wpdino-blocks_portfolio-block_filter a:hover {
+	transform: translateY(-1px);
 }
 
 .wpdino-blocks_portfolio-block_filter .current-cat a,
@@ -363,6 +433,29 @@
 	background: var(--dinofolio-portfolio-accent);
 	border-color: var(--dinofolio-portfolio-accent);
 	color: #fff;
+}
+
+.wpdino-blocks_portfolio-block_filter .current-cat a {
+	transform: scale(1.02);
+}
+
+.wpdino-blocks_portfolio-block_filter.show-filter-count .dinofolio-filter-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.4em;
+	padding: 0.12em 0.45em;
+	border-radius: 999px;
+	font-size: 0.78em;
+	font-weight: 600;
+	line-height: 1.35;
+	background: rgba(0, 0, 0, 0.07);
+	color: inherit;
+	transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.wpdino-blocks_portfolio-block_filter.show-filter-count .current-cat .dinofolio-filter-count {
+	background: rgba(255, 255, 255, 0.28);
 }
 
 /* Pagination */
