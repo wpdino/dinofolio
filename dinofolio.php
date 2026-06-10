@@ -7,7 +7,7 @@
  * Author:      WPDINO
  * Author URI:  https://www.wpdino.com
  * Requires at least:   6.6
- * Tested up to:        6.9
+ * Tested up to:        7.0
  * Requires PHP: 7.0
  * License:     GPL-2.0+ or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt	
@@ -97,6 +97,7 @@ final class Plugin {
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-custom-post.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-legacy-settings.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-display.php';
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-template.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-meta-boxes.php';
 		require_once DINOFOLIO_PATH . 'includes/components/class-dinofolio-component-base.php';
 		require_once DINOFOLIO_PATH . 'includes/components/class-dinofolio-components.php';
@@ -117,6 +118,10 @@ final class Plugin {
 
 		if ( class_exists( '\DinoFolio\Integrations' ) ) {
 			\DinoFolio\Integrations::instance();
+		}
+
+		if ( class_exists( '\DinoFolio\Template' ) ) {
+			\DinoFolio\Template::instance();
 		}
 
 	}

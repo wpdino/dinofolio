@@ -15,7 +15,7 @@
 	}
 
 	function getLightboxSelector() {
-		return '.wpdino-blocks_portfolio-block.lightbox-enabled a.glightbox.portfolio-lightbox-link';
+		return '.dinofolio.dinofolio-lightbox-enabled a.glightbox.dinofolio-lightbox-link';
 	}
 
 	function initPortfolioLightboxes() {

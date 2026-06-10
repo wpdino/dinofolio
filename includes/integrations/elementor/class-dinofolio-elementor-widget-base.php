@@ -179,11 +179,13 @@ class Elementor_Widget_Base extends Widget_Base {
 				continue;
 			}
 
+			$tab = ( 'style' === $section_key ) ? Controls_Manager::TAB_STYLE : Controls_Manager::TAB_CONTENT;
+
 			$this->start_controls_section(
 				'section_' . $section_key,
 				array(
 					'label' => $section['label'],
-					'tab'   => Controls_Manager::TAB_CONTENT,
+					'tab'   => $tab,
 				)
 			);
 

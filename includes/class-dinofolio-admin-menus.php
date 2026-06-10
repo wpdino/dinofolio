@@ -23,7 +23,7 @@ class Admin_Menus {
 	 *
 	 * @var string
 	 */
-	private static $goProLink = 'https://www.wpdino.com/plugins/dinofolio/?utm_source=wpadmin&utm_medium=dinofolio-free&utm_campaign=go-pro-links';
+	private static $goProLink = 'https://wpdino.com/plugins/dinofolio/?utm_source=wpadmin&utm_medium=dinofolio-free&utm_campaign=go-pro-links';
 
 	/**
 	 * The Constructor.
@@ -128,9 +128,12 @@ class Admin_Menus {
 	 * Add CSS to Go Pro link.
 	 */
 	public function add_css_go_pro_menu() {
+		$escaped_url = esc_url( self::$goProLink );
 		?>
 		<style>
-			#adminmenu #menu-posts-wpdino_portfolio a[href="<?php echo self::$goProLink; ?>"] {
+			#adminmenu #menu-posts-wpdino_portfolio a[href="<?php echo esc_attr( $escaped_url ); ?>"], 
+			#adminmenu #menu-posts-wpdino_portfolio a[href*="plugins/dinofolio"],
+			#adminmenu #menu-posts-wpdino_portfolio a.dinofolio-go-pro-menu-link {
 				background-color: #1A8960;
 				color: #fff;
 				font-weight: bold;
@@ -146,7 +149,10 @@ class Admin_Menus {
 		?>
 		<script>
 			jQuery( document ).ready( function( $ ) {
-				$('a[href$="<?php echo self::$goProLink; ?>"]').attr('target', '_blank');				
+				var $proLink = $('.wp-submenu a[href*="plugins/dinofolio"]');
+				if ( $proLink.length ) {
+					$proLink.attr('target', '_blank').addClass('dinofolio-go-pro-menu-link');
+				}
 			});
 		</script>
 		<?php

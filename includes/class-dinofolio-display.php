@@ -128,7 +128,7 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	public static function get_portfolio_filter_script_handle() {
-		return 'dinofolio-portfolio-filter';
+		return 'dinofolio-filter';
 	}
 
 	/**
@@ -270,6 +270,29 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Resolve the current listing page from query vars or the pg URL parameter.
+	 *
+	 * @return int
+	 */
+	private function get_listing_current_page() {
+		if ( get_query_var( 'paged' ) ) {
+			return max( 1, (int) get_query_var( 'paged' ) );
+		}
+
+		if ( get_query_var( 'page' ) ) {
+			return max( 1, (int) get_query_var( 'page' ) );
+		}
+
+		$page_param = filter_input( INPUT_GET, 'pg', FILTER_VALIDATE_INT );
+
+		if ( false !== $page_param && $page_param > 0 ) {
+			return max( 1, $page_param );
+		}
+
+		return 1;
+	}
+
+	/**
 	 * Enqueue portfolio listing styles when the listing is rendered.
 	 *
 	 * @return void
@@ -319,6 +342,59 @@ class WPDINO_Portfolio_Display {
 		
 		// Generate and return the HTML output
 		return $this->generate_portfolio_html( $portfolio_query, $attributes );
+	}
+
+	/**
+	 * Build listing attributes for portfolio taxonomy archive pages from settings.
+	 *
+	 * @param \WP_Term|null $term Queried taxonomy term. Defaults to get_queried_object().
+	 * @return array
+	 */
+	public function get_taxonomy_listing_attributes( $term = null ) {
+		if ( ! $term instanceof \WP_Term ) {
+			$term = get_queried_object();
+		}
+
+		if ( ! $term instanceof \WP_Term ) {
+			return array();
+		}
+
+		$attributes = array(
+			'layout'          => $this->settings->get_setting( 'taxonomy_layout', 'grid' ),
+			'columns'         => (int) $this->settings->get_setting( 'taxonomy_columns', 3 ),
+			'postsToShow'     => (int) $this->settings->get_setting( 'taxonomy_posts_per_page', 12 ),
+			'imageSize'       => $this->settings->get_setting( 'taxonomy_image_size', 'large' ),
+			'showTitle'       => (bool) $this->settings->get_setting( 'taxonomy_show_title', true ),
+			'showCategories'  => (bool) $this->settings->get_setting( 'taxonomy_show_categories', true ),
+			'showExcerpt'     => (bool) $this->settings->get_setting( 'taxonomy_show_excerpt', true ),
+			'showReadMore'    => (bool) $this->settings->get_setting( 'taxonomy_show_read_more', true ),
+			'readMoreLabel'   => $this->settings->get_setting( 'taxonomy_read_more_label', esc_html__( 'View Project', 'dinofolio' ) ),
+			'lightbox'        => (bool) $this->settings->get_setting( 'taxonomy_lightbox', true ),
+			'showPagination'  => (bool) $this->settings->get_setting( 'taxonomy_show_pagination', true ),
+			'showViewAll'     => false,
+			'viewAllText'     => '',
+			'viewAllLink'     => '',
+			'showFilter'      => false,
+			'showFilterCount' => false,
+			'orderBy'         => $this->settings->get_setting( 'taxonomy_order_by', 'date' ),
+			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
+			'style'           => $this->settings->get_setting( 'taxonomy_style', 'classic' ),
+			'hoverEffect'     => $this->settings->get_setting( 'taxonomy_hover_effect', 'zoom' ),
+			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '' ),
+			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
+			'buttonTextColor' => $this->settings->get_setting( 'taxonomy_button_text_color', '' ),
+			'mutedColor'      => $this->settings->get_setting( 'taxonomy_muted_color', '' ),
+			'gap'             => $this->settings->get_setting( 'taxonomy_gap', 24 ),
+			'radius'          => $this->settings->get_setting( 'taxonomy_radius', 8 ),
+		);
+
+		if ( $term->taxonomy === $this->taxonomies[0] ) {
+			$attributes['categories'] = array( (int) $term->term_id );
+		} elseif ( isset( $this->taxonomies[1] ) && $term->taxonomy === $this->taxonomies[1] ) {
+			$attributes['tags'] = array( (int) $term->term_id );
+		}
+
+		return apply_filters( 'dinofolio_taxonomy_listing_attributes', $attributes, $term );
 	}
 
 	/**
@@ -383,23 +459,7 @@ class WPDINO_Portfolio_Display {
 		if ( isset( $attributes['paged'] ) ) {
 			$args['paged'] = intval( $attributes['paged'] );
 		} else {
-			// Get current page from URL parameter
-			$current_page = 1;
-			
-			// Check for 'paged' query var (for archive pages)
-			if ( get_query_var( 'paged' ) ) {
-				$current_page = max( 1, get_query_var( 'paged' ) );
-			}
-			// Check for 'page' query var (for shortcodes on pages)
-			elseif ( get_query_var( 'page' ) ) {
-				$current_page = max( 1, get_query_var( 'page' ) );
-			}
-			// Check for custom pagination parameter in URL
-			elseif ( isset( $_GET['pg'] ) && is_numeric( $_GET['pg'] ) ) {
-				$current_page = max( 1, intval( $_GET['pg'] ) );
-			}
-			
-			$args['paged'] = $current_page;
+			$args['paged'] = $this->get_listing_current_page();
 		}
 
 		// Handle search
@@ -562,10 +622,16 @@ class WPDINO_Portfolio_Display {
 			'showTitle'      => true,
 			'showMeta'       => true,
 			'showCategories' => true,
-			'lightbox'       => $this->settings->get_setting( 'enable_lightbox', true ),
-			'hoverEffect'    => $this->settings->get_setting( 'hover_effect', 'zoom' ),
-			'style'          => $this->settings->get_setting( 'portfolio_style', 'classic' ),
-			'enableParallax' => true,
+			'lightbox'        => $this->settings->get_setting( 'enable_lightbox', true ),
+			'hoverEffect'     => $this->settings->get_setting( 'hover_effect', 'zoom' ),
+			'style'           => $this->settings->get_setting( 'portfolio_style', 'classic' ),
+			'accentColor'     => '',
+			'hoverColor'      => '',
+			'buttonTextColor' => '',
+			'mutedColor'      => '',
+			'gap'             => 24,
+			'radius'          => 8,
+			'enableParallax'  => true,
 		);
 
 		// Merge and sanitize
@@ -590,10 +656,92 @@ class WPDINO_Portfolio_Display {
 			$merged['layout'] = 'grid';
 		}
 
+		$valid_styles = array( 'classic', 'overlay' );
+		if ( ! in_array( $merged['style'], $valid_styles, true ) ) {
+			$merged['style'] = 'classic';
+		}
+
+		$valid_hover_effects = array( 'zoom' );
+		if ( ! in_array( $merged['hoverEffect'], $valid_hover_effects, true ) ) {
+			$merged['hoverEffect'] = 'zoom';
+		}
+
+		$merged['gap']    = max( 0, min( 80, (int) $merged['gap'] ) );
+		$merged['radius'] = max( 0, min( 40, (int) $merged['radius'] ) );
+
+		foreach ( array( 'accentColor', 'hoverColor', 'buttonTextColor', 'mutedColor' ) as $color_key ) {
+			if ( ! empty( $merged[ $color_key ] ) ) {
+				$sanitized_color = sanitize_hex_color( $merged[ $color_key ] );
+				$merged[ $color_key ] = $sanitized_color ? $sanitized_color : '';
+			} else {
+				$merged[ $color_key ] = '';
+			}
+		}
+
 		// Validate order
 		$merged['order'] = in_array( strtoupper( $merged['order'] ), array( 'ASC', 'DESC' ) ) ? $merged['order'] : 'desc';
 
 		return apply_filters( 'wpdino_portfolio_merged_attributes', $merged, $attributes );
+	}
+
+	/**
+	 * Build CSS custom properties for a listing instance.
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @return array
+	 */
+	private function get_listing_css_vars( $attributes ) {
+		$vars = array();
+
+		$color_map = array(
+			'accentColor'     => '--dinofolio-accent',
+			'hoverColor'      => '--dinofolio-hover',
+			'buttonTextColor' => '--dinofolio-button-text',
+			'mutedColor'      => '--dinofolio-muted',
+		);
+
+		foreach ( $color_map as $attribute_key => $css_var ) {
+			if ( empty( $attributes[ $attribute_key ] ) ) {
+				continue;
+			}
+
+			$color = sanitize_hex_color( $attributes[ $attribute_key ] );
+			if ( $color ) {
+				$vars[ $css_var ] = $color;
+			}
+		}
+
+		if ( isset( $attributes['gap'] ) && '' !== $attributes['gap'] && null !== $attributes['gap'] ) {
+			$vars['--dinofolio-gap'] = max( 0, min( 80, (int) $attributes['gap'] ) ) . 'px';
+		}
+
+		if ( isset( $attributes['radius'] ) && '' !== $attributes['radius'] && null !== $attributes['radius'] ) {
+			$vars['--dinofolio-radius'] = max( 0, min( 40, (int) $attributes['radius'] ) ) . 'px';
+		}
+
+		return apply_filters( 'dinofolio_listing_css_vars', $vars, $attributes );
+	}
+
+	/**
+	 * Inline style attribute for listing CSS variables.
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @return string
+	 */
+	private function get_listing_inline_style_attr( $attributes ) {
+		$vars = $this->get_listing_css_vars( $attributes );
+
+		if ( empty( $vars ) ) {
+			return '';
+		}
+
+		$parts = array();
+
+		foreach ( $vars as $property => $value ) {
+			$parts[] = esc_attr( $property ) . ':' . esc_attr( $value );
+		}
+
+		return ' style="' . esc_attr( implode( ';', $parts ) ) . '"';
 	}
 
 	/**
@@ -611,18 +759,18 @@ class WPDINO_Portfolio_Display {
 
 		$output = '';
 		
-		// Container classes - match existing SCSS structure
+		// Container classes
 		$container_classes = array(
-			'wpdino-blocks_portfolio-block',
-			'layout-' . $attributes['layout'],
-			'columns-' . $attributes['columns'],
-			'style-' . $attributes['style'],
-			'hover-' . $attributes['hoverEffect'],
+			'dinofolio',
+			'dinofolio-layout-' . $attributes['layout'],
+			'dinofolio-columns-' . $attributes['columns'],
+			'dinofolio-style-' . $attributes['style'],
+			'dinofolio-hover-' . $attributes['hoverEffect'],
 		);
 
 		// Enable parallax class when requested (for any style)
 		if ( ! empty( $attributes['enableParallax'] ) ) {
-			$container_classes[] = 'parallax-enabled';
+			$container_classes[] = 'dinofolio-parallax-enabled';
 		}
 
 		if ( ! empty( $attributes['className'] ) ) {
@@ -632,7 +780,7 @@ class WPDINO_Portfolio_Display {
 		$gallery_attr = '';
 
 		if ( $attributes['lightbox'] ) {
-			$container_classes[] = 'lightbox-enabled';
+			$container_classes[] = 'dinofolio-lightbox-enabled';
 			self::flag_lightbox_assets();
 			self::$listing_gallery_id = 'dinofolio-gallery-' . wp_unique_id();
 
@@ -650,10 +798,10 @@ class WPDINO_Portfolio_Display {
 		}
 
 		if ( $attributes['showFilter'] ) {
-			$container_classes[] = 'has-category-filter';
+			$container_classes[] = 'dinofolio-has-category-filter';
 
 			if ( ! empty( $attributes['showFilterCount'] ) ) {
-				$container_classes[] = 'show-filter-count';
+				$container_classes[] = 'dinofolio-show-filter-count';
 			}
 
 			self::flag_category_filter_assets();
@@ -664,7 +812,7 @@ class WPDINO_Portfolio_Display {
 		}
 
 		// Start container
-		$output .= '<div class="' . esc_attr( implode( ' ', $container_classes ) ) . '"' . $gallery_attr . '>';
+		$output .= '<div class="' . esc_attr( implode( ' ', $container_classes ) ) . '"' . $this->get_listing_inline_style_attr( $attributes ) . $gallery_attr . '>';
 
 		// Add filter if enabled
 		if ( $attributes['showFilter'] ) {
@@ -672,7 +820,7 @@ class WPDINO_Portfolio_Display {
 		}
 
 		// Add portfolio items wrapper - match SCSS structure
-		$output .= '<div class="wpdino-blocks_portfolio-block_items-list">';
+		$output .= '<div class="dinofolio-items-list">';
 
 		// Loop through posts
 		while ( $query->have_posts() ) {
@@ -708,18 +856,18 @@ class WPDINO_Portfolio_Display {
 	 */
 	private function get_portfolio_item_html( $attributes ) {
 		$post_id = get_the_ID();
-		$classes = array( 'wpdino-blocks_portfolio-block_item' );
+		$classes = array( 'dinofolio-item' );
 		
 		// Add categories as classes for filtering
 		$terms = get_the_terms( $post_id, $this->taxonomies[0] );
 		if ( $terms && ! is_wp_error( $terms ) ) {
 			foreach ( $terms as $term ) {
-				$classes[] = 'portfolio-cat-' . $term->slug;
+				$classes[] = 'dinofolio-cat-' . $term->slug;
 			}
 		}
 
 		if ( ! empty( $attributes['layout'] ) && 'masonry' === $attributes['layout'] ) {
-			$classes[] = 'is-masonry-item';
+			$classes[] = 'dinofolio-is-masonry-item';
 		}
 
         // Overlay variant for grid layout or is-style-overlay
@@ -732,9 +880,9 @@ class WPDINO_Portfolio_Display {
 			}
 			$img_src = wp_get_attachment_image_src( $thumb_id, $attributes['imageSize'] );
 			$bg_url  = $img_src ? $img_src[0] : '';
-			$thumb_classes = array( 'wpdino-blocks_portfolio-block_item-thumbnail' );
+			$thumb_classes = array( 'dinofolio-item-thumbnail' );
 			if ( ! empty( $attributes['lightbox'] ) ) {
-				$thumb_classes[] = 'lightbox';
+				$thumb_classes[] = 'dinofolio-lightbox';
 			}
 			$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 			$output .= '<div class="' . esc_attr( implode( ' ', $thumb_classes ) ) . '" style="background-image:url(' . esc_url( $bg_url ) . ');">';
@@ -745,12 +893,12 @@ class WPDINO_Portfolio_Display {
 				$output    .= $this->get_lightbox_zoom_icon_html();
 				$output    .= '</a>';
 			} else {
-				$output .= '<a href="' . esc_url( get_permalink() ) . '" class="portfolio-item-cover-link" aria-label="' . esc_attr( get_the_title() ) . '"></a>';
+				$output .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-item-cover-link" aria-label="' . esc_attr( get_the_title() ) . '"></a>';
 			}
-			$output .= '<div class="wpdino-blocks_portfolio-block_item-overlay">';
+			$output .= '<div class="dinofolio-item-overlay">';
 			// Title
 			if ( ! empty( $attributes['showTitle'] ) ) {
-				$output .= '<h3 class="wpdino-blocks_portfolio-block_item-title">';
+				$output .= '<h3 class="dinofolio-item-title">';
 				$output .= '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
 				$output .= '</h3>';
 			}
@@ -758,14 +906,14 @@ class WPDINO_Portfolio_Display {
 			if ( ! empty( $attributes['showExcerpt'] ) ) {
 				$excerpt = get_the_excerpt();
 				if ( $excerpt ) {
-					$output .= '<div class="wpdino-blocks_portfolio-block_item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
+					$output .= '<div class="dinofolio-item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
 				}
 			}
 			// Read more
 			if ( ! empty( $attributes['showReadMore'] ) ) {
 				$read_more_label = ! empty( $attributes['readMoreLabel'] ) ? $attributes['readMoreLabel'] : esc_html__( 'View Project', 'dinofolio' );
-				$output .= '<div class="wpdino-blocks_portfolio-block_item-button">';
-				$output .= '<a href="' . esc_url( get_permalink() ) . '" class="wpz-portfolio-button__link">' . esc_html( $read_more_label ) . '</a>';
+				$output .= '<div class="dinofolio-item-button">';
+				$output .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-button-link">' . esc_html( $read_more_label ) . '</a>';
 				$output .= '</div>';
 			}
 			$output .= '</div>'; // overlay
@@ -777,9 +925,9 @@ class WPDINO_Portfolio_Display {
 		// Default (list/masonry) structure
 		$output = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 		$output .= $this->get_portfolio_item_image( $attributes, $post_id );
-		$output .= '<div class="wpdino-blocks_portfolio-block_item-details">';
+		$output .= '<div class="dinofolio-item-details">';
 		if ( $attributes['showTitle'] ) {
-			$output .= '<h3 class="wpdino-blocks_portfolio-block_item-title">';
+			$output .= '<h3 class="dinofolio-item-title">';
 			$output .= '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
 			$output .= '</h3>';
 		}
@@ -792,13 +940,13 @@ class WPDINO_Portfolio_Display {
 				$excerpt = wp_trim_words( $excerpt, 18, '…' );
 			}
 			if ( $excerpt ) {
-				$output .= '<div class="wpdino-blocks_portfolio-block_item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
+				$output .= '<div class="dinofolio-item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
 			}
 		}
 		if ( $attributes['showReadMore'] ) {
 			$read_more_label = ! empty( $attributes['readMoreLabel'] ) ? $attributes['readMoreLabel'] : esc_html__( 'View Project', 'dinofolio' );
-			$output .= '<div class="wpdino-blocks_portfolio-block_item-button">';
-			$output .= '<a href="' . esc_url( get_permalink() ) . '" class="wpz-portfolio-button__link">' . esc_html( $read_more_label ) . '</a>';
+			$output .= '<div class="dinofolio-item-button">';
+			$output .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-button-link">' . esc_html( $read_more_label ) . '</a>';
 			$output .= '</div>';
 		}
 		$output .= '</div>';
@@ -842,7 +990,7 @@ class WPDINO_Portfolio_Display {
 
 		$atts = array(
 			'href'          => esc_url( $image_url ),
-			'class'         => 'glightbox portfolio-lightbox-link',
+			'class'         => 'glightbox dinofolio-lightbox-link',
 			'data-glightbox' => '',
 			'data-gallery'  => esc_attr( $gallery_id ),
 			'data-type'     => 'image',
@@ -896,10 +1044,10 @@ class WPDINO_Portfolio_Display {
 			return '';
 		}
 
-		$output  = '<div class="wpdino-blocks_portfolio-block_item-categories">';
+		$output  = '<div class="dinofolio-item-categories">';
 		$output .= $this->get_category_icon_svg();
-		$output .= '<span class="wpdino-blocks_portfolio-block_item-categories-list">';
-		$output .= implode( '<span class="wpdino-category-sep" aria-hidden="true">, </span>', $term_links );
+		$output .= '<span class="dinofolio-item-categories-list">';
+		$output .= implode( '<span class="dinofolio-category-sep" aria-hidden="true">, </span>', $term_links );
 		$output .= '</span>';
 		$output .= '</div>';
 
@@ -925,10 +1073,10 @@ class WPDINO_Portfolio_Display {
 			return '';
 		}
 
-		$classes = array( 'wpdino-blocks_portfolio-block_item-thumbnail' );
+		$classes = array( 'dinofolio-item-thumbnail' );
 		
 		if ( $attributes['lightbox'] ) {
-			$classes[] = 'lightbox';
+			$classes[] = 'dinofolio-lightbox';
 		}
 
 		$output = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
@@ -941,7 +1089,7 @@ class WPDINO_Portfolio_Display {
 				$image_size,
 				false,
 				array(
-					'class' => 'wpdino-blocks_portfolio-block_item-image',
+					'class' => 'dinofolio-item-image',
 					'alt'   => esc_attr( get_the_title() ),
 				)
 			);
@@ -954,7 +1102,7 @@ class WPDINO_Portfolio_Display {
 				$image_size,
 				false,
 				array(
-					'class' => 'wpdino-blocks_portfolio-block_item-image',
+					'class' => 'dinofolio-item-image',
 					'alt'   => esc_attr( get_the_title() ),
 				)
 			);
@@ -1043,7 +1191,7 @@ class WPDINO_Portfolio_Display {
 	 * Build a single category filter link.
 	 *
 	 * @param string   $label       Link label.
-	 * @param string   $filter      data-filter value (* or .portfolio-cat-slug).
+	 * @param string   $filter      data-filter value (* or .dinofolio-cat-slug).
 	 * @param int|null $count       Item count for this tab.
 	 * @param bool     $show_count  Whether to output the count badge.
 	 * @return string
@@ -1089,10 +1237,10 @@ class WPDINO_Portfolio_Display {
 		$show_count = ! empty( $attributes['showFilterCount'] );
 		$counts     = $show_count ? $this->get_category_counts_for_query( $query ) : array();
 
-		$filter_classes = array( 'wpdino-blocks_portfolio-block_filter' );
+		$filter_classes = array( 'dinofolio-filter' );
 
 		if ( $show_count ) {
-			$filter_classes[] = 'show-filter-count';
+			$filter_classes[] = 'dinofolio-show-filter-count';
 		}
 
 		$output  = '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
@@ -1100,7 +1248,7 @@ class WPDINO_Portfolio_Display {
 
 		$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
 
-		$output .= '<li class="current-cat" role="listitem">';
+		$output .= '<li class="dinofolio-current-cat" role="listitem">';
 		$output .= $this->get_filter_link_html( __( 'All', 'dinofolio' ), '*', $all_count, $show_count );
 		$output .= '</li>';
 
@@ -1110,7 +1258,7 @@ class WPDINO_Portfolio_Display {
 			$output .= '<li role="listitem">';
 			$output .= $this->get_filter_link_html(
 				$term->name,
-				'.portfolio-cat-' . $term->slug,
+				'.dinofolio-cat-' . $term->slug,
 				$term_count,
 				$show_count
 			);
@@ -1121,6 +1269,25 @@ class WPDINO_Portfolio_Display {
 		$output .= '</nav>';
 
 		return $output;
+	}
+
+	/**
+	 * Normalize WordPress paginate_links() markup to dinofolio-prefixed classes.
+	 *
+	 * @param string $html Pagination HTML from paginate_links().
+	 * @return string
+	 */
+	private function normalize_pagination_html( $html ) {
+		$replacements = array(
+			'page-numbers current' => 'dinofolio-page-numbers dinofolio-current',
+			'page-numbers dots'    => 'dinofolio-page-numbers dinofolio-dots',
+			'page-numbers'         => 'dinofolio-page-numbers',
+			'page-number'          => 'dinofolio-page-number',
+			'pagination-prev'      => 'dinofolio-pagination-prev',
+			'pagination-next'      => 'dinofolio-pagination-next',
+		);
+
+		return str_replace( array_keys( $replacements ), array_values( $replacements ), $html );
 	}
 
 	/**
@@ -1138,17 +1305,9 @@ class WPDINO_Portfolio_Display {
 			return '';
 		}
 
-		// Get current page
-		$current_page = 1;
-		if ( get_query_var( 'paged' ) ) {
-			$current_page = max( 1, get_query_var( 'paged' ) );
-		} elseif ( get_query_var( 'page' ) ) {
-			$current_page = max( 1, get_query_var( 'page' ) );
-		} elseif ( isset( $_GET['pg'] ) && is_numeric( $_GET['pg'] ) ) {
-			$current_page = max( 1, intval( $_GET['pg'] ) );
-		}
+		$current_page = $this->get_listing_current_page();
 
-		$output = '<div class="wpdino-portfolio-pagination">';
+		$output = '<div class="dinofolio-pagination">';
 		
 		// Build pagination for different contexts
 		if ( is_home() || is_archive() || is_post_type_archive( $this->post_type ) ) {
@@ -1156,23 +1315,23 @@ class WPDINO_Portfolio_Display {
 			$pagination_args = array(
 				'total'     => $total_pages,
 				'current'   => $current_page,
-				'prev_text' => '<span class="pagination-prev">&laquo; ' . esc_html__( 'Previous', 'dinofolio' ) . '</span>',
-				'next_text' => '<span class="pagination-next">' . esc_html__( 'Next', 'dinofolio' ) . ' &raquo;</span>',
+				'prev_text' => '<span class="dinofolio-pagination-prev">&laquo; ' . esc_html__( 'Previous', 'dinofolio' ) . '</span>',
+				'next_text' => '<span class="dinofolio-pagination-next">' . esc_html__( 'Next', 'dinofolio' ) . ' &raquo;</span>',
 				'mid_size'  => 2,
 				'end_size'  => 1,
-				'before_page_number' => '<span class="page-number">',
+				'before_page_number' => '<span class="dinofolio-page-number">',
 				'after_page_number'  => '</span>',
 			);
 		} else {
 			// For shortcodes, build pagination manually to avoid URL issues
-			$output .= '<nav class="pagination-wrapper" aria-label="' . esc_attr__( 'Portfolio pagination', 'dinofolio' ) . '">';
-			$output .= '<div class="pagination-items">';
+			$output .= '<nav class="dinofolio-pagination-wrapper" aria-label="' . esc_attr__( 'Portfolio pagination', 'dinofolio' ) . '">';
+			$output .= '<div class="dinofolio-pagination-items">';
 			
 			// Previous link
 			if ( $current_page > 1 ) {
 				$prev_url = add_query_arg( 'pg', $current_page - 1 );
-				$output .= '<a class="page-numbers" href="' . esc_url( $prev_url ) . '">';
-				$output .= '<span class="pagination-prev">&laquo; ' . esc_html__( 'Previous', 'dinofolio' ) . '</span>';
+				$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $prev_url ) . '">';
+				$output .= '<span class="dinofolio-pagination-prev">&laquo; ' . esc_html__( 'Previous', 'dinofolio' ) . '</span>';
 				$output .= '</a>';
 			}
 			
@@ -1183,25 +1342,25 @@ class WPDINO_Portfolio_Display {
 			// First page if not in range
 			if ( $start_page > 1 ) {
 				$page_url = ( $total_pages == 1 ) ? remove_query_arg( 'pg' ) : add_query_arg( 'pg', 1 );
-				$output .= '<a class="page-numbers" href="' . esc_url( $page_url ) . '">';
-				$output .= '<span class="page-number">1</span>';
+				$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $page_url ) . '">';
+				$output .= '<span class="dinofolio-page-number">1</span>';
 				$output .= '</a>';
 				
 				if ( $start_page > 2 ) {
-					$output .= '<span class="page-numbers dots">…</span>';
+					$output .= '<span class="dinofolio-page-numbers dinofolio-dots">…</span>';
 				}
 			}
 			
 			// Page range
 			for ( $i = $start_page; $i <= $end_page; $i++ ) {
 				if ( $i == $current_page ) {
-					$output .= '<span class="page-numbers current">';
-					$output .= '<span class="page-number">' . $i . '</span>';
+					$output .= '<span class="dinofolio-page-numbers dinofolio-current">';
+					$output .= '<span class="dinofolio-page-number">' . $i . '</span>';
 					$output .= '</span>';
 				} else {
 					$page_url = ( $i == 1 ) ? remove_query_arg( 'pg' ) : add_query_arg( 'pg', $i );
-					$output .= '<a class="page-numbers" href="' . esc_url( $page_url ) . '">';
-					$output .= '<span class="page-number">' . $i . '</span>';
+					$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $page_url ) . '">';
+					$output .= '<span class="dinofolio-page-number">' . $i . '</span>';
 					$output .= '</a>';
 				}
 			}
@@ -1209,20 +1368,20 @@ class WPDINO_Portfolio_Display {
 			// Last page if not in range
 			if ( $end_page < $total_pages ) {
 				if ( $end_page < $total_pages - 1 ) {
-					$output .= '<span class="page-numbers dots">…</span>';
+					$output .= '<span class="dinofolio-page-numbers dinofolio-dots">…</span>';
 				}
 				
 				$last_url = add_query_arg( 'pg', $total_pages );
-				$output .= '<a class="page-numbers" href="' . esc_url( $last_url ) . '">';
-				$output .= '<span class="page-number">' . $total_pages . '</span>';
+				$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $last_url ) . '">';
+				$output .= '<span class="dinofolio-page-number">' . $total_pages . '</span>';
 				$output .= '</a>';
 			}
 			
 			// Next link
 			if ( $current_page < $total_pages ) {
 				$next_url = add_query_arg( 'pg', $current_page + 1 );
-				$output .= '<a class="page-numbers" href="' . esc_url( $next_url ) . '">';
-				$output .= '<span class="pagination-next">' . esc_html__( 'Next', 'dinofolio' ) . ' &raquo;</span>';
+				$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $next_url ) . '">';
+				$output .= '<span class="dinofolio-pagination-next">' . esc_html__( 'Next', 'dinofolio' ) . ' &raquo;</span>';
 				$output .= '</a>';
 			}
 			
@@ -1234,10 +1393,10 @@ class WPDINO_Portfolio_Display {
 		}
 
 		$pagination_links = paginate_links( $pagination_args );
-		
+
 		if ( $pagination_links ) {
-			$output .= '<nav class="pagination-wrapper" aria-label="' . esc_attr__( 'Portfolio pagination', 'dinofolio' ) . '">';
-			$output .= $pagination_links;
+			$output .= '<nav class="dinofolio-pagination-wrapper" aria-label="' . esc_attr__( 'Portfolio pagination', 'dinofolio' ) . '">';
+			$output .= $this->normalize_pagination_html( $pagination_links );
 			$output .= '</nav>';
 		}
 
@@ -1254,8 +1413,8 @@ class WPDINO_Portfolio_Display {
 	 */
 	private function get_view_all_html( $attributes ) {
 		
-		$output = '<div class="wpdino-portfolio-view-all">';
-		$output .= '<a href="' . esc_url( $attributes['viewAllLink'] ) . '" class="wpdino-view-all-btn wpz-portfolio-button__link">';
+		$output = '<div class="dinofolio-view-all">';
+		$output .= '<a href="' . esc_url( $attributes['viewAllLink'] ) . '" class="dinofolio-view-all-btn dinofolio-button-link">';
 		$output .= esc_html( $attributes['viewAllText'] );
 		$output .= '</a>';
 		$output .= '</div>';
@@ -1273,7 +1432,7 @@ class WPDINO_Portfolio_Display {
 		
 		$message = apply_filters( 'wpdino_portfolio_no_posts_message', esc_html__( 'No portfolio items found.', 'dinofolio' ), $attributes );
 		
-		return '<div class="wpdino-portfolio-no-posts">' . $message . '</div>';
+		return '<div class="dinofolio-no-posts">' . $message . '</div>';
 	}
 
 	/**

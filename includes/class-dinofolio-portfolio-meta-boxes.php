@@ -510,7 +510,7 @@ class Portfolio_Meta_Boxes {
 			return '';
 		}
 
-		$data = $template_data;
+		$dinofolio_data = $template_data;
 		ob_start();
 		include $template_path;
 

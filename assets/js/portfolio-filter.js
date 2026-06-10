@@ -13,7 +13,7 @@
 	}
 
 	function applyFilter( block, selector ) {
-		var items = block.querySelectorAll( '.wpdino-blocks_portfolio-block_item' );
+		var items = block.querySelectorAll( '.dinofolio-item' );
 
 		items.forEach( function ( item ) {
 			var show = false;
@@ -32,13 +32,13 @@
 
 	function setActiveFilter( filterBar, link ) {
 		filterBar.querySelectorAll( 'li' ).forEach( function ( li ) {
-			li.classList.remove( 'current-cat' );
+			li.classList.remove( 'dinofolio-current-cat' );
 		} );
 
 		var activeLi = link.closest( 'li' );
 
 		if ( activeLi ) {
-			activeLi.classList.add( 'current-cat' );
+			activeLi.classList.add( 'dinofolio-current-cat' );
 		}
 	}
 
@@ -48,9 +48,9 @@
 		}
 
 		document
-			.querySelectorAll( '.wpdino-blocks_portfolio-block.has-category-filter:not([data-dinofolio-filter-init])' )
+			.querySelectorAll( '.dinofolio.dinofolio-has-category-filter:not([data-dinofolio-filter-init])' )
 			.forEach( function ( block ) {
-				var filterBar = block.querySelector( '.wpdino-blocks_portfolio-block_filter' );
+				var filterBar = block.querySelector( '.dinofolio-filter' );
 
 				if ( ! filterBar ) {
 					return;

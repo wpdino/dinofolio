@@ -2,110 +2,128 @@
  * Portfolio listing (grid, list, masonry) — used by shortcode, Elementor, Gutenberg, WPBakery.
  */
 
-.wpdino-blocks_portfolio-block {
-	--dinofolio-portfolio-gap: 24px;
-	--dinofolio-portfolio-radius: 8px;
-	--dinofolio-portfolio-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-	--dinofolio-portfolio-accent: #6f9c50;
-	--dinofolio-portfolio-text: #333;
-	--dinofolio-portfolio-muted: #666;
+/* Taxonomy archive wrapper */
+.dinofolio-taxonomy-archive {
 	margin: 0 0 2rem;
 }
 
-.wpdino-blocks_portfolio-block_items-list {
-	gap: var(--dinofolio-portfolio-gap);
+.dinofolio-taxonomy-header {
+	margin-bottom: 1.5rem;
+}
+
+.dinofolio-taxonomy-title {
+	margin: 0 0 0.5rem;
+}
+
+.dinofolio-taxonomy-description {
+	color: var(--dinofolio-muted, #666);
+}
+
+.dinofolio {
+	--dinofolio-gap: 24px;
+	--dinofolio-radius: 8px;
+	--dinofolio-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+	--dinofolio-accent: #1a8960; 
+	--dinofolio-hover: #1a8970;
+	--dinofolio-button-text: #fff;	
+	--dinofolio-muted: #666;
+	margin: 0 0 2rem;
+}
+
+.dinofolio-items-list {
+	gap: var(--dinofolio-gap);
 }
 
 /* Grid layout */
-.wpdino-blocks_portfolio-block.layout-grid .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-grid .dinofolio-items-list {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.wpdino-blocks_portfolio-block.layout-grid.columns-2 .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-grid.dinofolio-columns-2 .dinofolio-items-list {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.wpdino-blocks_portfolio-block.layout-grid.columns-3 .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-grid.dinofolio-columns-3 .dinofolio-items-list {
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-grid.dinofolio-columns-4 .dinofolio-items-list {
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 /* List layout */
-.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-list .dinofolio-items-list {
 	display: flex;
 	flex-direction: column;
 }
 
 /* Masonry layout (CSS columns — natural image heights create stagger) */
-.wpdino-blocks_portfolio-block.layout-masonry .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-masonry .dinofolio-items-list {
 	display: block;
 	column-count: 3;
-	column-gap: var(--dinofolio-portfolio-gap);
+	column-gap: var(--dinofolio-gap);
 	column-fill: balance;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry.columns-2 .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-masonry.dinofolio-columns-2 .dinofolio-items-list {
 	column-count: 2;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry.columns-3 .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-masonry.dinofolio-columns-3 .dinofolio-items-list {
 	column-count: 3;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry.columns-4 .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-layout-masonry.dinofolio-columns-4 .dinofolio-items-list {
 	column-count: 4;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item {
+.dinofolio.dinofolio-layout-masonry .dinofolio-is-masonry-item {
 	break-inside: avoid;
 	page-break-inside: avoid;
 	-webkit-column-break-inside: avoid;
 	display: inline-block;
 	width: 100%;
-	margin: 0 0 var(--dinofolio-portfolio-gap);
+	margin: 0 0 var(--dinofolio-gap);
 	vertical-align: top;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item .wpdino-blocks_portfolio-block_item-image {
+.dinofolio.dinofolio-layout-masonry .dinofolio-is-masonry-item .dinofolio-item-image {
 	width: 100%;
 	height: auto;
 	object-fit: unset;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item .wpdino-blocks_portfolio-block_item-details {
+.dinofolio.dinofolio-layout-masonry .dinofolio-is-masonry-item .dinofolio-item-details {
 	padding: 1rem 1.15rem 1.2rem;
 }
 
-.wpdino-blocks_portfolio-block.layout-masonry .is-masonry-item .wpdino-blocks_portfolio-block_item-excerpt {
+.dinofolio.dinofolio-layout-masonry .dinofolio-is-masonry-item .dinofolio-item-excerpt {
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 }
 
-.wpdino-blocks_portfolio-block_item {
+.dinofolio-item {
 	background: #fff;
-	border-radius: var(--dinofolio-portfolio-radius);
-	box-shadow: var(--dinofolio-portfolio-shadow);
+	border-radius: var(--dinofolio-radius);
+	box-shadow: var(--dinofolio-shadow);
 	overflow: hidden;
 }
 
 /* Category filter — CSS-only transitions (JS only toggles .dinofolio-filter-hidden) */
-.wpdino-blocks_portfolio-block.has-category-filter {
+.dinofolio.dinofolio-has-category-filter {
 	--dinofolio-filter-duration: 0.42s;
 	--dinofolio-filter-ease: cubic-bezier(0.22, 1, 0.36, 1);
 	--dinofolio-filter-max-height: 3200px;
 }
 
-.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_items-list {
+.dinofolio.dinofolio-has-category-filter .dinofolio-items-list {
 	transition: gap var(--dinofolio-filter-duration) var(--dinofolio-filter-ease);
 }
 
-.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item {
+.dinofolio.dinofolio-has-category-filter .dinofolio-item {
 	transform-origin: center top;
 	overflow: hidden;
 	max-height: var(--dinofolio-filter-max-height);
@@ -122,7 +140,7 @@
 		box-shadow var(--dinofolio-filter-duration) var(--dinofolio-filter-ease);
 }
 
-.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+.dinofolio.dinofolio-has-category-filter .dinofolio-item.dinofolio-filter-hidden {
 	max-height: 0;
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
@@ -142,40 +160,40 @@
 		box-shadow calc(var(--dinofolio-filter-duration) - 0.06s) var(--dinofolio-filter-ease);
 }
 
-.wpdino-blocks_portfolio-block.has-category-filter.layout-masonry .wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+.dinofolio.dinofolio-has-category-filter.dinofolio-layout-masonry .dinofolio-item.dinofolio-filter-hidden {
 	display: none !important;
 	max-height: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item,
-	.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block_filter a {
+	.dinofolio.dinofolio-has-category-filter .dinofolio-item,
+	.dinofolio.dinofolio-has-category-filter .dinofolio-items-list,
+	.dinofolio-filter a {
 		transition: none !important;
 	}
 
-	.wpdino-blocks_portfolio-block.has-category-filter .wpdino-blocks_portfolio-block_item.dinofolio-filter-hidden {
+	.dinofolio.dinofolio-has-category-filter .dinofolio-item.dinofolio-filter-hidden {
 		display: none !important;
 	}
 }
 
-.wpdino-blocks_portfolio-block_item-thumbnail {
+.dinofolio-item-thumbnail {
 	position: relative;
 	overflow: hidden;
 	line-height: 0;
 }
 
-.wpdino-blocks_portfolio-block_item-thumbnail a {
+.dinofolio-item-thumbnail a {
 	display: block;
 }
 
-.wpdino-blocks_portfolio-block_item-thumbnail.lightbox > a.glightbox.portfolio-lightbox-link {
+.dinofolio-item-thumbnail.dinofolio-lightbox > a.glightbox.dinofolio-lightbox-link {
 	position: relative;
 	display: block;
 }
 
 /* Lightbox zoom icon on hover */
-.wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
+.dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-lightbox-zoom-icon {
 	position: absolute;
 	inset: 0;
 	z-index: 2;
@@ -188,8 +206,8 @@
 	transition: opacity 0.3s ease, background 0.3s ease;
 }
 
-.wpdino-blocks_portfolio-block_item-thumbnail.lightbox:hover .dinofolio-lightbox-zoom-icon,
-.wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-lightbox-zoom-icon {
+.dinofolio-item-thumbnail.dinofolio-lightbox:hover .dinofolio-lightbox-zoom-icon,
+.dinofolio-item:hover .dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-lightbox-zoom-icon {
 	opacity: 1;
 }
 
@@ -202,48 +220,48 @@
 	transition: transform 0.3s ease;
 }
 
-.wpdino-blocks_portfolio-block_item-thumbnail.lightbox:hover .dinofolio-zoom-icon,
-.wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-thumbnail.lightbox .dinofolio-zoom-icon {
+.dinofolio-item-thumbnail.dinofolio-lightbox:hover .dinofolio-zoom-icon,
+.dinofolio-item:hover .dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-zoom-icon {
 	transform: scale(1);
 }
 
-.wpdino-blocks_portfolio-block_item-image {
+.dinofolio-item-image {
 	width: 100%;
 	height: auto;
 	display: block;
 	transition: transform 0.35s ease;
 }
 
-.wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-image {
+.dinofolio-item:hover .dinofolio-item-image {
 	transform: scale(1.04);
 }
 
-.wpdino-blocks_portfolio-block_item-details {
+.dinofolio-item-details {
 	padding: 1.25rem 1.35rem 1.4rem;
 }
 
-.wpdino-blocks_portfolio-block_item-title {
+.dinofolio-item-title {
 	margin: 0 0 0.5rem;
 	font-size: 1.15rem;
 	line-height: 1.35;
 }
 
-.wpdino-blocks_portfolio-block_item-title a {
-	color: var(--dinofolio-portfolio-text);
+.dinofolio-item-title a {
+	color: var(--dinofolio-text);
 	text-decoration: none;
 	transition: color 0.2s ease;
 }
 
-.wpdino-blocks_portfolio-block_item-title a:hover {
-	color: var(--dinofolio-portfolio-accent);
+.dinofolio-item-title a:hover {
+	color: var(--dinofolio-accent);
 }
 
-.wpdino-blocks_portfolio-block_item-categories {
+.dinofolio-item-categories {
 	display: flex;
 	align-items: center;
 	gap: 0.4rem;
 	font-size: 0.8rem;
-	color: var(--dinofolio-portfolio-muted);
+	color: var(--dinofolio-muted);
 	margin-bottom: 0.65rem;
 }
 
@@ -251,62 +269,65 @@
 	flex-shrink: 0;
 	width: 0.95rem;
 	height: 0.95rem;
-	color: var(--dinofolio-portfolio-accent);
+	color: var(--dinofolio-accent);
 	opacity: 0.9;
 }
 
-.wpdino-blocks_portfolio-block_item-categories-list {
+.dinofolio-item-categories-list {
 	display: inline;
 	line-height: 1.4;
 }
 
-.wpdino-blocks_portfolio-block_item-categories a {
+.dinofolio-item-categories a {
 	color: inherit;
 	text-decoration: none;
 }
 
-.wpdino-blocks_portfolio-block_item-categories a:hover {
-	color: var(--dinofolio-portfolio-accent);
+.dinofolio-item-categories a:hover {
+	color: var(--dinofolio-accent);
 }
 
-.wpdino-category-sep {
-	color: var(--dinofolio-portfolio-muted);
+.dinofolio-category-sep {
+	color: var(--dinofolio-muted);
 }
 
-.wpdino-blocks_portfolio-block_item-excerpt {
-	color: var(--dinofolio-portfolio-muted);
+.dinofolio-item-excerpt {
+	color: var(--dinofolio-muted);
 	font-size: 0.92rem;
 	line-height: 1.6;
 	margin-bottom: 0.85rem;
 }
 
-.wpdino-blocks_portfolio-block_item-excerpt p {
+.dinofolio-item-excerpt p {
 	margin: 0;
 }
 
-.wpdino-blocks_portfolio-block_item-button {
+.dinofolio-item-button {
 	margin-top: 0.25rem;
 }
 
-.wpz-portfolio-button__link {
+.dinofolio-button-link {
 	display: inline-block;
 	padding: 0.55rem 1.1rem;
 	border-radius: 4px;
-	background: var(--dinofolio-portfolio-accent);
-	color: #fff !important;
-	text-decoration: none !important;
+	background: var(--dinofolio-accent);
+	color: var(--dinofolio-button-text);
+	text-decoration: none;
 	font-size: 0.88rem;
 	font-weight: 500;
 	transition: background 0.2s ease, color 0.2s ease;
 }
 
-.wpz-portfolio-button__link:hover {
-	background: #5a833f;
-	color: #fff !important;
+.dinofolio-button-link:hover {
+	background: var(--dinofolio-hover);
+	color: var(--dinofolio-button-text);
+}
+.dinofolio-button-link:visited {
+	color: var(--dinofolio-button-text);
 }
 
 /* View All footer CTA */
-.wpdino-portfolio-view-all {
+.dinofolio-view-all {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -316,7 +337,7 @@
 	width: 100%;
 }
 
-.wpdino-portfolio-view-all .wpdino-view-all-btn {
+.dinofolio-view-all .dinofolio-view-all-btn {
 	display: inline-block;
 	min-width: 10rem;
 	padding: 0.65rem 1.75rem;
@@ -330,48 +351,48 @@
 	transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.wpdino-portfolio-view-all .wpdino-view-all-btn:hover {
+.dinofolio-view-all .dinofolio-view-all-btn:hover {
 	box-shadow: 0 4px 14px rgba(111, 156, 80, 0.35);
 	transform: translateY(-1px);
 }
 
-.wpdino-portfolio-view-all .wpdino-view-all-btn:focus-visible {
-	outline: 2px solid var(--dinofolio-portfolio-accent);
+.dinofolio-view-all .dinofolio-view-all-btn:focus-visible {
+	outline: 2px solid var(--dinofolio-accent);
 	outline-offset: 3px;
 }
 
 /* List layout items */
-.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item {
+.dinofolio.dinofolio-layout-list .dinofolio-item {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
 }
 
-.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-thumbnail {
+.dinofolio.dinofolio-layout-list .dinofolio-item-thumbnail {
 	flex: 0 0 38%;
 	max-width: 38%;
 }
 
-.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-details {
+.dinofolio.dinofolio-layout-list .dinofolio-item-details {
 	flex: 1 1 62%;
 	max-width: 62%;
 }
 
 /* Overlay style */
-.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail,
-.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail[style*="background-image"] {
+.dinofolio.dinofolio-style-overlay .dinofolio-item-thumbnail,
+.dinofolio.dinofolio-style-overlay .dinofolio-item-thumbnail[style*="background-image"] {
 	min-height: 260px;
 	background-size: cover;
 	background-position: center;
 }
 
-.wpdino-blocks_portfolio-block.style-overlay .wpdino-blocks_portfolio-block_item-thumbnail > a {
+.dinofolio.dinofolio-style-overlay .dinofolio-item-thumbnail > a {
 	position: absolute;
 	inset: 0;
 	z-index: 1;
 }
 
-.wpdino-blocks_portfolio-block_item-overlay {
+.dinofolio-item-overlay {
 	position: absolute;
 	inset: 0;
 	display: flex;
@@ -384,21 +405,21 @@
 	pointer-events: none;
 }
 
-.wpdino-blocks_portfolio-block_item-overlay a {
+.dinofolio-item-overlay a {
 	pointer-events: auto;
 	color: #fff;
 }
 
-.wpdino-blocks_portfolio-block_item-overlay .wpdino-blocks_portfolio-block_item-excerpt {
+.dinofolio-item-overlay .dinofolio-item-excerpt {
 	color: rgba(255, 255, 255, 0.88);
 }
 
 /* Category filter */
-.wpdino-blocks_portfolio-block_filter {
+.dinofolio-filter {
 	margin-bottom: 1.25rem;
 }
 
-.wpdino-blocks_portfolio-block_filter ul {
+.dinofolio-filter ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem 0.75rem;
@@ -407,14 +428,14 @@
 	padding: 0;
 }
 
-.wpdino-blocks_portfolio-block_filter a {
+.dinofolio-filter a {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.35rem;
 	padding: 0.4rem 0.85rem;
 	border-radius: 999px;
 	border: 1px solid #ddd;
-	color: var(--dinofolio-portfolio-text);
+	color: var(--dinofolio-text);
 	text-decoration: none;
 	font-size: 0.85rem;
 	transition:
@@ -424,22 +445,22 @@
 		transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.wpdino-blocks_portfolio-block_filter a:hover {
+.dinofolio-filter a:hover {
 	transform: translateY(-1px);
 }
 
-.wpdino-blocks_portfolio-block_filter .current-cat a,
-.wpdino-blocks_portfolio-block_filter a:hover {
-	background: var(--dinofolio-portfolio-accent);
-	border-color: var(--dinofolio-portfolio-accent);
+.dinofolio-filter .dinofolio-current-cat a,
+.dinofolio-filter a:hover {
+	background: var(--dinofolio-accent);
+	border-color: var(--dinofolio-accent);
 	color: #fff;
 }
 
-.wpdino-blocks_portfolio-block_filter .current-cat a {
+.dinofolio-filter .dinofolio-current-cat a {
 	transform: scale(1.02);
 }
 
-.wpdino-blocks_portfolio-block_filter.show-filter-count .dinofolio-filter-count {
+.dinofolio-filter.dinofolio-show-filter-count .dinofolio-filter-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -454,23 +475,23 @@
 	transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.wpdino-blocks_portfolio-block_filter.show-filter-count .current-cat .dinofolio-filter-count {
+.dinofolio-filter.dinofolio-show-filter-count .dinofolio-current-cat .dinofolio-filter-count {
 	background: rgba(255, 255, 255, 0.28);
 }
 
 /* Pagination */
-.wpdino-portfolio-pagination {
+.dinofolio-pagination {
 	margin-top: 2rem;
 	text-align: center;
 }
 
-.wpdino-portfolio-pagination .pagination-wrapper {
+.dinofolio-pagination .dinofolio-pagination-wrapper {
 	display: block;
 }
 
-.wpdino-portfolio-pagination .pagination-items,
-.wpdino-portfolio-pagination .pagination-wrapper > .page-numbers,
-.wpdino-portfolio-pagination ul.page-numbers {
+.dinofolio-pagination .dinofolio-pagination-items,
+.dinofolio-pagination .dinofolio-pagination-wrapper > .dinofolio-page-numbers,
+.dinofolio-pagination ul.dinofolio-page-numbers {
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -484,18 +505,18 @@
 	box-shadow: none;
 }
 
-.wpdino-portfolio-pagination ul.page-numbers li {
+.dinofolio-pagination ul.dinofolio-page-numbers li {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.wpdino-portfolio-pagination .pagination-items > a.page-numbers,
-.wpdino-portfolio-pagination .pagination-items > span.page-numbers,
-.wpdino-portfolio-pagination .pagination-wrapper > a.page-numbers,
-.wpdino-portfolio-pagination .pagination-wrapper > span.page-numbers,
-.wpdino-portfolio-pagination ul.page-numbers a.page-numbers,
-.wpdino-portfolio-pagination ul.page-numbers span.page-numbers {
+.dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers,
+.dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers,
+.dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers,
+.dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers,
+.dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers,
+.dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -506,97 +527,97 @@
 	border-radius: 4px;
 	background: #fff;
 	text-decoration: none !important;
-	color: var(--dinofolio-portfolio-text);
+	color: var(--dinofolio-text);
 	font-size: 0.9rem;
 	line-height: 1.2;
 	box-sizing: border-box;
 	transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
-.wpdino-portfolio-pagination .pagination-items > span.page-numbers.current,
-.wpdino-portfolio-pagination .pagination-wrapper > span.page-numbers.current,
-.wpdino-portfolio-pagination ul.page-numbers span.page-numbers.current {
-	background: var(--dinofolio-portfolio-accent);
-	border-color: var(--dinofolio-portfolio-accent);
+.dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-current,
+.dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers.dinofolio-current,
+.dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers.dinofolio-current {
+	background: var(--dinofolio-accent);
+	border-color: var(--dinofolio-accent);
 	color: #fff;
 }
 
-.wpdino-portfolio-pagination .pagination-items > span.page-numbers.dots,
-.wpdino-portfolio-pagination .pagination-wrapper > span.page-numbers.dots,
-.wpdino-portfolio-pagination ul.page-numbers span.page-numbers.dots {
+.dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-dots,
+.dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers.dinofolio-dots,
+.dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers.dinofolio-dots {
 	min-width: auto;
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
 	border: none;
 	background: transparent;
-	color: var(--dinofolio-portfolio-muted);
+	color: var(--dinofolio-muted);
 }
 
-.wpdino-portfolio-pagination .pagination-items > a.page-numbers:hover,
-.wpdino-portfolio-pagination .pagination-wrapper > a.page-numbers:hover,
-.wpdino-portfolio-pagination ul.page-numbers a.page-numbers:hover {
-	border-color: var(--dinofolio-portfolio-accent);
-	color: var(--dinofolio-portfolio-accent);
+.dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers:hover,
+.dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers:hover,
+.dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers:hover {
+	border-color: var(--dinofolio-accent);
+	color: var(--dinofolio-accent);
 }
 
-.wpdino-portfolio-pagination .pagination-items > a.page-numbers:focus-visible,
-.wpdino-portfolio-pagination .pagination-wrapper > a.page-numbers:focus-visible,
-.wpdino-portfolio-pagination ul.page-numbers a.page-numbers:focus-visible {
-	outline: 2px solid var(--dinofolio-portfolio-accent);
+.dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers:focus-visible,
+.dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers:focus-visible,
+.dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers:focus-visible {
+	outline: 2px solid var(--dinofolio-accent);
 	outline-offset: 2px;
 }
 
-.wpdino-portfolio-pagination .pagination-prev,
-.wpdino-portfolio-pagination .pagination-next {
+.dinofolio-pagination .dinofolio-pagination-prev,
+.dinofolio-pagination .dinofolio-pagination-next {
 	display: inline;
 }
 
 /* Empty state */
-.wpdino-portfolio-no-posts {
+.dinofolio-no-posts {
 	padding: 2rem;
 	text-align: center;
-	color: var(--dinofolio-portfolio-muted);
+	color: var(--dinofolio-muted);
 }
 
 @media (max-width: 1024px) {
-	.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	.dinofolio.dinofolio-layout-grid.dinofolio-columns-4 .dinofolio-items-list {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 
-	.wpdino-blocks_portfolio-block.layout-masonry.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	.dinofolio.dinofolio-layout-masonry.dinofolio-columns-4 .dinofolio-items-list {
 		column-count: 3;
 	}
 }
 
 @media (max-width: 767px) {
-	.wpdino-blocks_portfolio-block.layout-grid .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-grid.columns-3 .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	.dinofolio.dinofolio-layout-grid .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-grid.dinofolio-columns-3 .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-grid.dinofolio-columns-4 .dinofolio-items-list {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.wpdino-blocks_portfolio-block.layout-masonry .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-masonry.columns-3 .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-masonry.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	.dinofolio.dinofolio-layout-masonry .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-masonry.dinofolio-columns-3 .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-masonry.dinofolio-columns-4 .dinofolio-items-list {
 		column-count: 2;
 	}
 
-	.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-thumbnail,
-	.wpdino-blocks_portfolio-block.layout-list .wpdino-blocks_portfolio-block_item-details {
+	.dinofolio.dinofolio-layout-list .dinofolio-item-thumbnail,
+	.dinofolio.dinofolio-layout-list .dinofolio-item-details {
 		flex: 0 0 100%;
 		max-width: 100%;
 	}
 }
 
 @media (max-width: 480px) {
-	.wpdino-blocks_portfolio-block.layout-grid .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-grid.columns-2 .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-grid.columns-3 .wpdino-blocks_portfolio-block_items-list,
-	.wpdino-blocks_portfolio-block.layout-grid.columns-4 .wpdino-blocks_portfolio-block_items-list {
+	.dinofolio.dinofolio-layout-grid .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-grid.dinofolio-columns-2 .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-grid.dinofolio-columns-3 .dinofolio-items-list,
+	.dinofolio.dinofolio-layout-grid.dinofolio-columns-4 .dinofolio-items-list {
 		grid-template-columns: 1fr;
 	}
 
-	.wpdino-blocks_portfolio-block.layout-masonry .wpdino-blocks_portfolio-block_items-list {
+	.dinofolio.dinofolio-layout-masonry .dinofolio-items-list {
 		column-count: 1;
 	}
 }

@@ -78,7 +78,9 @@ class Custom_Post {
 		$settings = DinoFolio_Settings::instance();
 		$portfolio_slug     = $settings->get_setting( 'portfolio_slug', 'dinofolio-portfolio' );
 		$portfolio_tax_slug = $settings->get_setting( 'portfolio_tax_slug', 'dinofolio-portfolio-category' );
-		
+		// Use an explicit white fill so the icon does not flash dark before admin CSS loads (currentColor defaults to black in data-uri SVGs).
+		$menu_icon_svg      = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M3 4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4zm2 1v6h6V5H5zm0 8v6h6v-6H5zm8 6h6v-3h-6v3zm0-5h6V5h-6v9z"/></svg>';
+
 		// Add the portfolio post type
 		register_post_type(
 			'wpdino_portfolio', 
@@ -116,12 +118,7 @@ class Custom_Post {
 					'view_item'                => esc_html__( 'View Portfolio Post', 'dinofolio' ),
 					'view_items'               => esc_html__( 'View Portfolio Posts', 'dinofolio' )
 				),
-			'menu_icon' => 'data:image/svg+xml;base64,' . base64_encode( <<<SVG
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-					<path d="M3 4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4zm2 1v6h6V5H5zm0 8v6h6v-6H5zm8 6h6v-3h-6v3zm0-5h6V5h-6v9z"/>
-				</svg>
-				SVG
-			),
+			'menu_icon' => 'data:image/svg+xml;base64,' . base64_encode( $menu_icon_svg ),
 			'public'              => true,
 			'publicly_queryable'  => true,
 			'show_ui'             => true,
@@ -267,7 +264,7 @@ class Custom_Post {
 				);
 				
                 echo '<div class="wpdino-featured-image-wrapper" data-post-id="' . esc_attr( $post_id ) . '">';
-				echo $image;
+				echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe HTML from wp_get_attachment_image().
 				echo '<div class="wpdino-featured-image-actions">';
 				echo '<a href="#" class="wpdino-change-featured-image" data-post-id="' . esc_attr( $post_id ) . '" title="' . esc_attr__( 'Change featured image', 'dinofolio' ) . '">📝</a>';
 				echo '<a href="#" class="wpdino-remove-featured-image" data-post-id="' . esc_attr( $post_id ) . '" title="' . esc_attr__( 'Remove featured image', 'dinofolio' ) . '">🗑️</a>';
@@ -360,19 +357,15 @@ class Custom_Post {
 	 * @since 1.0.0
 	 */
 	public function save_featured_image_ajax() {
-		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'wpdino_portfolio_featured_image' ) ) {
-			wp_die( esc_html__( 'Security check failed', 'dinofolio' ) );
-		}
+		check_ajax_referer( 'wpdino_portfolio_featured_image', 'nonce' );
 
-		// Check permissions
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_die( esc_html__( 'You do not have permission to perform this action', 'dinofolio' ) );
 		}
 
-		$post_id = intval( $_POST['post_id'] );
-        $image_id = isset( $_POST['image_id'] ) ? intval( $_POST['image_id'] ) : 0;
-		$action = sanitize_text_field( $_POST['action_type'] );
+		$post_id  = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+		$image_id = isset( $_POST['image_id'] ) ? absint( wp_unslash( $_POST['image_id'] ) ) : 0;
+		$action   = isset( $_POST['action_type'] ) ? sanitize_key( wp_unslash( $_POST['action_type'] ) ) : '';
 
 		if ( ! $post_id ) {
 			wp_die( esc_html__( 'Invalid post ID', 'dinofolio' ) );
@@ -411,8 +404,10 @@ class Custom_Post {
 	 * @param string $hook The current admin page hook
 	 */
 	public function enqueue_admin_scripts( $hook ) {
-		// Only load on portfolio edit page
-		if ( $hook !== 'edit.php' || ! isset( $_GET['post_type'] ) || $_GET['post_type'] !== 'wpdino_portfolio' ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only admin screen routing.
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : '';
+
+		if ( 'edit.php' !== $hook || 'wpdino_portfolio' !== $post_type ) {
 			return;
 		}
 
@@ -535,13 +530,32 @@ class Custom_Post {
             return;
         }
 
-        if ( isset( $_REQUEST['wpdino_featured_image_changed'] ) && '1' === $_REQUEST['wpdino_featured_image_changed'] ) {
-            $image_id = isset( $_REQUEST['wpdino_featured_image_id'] ) ? intval( $_REQUEST['wpdino_featured_image_id'] ) : 0;
-            if ( $image_id > 0 ) {
-                set_post_thumbnail( $post_id, $image_id );
-            } else {
-                delete_post_thumbnail( $post_id );
-            }
+        if ( ! isset( $_POST['_inline_edit'] ) ) {
+            return;
+        }
+
+        $inline_edit_nonce = sanitize_text_field( wp_unslash( $_POST['_inline_edit'] ) );
+
+        if ( ! wp_verify_nonce( $inline_edit_nonce, 'inlineeditnonce' ) ) {
+            return;
+        }
+
+        if ( ! isset( $_POST['wpdino_featured_image_changed'] ) ) {
+            return;
+        }
+
+        $featured_image_changed = sanitize_text_field( wp_unslash( $_POST['wpdino_featured_image_changed'] ) );
+
+        if ( '1' !== $featured_image_changed ) {
+            return;
+        }
+
+        $image_id = isset( $_POST['wpdino_featured_image_id'] ) ? absint( wp_unslash( $_POST['wpdino_featured_image_id'] ) ) : 0;
+
+        if ( $image_id > 0 ) {
+            set_post_thumbnail( $post_id, $image_id );
+        } else {
+            delete_post_thumbnail( $post_id );
         }
     }
 
@@ -551,15 +565,13 @@ class Custom_Post {
      * @since 1.0.0
      */
     public function get_featured_image_ajax() {
-        if ( ! wp_verify_nonce( $_POST['nonce'], 'wpdino_portfolio_featured_image' ) ) {
-            wp_die( esc_html__( 'Security check failed', 'dinofolio' ) );
-        }
+        check_ajax_referer( 'wpdino_portfolio_featured_image', 'nonce' );
 
         if ( ! current_user_can( 'edit_posts' ) ) {
             wp_die( esc_html__( 'You do not have permission to perform this action', 'dinofolio' ) );
         }
 
-        $post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+        $post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
         if ( ! $post_id ) {
             wp_die( esc_html__( 'Invalid post ID', 'dinofolio' ) );
         }

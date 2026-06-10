@@ -439,8 +439,11 @@ class DinoFolio_Settings {
 		// Check if we're on the settings page
 		$is_settings_page = in_array( $hook, $valid_hooks );
 		
-		// Also check by GET parameter as fallback
-		if ( ! $is_settings_page && isset( $_GET['page'] ) && $_GET['page'] === 'dinofolio-settings' ) {
+		// Also check by GET parameter as fallback.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only admin screen routing.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+
+		if ( ! $is_settings_page && 'dinofolio-settings' === $page ) {
 			$is_settings_page = true;
 		}
 		
@@ -456,10 +459,12 @@ class DinoFolio_Settings {
 		// Enqueue media uploader
 		wp_enqueue_media();
 
+		wp_enqueue_style( 'dashicons' );
+
 		wp_enqueue_style(
 			'wpdino-admin',
 			DINOFOLIO_URL . 'includes/admin/assets/css/admin.css',
-			array( 'wp-color-picker' ),
+			array( 'dashicons', 'wp-color-picker' ),
 			DINOFOLIO_VERSION
 		);
 		wp_enqueue_style(
@@ -866,7 +871,11 @@ class DinoFolio_Settings {
 				'id'   => 'portfolio_slug',
 				'name' => 'portfolio_slug',
 				'label' => esc_html__( 'Portfolio Slug', 'dinofolio' ),
-				'description' => sprintf( wp_kses_post( __( 'Define a custom portfolio slug. After saving, refresh permalinks in <a href="%s" target="_blank">WordPress Settings > Permalinks</a> to apply changes', 'dinofolio' ) ), esc_url( $wp_admin_permalink_url ) ),
+				'description' => sprintf(
+					/* translators: %s: Permalinks settings URL in the WordPress admin. */
+					wp_kses_post( __( 'Define a custom portfolio slug. After saving, refresh permalinks in <a href="%s" target="_blank">WordPress Settings > Permalinks</a> to apply changes', 'dinofolio' ) ),
+					esc_url( $wp_admin_permalink_url )
+				),
 				'placeholder' => esc_html__( 'Enter your portfolio slug', 'dinofolio' ),
 				'default' => 'dinofolio-portfolio',
 			),
@@ -875,7 +884,11 @@ class DinoFolio_Settings {
 				'id'   => 'portfolio_tax_slug',
 				'name' => 'portfolio_tax_slug',
 				'label' => esc_html__( 'Portfolio Taxonomy Slug', 'dinofolio' ),
-				'description' => sprintf( wp_kses_post( __( 'Define a custom portfolio taxonomy slug. After saving, refresh permalinks in <a href="%s" target="_blank">WordPress Settings > Permalinks</a> to apply changes', 'dinofolio' ) ), esc_url( $wp_admin_permalink_url ) ),
+				'description' => sprintf(
+					/* translators: %s: Permalinks settings URL in the WordPress admin. */
+					wp_kses_post( __( 'Define a custom portfolio taxonomy slug. After saving, refresh permalinks in <a href="%s" target="_blank">WordPress Settings > Permalinks</a> to apply changes', 'dinofolio' ) ),
+					esc_url( $wp_admin_permalink_url )
+				),
 				'placeholder' => esc_html__( 'Enter your portfolio taxonomy slug', 'dinofolio' ),
 				'default' => 'dinofolio-portfolio-category', 
 			),
@@ -1029,6 +1042,7 @@ class DinoFolio_Settings {
 					'name' => 'pro_widgets_subsection',
 					'label' => esc_html__( 'PRO Widgets', 'dinofolio' ),
 					'description' => sprintf(
+						/* translators: %s: DinoFolio PRO plugin URL. */
 						wp_kses_post( __( 'These widgets are available in <a href="%s" target="_blank">DinoFolio PRO</a>. Upgrade to unlock these powerful features.', 'dinofolio' ) ),
 						esc_url( $this->add_utm_params( 'https://wpdino.com/plugins/dinofolio/', 'pro_widgets_section' ) )
 					),
@@ -1045,6 +1059,14 @@ class DinoFolio_Settings {
 				'callback'    => null,
 				'icon'        => 'dashicons-admin-generic',
 				'fields'      => $general_fields,
+			),
+			'taxonomy' => array(
+				'id'          => 'taxonomy',
+				'title'       => esc_html__( 'Taxonomy Archive', 'dinofolio' ),
+				'description' => esc_html__( 'Configure the portfolio category and tag archive template using the same listing options as the block and Elementor widget.', 'dinofolio' ),
+				'callback'    => null,
+				'icon'        => 'dashicons-category',
+				'fields'      => $this->get_taxonomy_settings_fields(),
 			),
 			'tools' => array(
 				'id' => 'tools',
@@ -1063,6 +1085,240 @@ class DinoFolio_Settings {
 		 * @param array $sections Settings sections array.
 		 */
 		return apply_filters( 'dinofolio_settings_sections', $sections );
+	}
+
+	/**
+	 * Shared portfolio listing style fields.
+	 *
+	 * @param string $prefix Setting key prefix, e.g. taxonomy_.
+	 * @return array
+	 */
+	private function get_listing_style_setting_fields( $prefix = '' ) {
+		return array(
+			array(
+				'type'    => 'select',
+				'id'      => $prefix . 'style',
+				'name'    => $prefix . 'style',
+				'label'   => esc_html__( 'Card Style', 'dinofolio' ),
+				'options' => array(
+					'classic' => esc_html__( 'Classic', 'dinofolio' ),
+					'overlay' => esc_html__( 'Overlay', 'dinofolio' ),
+				),
+				'default' => 'classic',
+			),
+			array(
+				'type'    => 'select',
+				'id'      => $prefix . 'hover_effect',
+				'name'    => $prefix . 'hover_effect',
+				'label'   => esc_html__( 'Hover Effect', 'dinofolio' ),
+				'options' => array(
+					'zoom' => esc_html__( 'Zoom', 'dinofolio' ),
+				),
+				'default' => 'zoom',
+			),
+			array(
+				'type'    => 'number',
+				'id'      => $prefix . 'gap',
+				'name'    => $prefix . 'gap',
+				'label'   => esc_html__( 'Columns Gap', 'dinofolio' ),
+				'min'     => 0,
+				'max'     => 80,
+				'default' => 24,
+			),
+			array(
+				'type'    => 'number',
+				'id'      => $prefix . 'radius',
+				'name'    => $prefix . 'radius',
+				'label'   => esc_html__( 'Border Radius', 'dinofolio' ),
+				'min'     => 0,
+				'max'     => 40,
+				'default' => 8,
+			),
+			array(
+				'type'    => 'colorpicker',
+				'id'      => $prefix . 'accent_color',
+				'name'    => $prefix . 'accent_color',
+				'label'   => esc_html__( 'Accent Color', 'dinofolio' ),
+				'default' => '#1a8960',
+			),
+			array(
+				'type'    => 'colorpicker',
+				'id'      => $prefix . 'hover_color',
+				'name'    => $prefix . 'hover_color',
+				'label'   => esc_html__( 'Button Hover Color', 'dinofolio' ),
+				'default' => '#1a8970',
+			),
+			array(
+				'type'    => 'colorpicker',
+				'id'      => $prefix . 'button_text_color',
+				'name'    => $prefix . 'button_text_color',
+				'label'   => esc_html__( 'Button Text Color', 'dinofolio' ),
+				'default' => '#ffffff',
+			),
+			array(
+				'type'    => 'colorpicker',
+				'id'      => $prefix . 'muted_color',
+				'name'    => $prefix . 'muted_color',
+				'label'   => esc_html__( 'Muted Text Color', 'dinofolio' ),
+				'default' => '#666666',
+			),
+		);
+	}
+
+	/**
+	 * Taxonomy archive template settings fields.
+	 *
+	 * @return array
+	 */
+	private function get_taxonomy_settings_fields() {
+		$fields = array(
+			array(
+				'type'        => 'checkbox',
+				'id'          => 'taxonomy_use_template',
+				'name'        => 'taxonomy_use_template',
+				'label'       => esc_html__( 'Use Plugin Taxonomy Template', 'dinofolio' ),
+				'description' => esc_html__( 'Replace the theme taxonomy archive with the DinoFolio listing template for portfolio categories and tags.', 'dinofolio' ),
+				'default'     => true,
+			),
+			array(
+				'type'        => 'subsection',
+				'id'          => 'taxonomy_display_subsection',
+				'name'        => 'taxonomy_display_subsection',
+				'label'       => esc_html__( 'Display', 'dinofolio' ),
+				'description' => esc_html__( 'Same options as the portfolio listing block and Elementor widget.', 'dinofolio' ),
+			),
+			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_layout',
+				'name'    => 'taxonomy_layout',
+				'label'   => esc_html__( 'Layout', 'dinofolio' ),
+				'options' => array(
+					'grid'    => esc_html__( 'Grid', 'dinofolio' ),
+					'masonry' => esc_html__( 'Masonry', 'dinofolio' ),
+					'list'    => esc_html__( 'List', 'dinofolio' ),
+				),
+				'default' => 'grid',
+			),
+			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_columns',
+				'name'    => 'taxonomy_columns',
+				'label'   => esc_html__( 'Columns', 'dinofolio' ),
+				'options' => array(
+					'2' => '2',
+					'3' => '3',
+					'4' => '4',
+				),
+				'default' => '3',
+			),
+			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_image_size',
+				'name'    => 'taxonomy_image_size',
+				'label'   => esc_html__( 'Image Size', 'dinofolio' ),
+				'options' => $this->get_ordered_image_sizes(),
+				'default' => 'large',
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_show_title',
+				'name'    => 'taxonomy_show_title',
+				'label'   => esc_html__( 'Show Title', 'dinofolio' ),
+				'default' => true,
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_show_categories',
+				'name'    => 'taxonomy_show_categories',
+				'label'   => esc_html__( 'Show Categories', 'dinofolio' ),
+				'default' => true,
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_show_excerpt',
+				'name'    => 'taxonomy_show_excerpt',
+				'label'   => esc_html__( 'Show Excerpt', 'dinofolio' ),
+				'default' => true,
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_show_read_more',
+				'name'    => 'taxonomy_show_read_more',
+				'label'   => esc_html__( 'Show Read More Button', 'dinofolio' ),
+				'default' => true,
+			),
+			array(
+				'type'    => 'text',
+				'id'      => 'taxonomy_read_more_label',
+				'name'    => 'taxonomy_read_more_label',
+				'label'   => esc_html__( 'Read More Label', 'dinofolio' ),
+				'default' => esc_html__( 'View Project', 'dinofolio' ),
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_lightbox',
+				'name'    => 'taxonomy_lightbox',
+				'label'   => esc_html__( 'Enable Lightbox', 'dinofolio' ),
+				'default' => true,
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_show_pagination',
+				'name'    => 'taxonomy_show_pagination',
+				'label'   => esc_html__( 'Show Pagination', 'dinofolio' ),
+				'default' => true,
+			),
+			array(
+				'type'        => 'subsection',
+				'id'          => 'taxonomy_query_subsection',
+				'name'        => 'taxonomy_query_subsection',
+				'label'       => esc_html__( 'Query', 'dinofolio' ),
+				'description' => esc_html__( 'Posts are automatically limited to the current category or tag archive.', 'dinofolio' ),
+			),
+			array(
+				'type'    => 'number',
+				'id'      => 'taxonomy_posts_per_page',
+				'name'    => 'taxonomy_posts_per_page',
+				'label'   => esc_html__( 'Posts To Show', 'dinofolio' ),
+				'min'     => 1,
+				'max'     => 100,
+				'default' => 12,
+			),
+			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_order_by',
+				'name'    => 'taxonomy_order_by',
+				'label'   => esc_html__( 'Order By', 'dinofolio' ),
+				'options' => array(
+					'menu_order' => esc_html__( 'Default (Menu Order)', 'dinofolio' ),
+					'date'       => esc_html__( 'Date', 'dinofolio' ),
+					'title'      => esc_html__( 'Title', 'dinofolio' ),
+					'modified'   => esc_html__( 'Last Modified', 'dinofolio' ),
+					'rand'       => esc_html__( 'Random', 'dinofolio' ),
+				),
+				'default' => 'date',
+			),
+			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_order',
+				'name'    => 'taxonomy_order',
+				'label'   => esc_html__( 'Order', 'dinofolio' ),
+				'options' => array(
+					'desc' => esc_html__( 'Descending', 'dinofolio' ),
+					'asc'  => esc_html__( 'Ascending', 'dinofolio' ),
+				),
+				'default' => 'desc',
+			),
+			array(
+				'type'        => 'subsection',
+				'id'          => 'taxonomy_style_subsection',
+				'name'        => 'taxonomy_style_subsection',
+				'label'       => esc_html__( 'Style', 'dinofolio' ),
+				'description' => esc_html__( 'Same styling options as the portfolio listing block and Elementor widget.', 'dinofolio' ),
+			),
+		);
+
+		return array_merge( $fields, $this->get_listing_style_setting_fields( 'taxonomy_' ) );
 	}
 
 	/**
@@ -1481,9 +1737,9 @@ class DinoFolio_Settings {
 					<div class="wpdino-footer-left">
 						<?php
 						$footer_left_content = sprintf(
-							/* translators: DinoFolio version and WPDINO link */
 							'<p>%s</p>',
 							sprintf(
+								/* translators: %1$s: Plugin version number. %2$s: Author name linked to the WPDINO website. */
 								esc_html__( 'DinoFolio Lite v%1$s by %2$s', 'dinofolio' ),
 								esc_attr( DINOFOLIO_VERSION ),
 								'<a href="' . esc_url( $this->add_utm_params( 'https://wpdino.com', 'footer_brand_link' ) ) . '" target="_blank">WPDINO</a>'

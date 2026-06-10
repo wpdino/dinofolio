@@ -10,6 +10,8 @@
 	var RangeControl = components.RangeControl;
 	var ToggleControl = components.ToggleControl;
 	var TextControl = components.TextControl;
+	var BaseControl = components.BaseControl;
+	var ColorPalette = components.ColorPalette;
 	var TreeSelect = components.TreeSelect;
 	var Spinner = components.Spinner;
 	var Disabled = components.Disabled;
@@ -269,6 +271,39 @@
 				label: control.label,
 				value: String(value),
 				options: control.options,
+				onChange: function (next) {
+					var patch = {};
+					patch[control.name] = next;
+					setAttributes(patch);
+				}
+			});
+		}
+
+		if (control.type === 'colorpicker') {
+			if (ColorPalette) {
+				return el(
+					BaseControl,
+					{
+						key: control.name,
+						label: control.label
+					},
+					el(ColorPalette, {
+						value: value || '',
+						clearable: true,
+						onChange: function (next) {
+							var patch = {};
+							patch[control.name] = next || '';
+							setAttributes(patch);
+						}
+					})
+				);
+			}
+
+			return el(TextControl, {
+				key: control.name,
+				label: control.label,
+				value: String(value || ''),
+				help: __('Hex color, e.g. #1a8960', 'dinofolio'),
 				onChange: function (next) {
 					var patch = {};
 					patch[control.name] = next;

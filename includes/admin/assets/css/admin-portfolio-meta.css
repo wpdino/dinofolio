@@ -199,7 +199,7 @@
 	padding: 10px;
 	text-align: center;
 	background: #fff;
-	border: 2px solid #d6e1dc;
+	border: 1px solid #d6e1dc;
 	border-radius: 8px;
 	cursor: pointer;
 	transition: all 0.2s ease;
@@ -223,7 +223,7 @@
 	width: 100%;
 	height: 80px;
 	object-fit: cover;
-	border: 2px solid #eef3f1;
+	border: 1px solid #eef3f1;
 	border-radius: 6px;
 }
 
@@ -474,7 +474,7 @@
 	width: auto;
 	max-width: none;
 	margin: 0;
-	accent-color: #6f9c50;
+	accent-color: #1A8960; 
 }
 
 .wpdino-settings-wrap .wpdino-field-group--range .wpdino-range-value {

@@ -48,26 +48,47 @@ class Portfolio_Component extends Component_Base {
 	 */
 	public function get_defaults() {
 		return array(
-			'layout'         => 'grid',
-			'columns'        => 3,
-			'postsToShow'    => 12,
-			'showTitle'      => true,
-			'showCategories' => true,
-			'showExcerpt'    => true,
-			'showReadMore'   => true,
-			'readMoreLabel'  => esc_html__( 'View Project', 'dinofolio' ),
-			'imageSize'      => 'large',
-			'lightbox'       => true,
+			'layout'          => 'grid',
+			'columns'         => 3,
+			'postsToShow'     => 12,
+			'showTitle'       => true,
+			'showCategories'  => true,
+			'showExcerpt'     => true,
+			'showReadMore'    => true,
+			'readMoreLabel'   => esc_html__( 'View Project', 'dinofolio' ),
+			'imageSize'       => 'large',
+			'lightbox'        => true,
 			'showFilter'      => false,
 			'showFilterCount' => false,
-			'showPagination' => true,
-			'showViewAll'    => false,
-			'viewAllText'    => esc_html__( 'View All', 'dinofolio' ),
-			'viewAllLink'    => '',
-			'categories'     => array(),
-			'tags'           => array(),
-			'orderBy'        => 'date',
-			'order'          => 'desc',
+			'showPagination'  => true,
+			'showViewAll'     => false,
+			'viewAllText'     => esc_html__( 'View All', 'dinofolio' ),
+			'viewAllLink'     => '',
+			'categories'      => array(),
+			'tags'            => array(),
+			'orderBy'         => 'date',
+			'order'           => 'desc',
+			'style'           => 'classic',
+			'hoverEffect'     => 'zoom',
+			'accentColor'     => '',
+			'hoverColor'      => '',
+			'buttonTextColor' => '',
+			'mutedColor'      => '',
+			'gap'             => 24,
+			'radius'          => 8,
+		);
+	}
+
+	/**
+	 * Inspector section labels.
+	 *
+	 * @return array
+	 */
+	public function get_param_sections() {
+		return array(
+			'content' => esc_html__( 'Display', 'dinofolio' ),
+			'style'   => esc_html__( 'Style', 'dinofolio' ),
+			'query'   => esc_html__( 'Query', 'dinofolio' ),
 		);
 	}
 
@@ -273,6 +294,73 @@ class Portfolio_Component extends Component_Base {
 					'asc'  => esc_html__( 'Ascending', 'dinofolio' ),
 				),
 				'std'        => 'desc',
+			),
+			array(
+				'type'       => 'dropdown',
+				'heading'    => esc_html__( 'Card Style', 'dinofolio' ),
+				'param_name' => 'style',
+				'section'    => 'style',
+				'value'      => array(
+					'classic' => esc_html__( 'Classic', 'dinofolio' ),
+					'overlay' => esc_html__( 'Overlay', 'dinofolio' ),
+				),
+				'std'        => 'classic',
+			),
+			array(
+				'type'       => 'dropdown',
+				'heading'    => esc_html__( 'Hover Effect', 'dinofolio' ),
+				'param_name' => 'hoverEffect',
+				'section'    => 'style',
+				'value'      => array(
+					'zoom' => esc_html__( 'Zoom', 'dinofolio' ),
+				),
+				'std'        => 'zoom',
+			),
+			array(
+				'type'       => 'number',
+				'heading'    => esc_html__( 'Columns Gap', 'dinofolio' ),
+				'param_name' => 'gap',
+				'section'    => 'style',
+				'std'        => 24,
+				'min'        => 0,
+				'max'        => 80,
+			),
+			array(
+				'type'       => 'number',
+				'heading'    => esc_html__( 'Border Radius', 'dinofolio' ),
+				'param_name' => 'radius',
+				'section'    => 'style',
+				'std'        => 8,
+				'min'        => 0,
+				'max'        => 40,
+			),
+			array(
+				'type'       => 'colorpicker',
+				'heading'    => esc_html__( 'Accent Color', 'dinofolio' ),
+				'param_name' => 'accentColor',
+				'section'    => 'style',
+				'std'        => '',
+			),
+			array(
+				'type'       => 'colorpicker',
+				'heading'    => esc_html__( 'Button Hover Color', 'dinofolio' ),
+				'param_name' => 'hoverColor',
+				'section'    => 'style',
+				'std'        => '',
+			),
+			array(
+				'type'       => 'colorpicker',
+				'heading'    => esc_html__( 'Button Text Color', 'dinofolio' ),
+				'param_name' => 'buttonTextColor',
+				'section'    => 'style',
+				'std'        => '',
+			),
+			array(
+				'type'       => 'colorpicker',
+				'heading'    => esc_html__( 'Muted Text Color', 'dinofolio' ),
+				'param_name' => 'mutedColor',
+				'section'    => 'style',
+				'std'        => '',
 			),
 		);
 	}

@@ -427,6 +427,12 @@ class Util {
 				continue;
 			}
 
+			if ( 'colorpicker' === $type && isset( $atts[ $param_name ] ) ) {
+				$color = sanitize_hex_color( $atts[ $param_name ] );
+				$atts[ $param_name ] = $color ? $color : '';
+				continue;
+			}
+
 			if ( 'multiselect' === $type || 'taxonomy' === $type ) {
 				if ( ! isset( $atts[ $param_name ] ) ) {
 					$atts[ $param_name ] = isset( $defaults[ $param_name ] ) ? $defaults[ $param_name ] : array();

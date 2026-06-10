@@ -4,23 +4,23 @@
 
 .dinofolio-listing--editor-preview a,
 .dinofolio-listing--editor-preview button,
-.dinofolio-listing--editor-preview .wpdino-blocks_portfolio-block_filter a,
-.dinofolio-listing--editor-preview .wpdino-portfolio-pagination a {
+.dinofolio-listing--editor-preview .dinofolio-filter a,
+.dinofolio-listing--editor-preview .dinofolio-pagination a {
 	pointer-events: none !important;
 	cursor: default !important;
 }
 
-.dinofolio-listing--editor-preview .wpdino-portfolio-view-all a {
+.dinofolio-listing--editor-preview .dinofolio-view-all a {
 	pointer-events: none !important;
 	cursor: default !important;
 }
 
 /* Card hover still works inside the Disabled preview wrapper */
-.dinofolio-listing--editor-preview .wpdino-blocks_portfolio-block_item {
+.dinofolio-listing--editor-preview .dinofolio-item {
 	cursor: default;
 }
 
-.dinofolio-listing--editor-preview .wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-image {
+.dinofolio-listing--editor-preview .dinofolio-item:hover .dinofolio-item-image {
 	transform: scale(1.04);
 }
 
@@ -29,8 +29,8 @@
 	display: none !important;
 }
 
-.dinofolio-listing--editor-preview .wpdino-blocks_portfolio-block_item:hover .wpdino-blocks_portfolio-block_item-title a {
-	color: var(--dinofolio-portfolio-accent, #6f9c50);
+.dinofolio-listing--editor-preview .dinofolio-item:hover .dinofolio-item-title a {
+	color: var(--dinofolio-accent, #6f9c50);
 }
 
 .dinofolio-block-preview-error {
