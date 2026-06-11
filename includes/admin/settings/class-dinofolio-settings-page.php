@@ -1418,7 +1418,7 @@ class DinoFolio_Settings {
 				<div class="wpdino-tool-content">
 					<h4><?php esc_html_e( 'Export Settings', 'dinofolio' ); ?></h4>
 					<p><?php esc_html_e( 'Download your current settings as a JSON file.', 'dinofolio' ); ?></p>
-					<button type="button" id="export-settings" class="wpdino-btn wpdino-btn-secondary">
+					<button type="button" id="export-settings" class="wpdino-btn wpdino-btn-primary">
 						<span class="dashicons dashicons-download"></span>
 						<?php esc_html_e( 'Export Settings', 'dinofolio' ); ?>
 					</button>
@@ -1434,7 +1434,7 @@ class DinoFolio_Settings {
 					<p><?php esc_html_e( 'Upload a settings file to restore your configuration.', 'dinofolio' ); ?></p>
 					<div class="wpdino-file-upload">
 						<input type="file" id="import-file" accept=".json" style="display: none;" />
-						<button type="button" id="import-settings" class="wpdino-btn wpdino-btn-secondary">
+						<button type="button" id="import-settings" class="wpdino-btn wpdino-btn-primary">
 							<span class="dashicons dashicons-upload"></span>
 							<?php esc_html_e( 'Choose File', 'dinofolio' ); ?>
 						</button>
@@ -1453,7 +1453,7 @@ class DinoFolio_Settings {
 			
 			<div class="wpdino-system-info">
 				<div class="wpdino-system-info-header">
-					<button type="button" id="copy-system-info" class="wpdino-btn wpdino-btn-secondary">
+					<button type="button" id="copy-system-info" class="wpdino-btn wpdino-btn-primary">
 						<span class="dashicons dashicons-admin-page"></span>
 						<?php esc_html_e( 'Copy System Info', 'dinofolio' ); ?>
 					</button>

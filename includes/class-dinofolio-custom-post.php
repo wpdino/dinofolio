@@ -50,6 +50,7 @@ class Custom_Post {
 	 */
 	public function __construct() {
 
+		add_action( 'after_setup_theme', array( $this, 'register_portfolio_post_formats' ), 20 );
 		add_action( 'init', array( $this, 'register_custom_post_type' ) );
 
 		// Admin columns
@@ -64,6 +65,16 @@ class Custom_Post {
 		add_action( 'bulk_edit_custom_box', array( $this, 'add_featured_image_to_bulk_edit' ), 10, 2 );
 
 
+	}
+
+	/**
+	 * Enable Standard and Gallery post formats for portfolio items.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function register_portfolio_post_formats() {
+		add_theme_support( 'post-formats', array( 'gallery' ) );
 	}
 
 	/**
@@ -135,7 +146,7 @@ class Custom_Post {
 				'ep_mask'    => EP_PERMALINK,
 			),
 			'show_in_rest'        => true,
-			'supports'            => array( 'author', 'custom-fields', 'editor', 'excerpt', 'revisions', 'thumbnail', 'title' ),
+			'supports'            => array( 'author', 'custom-fields', 'editor', 'excerpt', 'post-formats', 'revisions', 'thumbnail', 'title' ),
 		) );
 
 		// Add the portfolio categories taxonomy

@@ -21,10 +21,55 @@ if ( empty( $dinofolio_data ) || ! is_array( $dinofolio_data ) ) {
 $dinofolio_related_style   = ! empty( $dinofolio_data['related_projects_style'] ) ? $dinofolio_data['related_projects_style'] : 'grid';
 $dinofolio_is_carousel     = ( 'carousel' === $dinofolio_related_style );
 $dinofolio_related_columns = isset( $dinofolio_data['related_projects_count'] ) ? max( 2, min( 5, (int) $dinofolio_data['related_projects_count'] ) ) : 3;
+$dinofolio_gallery_images  = ! empty( $dinofolio_data['gallery_images'] ) && is_array( $dinofolio_data['gallery_images'] ) ? $dinofolio_data['gallery_images'] : array();
+$dinofolio_gallery_group   = 'dinofolio-single-gallery-' . (int) get_the_ID();
+$dinofolio_gallery_style   = ! empty( $dinofolio_data['gallery_display_style'] ) ? $dinofolio_data['gallery_display_style'] : 'grid';
+$dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 
 ?>
 <div class="dinofolio-single-meta">
-	<?php if ( ! empty( $dinofolio_data['featured_image_url'] ) ) : ?>
+	<?php if ( ! empty( $dinofolio_gallery_images ) ) : ?>
+		<div
+			class="dinofolio-portfolio-gallery is-<?php echo esc_attr( $dinofolio_gallery_style ); ?>"
+			data-dinofolio-gallery="<?php echo esc_attr( $dinofolio_gallery_group ); ?>"
+		>
+			<?php if ( $dinofolio_gallery_slider ) : ?>
+				<div class="dinofolio-gallery-carousel-shell">
+					<div class="dinofolio-gallery-carousel" data-dinofolio-gallery-carousel>
+						<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-prev" aria-label="<?php esc_attr_e( 'Previous image', 'dinofolio' ); ?>">
+							<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+								<path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+						<div class="dinofolio-gallery-carousel-viewport">
+							<div class="dinofolio-gallery-carousel-track">
+								<?php foreach ( $dinofolio_gallery_images as $dinofolio_gallery_image ) : ?>
+									<?php
+									$dinofolio_gallery_slide_class = 'dinofolio-gallery-slide';
+									$dinofolio_gallery_image_sizes = '100vw';
+									require DINOFOLIO_PATH . 'templates/parts/gallery-image.php';
+									?>
+								<?php endforeach; ?>
+							</div>
+						</div>
+						<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-next" aria-label="<?php esc_attr_e( 'Next image', 'dinofolio' ); ?>">
+							<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+								<path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+			<?php else : ?>
+				<?php foreach ( $dinofolio_gallery_images as $dinofolio_gallery_image ) : ?>
+					<?php
+					$dinofolio_gallery_slide_class = '';
+					unset( $dinofolio_gallery_image_sizes );
+					require DINOFOLIO_PATH . 'templates/parts/gallery-image.php';
+					?>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+	<?php elseif ( ! empty( $dinofolio_data['featured_image_url'] ) ) : ?>
 		<div class="dinofolio-featured-image-wrap">
 			<?php
 			if ( ! empty( $dinofolio_data['featured_image_id'] ) ) {

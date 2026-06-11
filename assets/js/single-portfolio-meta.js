@@ -1,25 +1,40 @@
 (function () {
 	'use strict';
 
-	var carousels = document.querySelectorAll('[data-dinofolio-carousel]');
+	var galleryLinks = document.querySelectorAll('.dinofolio-portfolio-gallery a.glightbox');
 
-	if (!carousels.length) {
-		return;
+	if (galleryLinks.length && typeof GLightbox !== 'undefined') {
+		GLightbox({
+			selector: '.dinofolio-portfolio-gallery a.glightbox',
+			touchNavigation: true,
+			loop: true,
+			autoplayVideos: false,
+			closeButton: true,
+			closeOnOutsideClick: true,
+		});
 	}
 
-	carousels.forEach(function (carousel) {
-		var viewport = carousel.querySelector('.dinofolio-related-carousel-viewport');
-		var track = carousel.querySelector('.dinofolio-related-carousel-track');
+	var initHorizontalCarousel = function (carousel, options) {
+		options = options || {};
+		var viewportSelector = options.viewportSelector || '.dinofolio-related-carousel-viewport';
+		var trackSelector = options.trackSelector || '.dinofolio-related-carousel-track';
+		var slideSelector = options.slideSelector || '.dinofolio-related-card';
+		var section = options.section || carousel.closest('.dinofolio-related-projects');
+		var minColumns = typeof options.minColumns === 'number' ? options.minColumns : 2;
+		var maxColumns = typeof options.maxColumns === 'number' ? options.maxColumns : 5;
+		var defaultColumns = typeof options.defaultColumns === 'number' ? options.defaultColumns : 3;
+
+		var viewport = carousel.querySelector(viewportSelector);
+		var track = carousel.querySelector(trackSelector);
 		var prevButton = carousel.querySelector('.dinofolio-carousel-prev');
 		var nextButton = carousel.querySelector('.dinofolio-carousel-next');
-		var section = carousel.closest('.dinofolio-related-projects');
 
 		if (!viewport || !track || !prevButton || !nextButton) {
 			return;
 		}
 
 		var getVisibleColumns = function () {
-			var columns = 3;
+			var columns = defaultColumns;
 
 			if (carousel.dataset.columns) {
 				columns = parseInt(carousel.dataset.columns, 10);
@@ -33,7 +48,11 @@
 				}
 			}
 
-			columns = Math.max(2, Math.min(5, columns || 3));
+			columns = Math.max(minColumns, Math.min(maxColumns, columns || defaultColumns));
+
+			if (typeof options.getVisibleColumns === 'function') {
+				return options.getVisibleColumns(columns);
+			}
 
 			if (window.matchMedia('(max-width: 640px)').matches) {
 				return 1;
@@ -61,7 +80,7 @@
 				return;
 			}
 
-			track.querySelectorAll('.dinofolio-related-card').forEach(function (card) {
+			track.querySelectorAll(slideSelector).forEach(function (card) {
 				card.style.flexBasis = cardWidth + 'px';
 				card.style.width = cardWidth + 'px';
 				card.style.maxWidth = cardWidth + 'px';
@@ -69,7 +88,7 @@
 		};
 
 		var getScrollStep = function () {
-			var card = track.querySelector('.dinofolio-related-card');
+			var card = track.querySelector(slideSelector);
 
 			if (!card) {
 				return viewport.clientWidth * 0.85;
@@ -152,5 +171,25 @@
 
 		updateCardWidths();
 		updateNavState();
+	};
+
+	document.querySelectorAll('[data-dinofolio-gallery-carousel]').forEach(function (carousel) {
+		initHorizontalCarousel(carousel, {
+			viewportSelector: '.dinofolio-gallery-carousel-viewport',
+			trackSelector: '.dinofolio-gallery-carousel-track',
+			slideSelector: '.dinofolio-gallery-slide',
+			minColumns: 1,
+			maxColumns: 1,
+			defaultColumns: 1,
+			getVisibleColumns: function () {
+				return 1;
+			},
+		});
+	});
+
+	var carousels = document.querySelectorAll('[data-dinofolio-carousel]');
+
+	carousels.forEach(function (carousel) {
+		initHorizontalCarousel(carousel);
 	});
 })();

@@ -923,16 +923,14 @@ class WPDINO_Portfolio_Display {
 		}
 
 		// Default (list/masonry) structure
-		$output = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
-		$output .= $this->get_portfolio_item_image( $attributes, $post_id );
-		$output .= '<div class="dinofolio-item-details">';
+		$details_html = '';
 		if ( $attributes['showTitle'] ) {
-			$output .= '<h3 class="dinofolio-item-title">';
-			$output .= '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
-			$output .= '</h3>';
+			$details_html .= '<h3 class="dinofolio-item-title">';
+			$details_html .= '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
+			$details_html .= '</h3>';
 		}
 		if ( $attributes['showCategories'] && $terms && ! is_wp_error( $terms ) ) {
-			$output .= $this->get_portfolio_item_categories_html( $terms );
+			$details_html .= $this->get_portfolio_item_categories_html( $terms );
 		}
 		if ( $attributes['showExcerpt'] ) {
 			$excerpt = get_the_excerpt();
@@ -940,16 +938,21 @@ class WPDINO_Portfolio_Display {
 				$excerpt = wp_trim_words( $excerpt, 18, '…' );
 			}
 			if ( $excerpt ) {
-				$output .= '<div class="dinofolio-item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
+				$details_html .= '<div class="dinofolio-item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
 			}
 		}
 		if ( $attributes['showReadMore'] ) {
 			$read_more_label = ! empty( $attributes['readMoreLabel'] ) ? $attributes['readMoreLabel'] : esc_html__( 'View Project', 'dinofolio' );
-			$output .= '<div class="dinofolio-item-button">';
-			$output .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-button-link">' . esc_html( $read_more_label ) . '</a>';
-			$output .= '</div>';
+			$details_html .= '<div class="dinofolio-item-button">';
+			$details_html .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-button-link">' . esc_html( $read_more_label ) . '</a>';
+			$details_html .= '</div>';
 		}
-		$output .= '</div>';
+
+		$output = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+		$output .= $this->get_portfolio_item_image( $attributes, $post_id );
+		if ( '' !== $details_html ) {
+			$output .= '<div class="dinofolio-item-details">' . $details_html . '</div>';
+		}
 		$output .= '</div>';
 		return $output;
 	}

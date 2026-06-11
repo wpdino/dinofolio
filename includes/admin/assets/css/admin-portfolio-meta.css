@@ -540,3 +540,158 @@
 .wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label.is-checked:hover {
 	color: #fff;
 }
+
+.wpdino-gallery-display-style {
+	margin-bottom: 14px;
+}
+
+.wpdino-gallery-display-style > label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: #1f2933;
+}
+
+.wpdino-gallery-metabox .wpdino-format-group {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	gap: 0;
+	overflow: hidden;
+	border: 1px solid #c8d5cf;
+	border-radius: 6px;
+	background: #fff;
+}
+
+.wpdino-gallery-metabox .wpdino-format-group label {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 96px;
+	margin: 0;
+	padding: 8px 14px;
+	font-size: 13px;
+	font-weight: 500;
+	color: #374151;
+	background: #fff;
+	border-right: 1px solid #c8d5cf;
+	cursor: pointer;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.wpdino-gallery-metabox .wpdino-format-group label:last-child {
+	border-right: 0;
+}
+
+.wpdino-gallery-metabox .wpdino-format-group label:hover {
+	background: #f0f7f4;
+	color: #14694a;
+}
+
+.wpdino-gallery-metabox .wpdino-format-group label.is-checked {
+	background: #1a8960;
+	border-color: transparent;
+	color: #fff;
+}
+
+.wpdino-gallery-metabox .wpdino-format-group input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.wpdino-gallery-metabox .description {
+	margin-top: 0;
+}
+
+.wpdino-gallery-images {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin: 12px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wpdino-gallery-item {
+	position: relative;
+	width: 96px;
+	height: 96px;
+	margin: 0;
+	border: 1px solid #c8d5cf;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #f8fbfa;
+	cursor: grab;
+}
+
+.wpdino-gallery-item:active {
+	cursor: grabbing;
+}
+
+.wpdino-gallery-item img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	pointer-events: none;
+}
+
+.wpdino-gallery-drag {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	z-index: 2;
+	width: 18px;
+	height: 18px;
+	border-radius: 4px;
+	background: rgba(17, 24, 39, 0.72);
+	cursor: grab;
+}
+
+.wpdino-gallery-drag::before {
+	content: "";
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 10px;
+	height: 10px;
+	background:
+		linear-gradient(#fff 0 0) 0 0 / 2px 10px,
+		linear-gradient(#fff 0 0) 4px 0 / 2px 10px,
+		linear-gradient(#fff 0 0) 8px 0 / 2px 10px;
+	background-repeat: no-repeat;
+}
+
+.wpdino-gallery-remove {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(17, 24, 39, 0.82);
+	color: #fff;
+	font-size: 14px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.wpdino-gallery-remove:hover,
+.wpdino-gallery-remove:focus {
+	background: #b42318;
+	color: #fff;
+}
+
+.wpdino-gallery-placeholder {
+	width: 96px;
+	height: 96px;
+	border: 2px dashed #1a8960;
+	border-radius: 8px;
+	background: #e9f6f0;
+}

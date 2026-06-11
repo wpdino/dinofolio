@@ -682,9 +682,9 @@
 }
 
 .wpdino-btn-secondary {
-	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-	color: #495057;
-	border: 1px solid #e0e0e0;
+	background-color:#DBDBDB5C;
+	color: #1A8960;
+	box-shadow: 1px 1px 1px 0px rgba(158, 158, 158, 0.5);
 }
 
 .wpdino-btn-danger {
@@ -756,30 +756,25 @@
 }
 
 .wpdino-tool-item {
-	background: #f8f9fa;
-	border: 1px solid #e9ecef;
 	padding: 25px;
 	transition: all 0.3s ease;
 	position: relative;
 	overflow: hidden;
+	box-shadow:0px 0px 1px 0px rgba(158, 158, 158, 0.5);
 }
 
 .wpdino-tool-icon {
-	width: 60px;
-	height: 60px;
-	background: #1A8960;
-	border-radius: 50%;
+	width: 40px;
+	height: 40px;
 	display: flex;
-	align-items: center;
-	justify-content: center;
 	margin-bottom: 20px;
 }
 
 .wpdino-tool-icon .dashicons {
-	font-size: 24px;
-	color: white;
-	height:24px;
-	width:24px;
+	font-size: 34px;
+	color: #1a8960;
+	height:34px;
+	width:34px;
 }
 
 .wpdino-tool-content h4 {

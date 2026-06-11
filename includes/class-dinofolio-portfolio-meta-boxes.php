@@ -73,6 +73,15 @@ class Portfolio_Meta_Boxes {
 			'normal',
 			'high'
 		);
+
+		add_meta_box(
+			'wpdino_portfolio_gallery',
+			esc_html__( 'Portfolio Gallery', 'dinofolio' ),
+			array( $this, 'render_portfolio_gallery_meta_box' ),
+			'wpdino_portfolio',
+			'normal',
+			'default'
+		);
 	}
 
 	/**
@@ -223,6 +232,59 @@ class Portfolio_Meta_Boxes {
 	}
 
 	/**
+	 * Render gallery metabox for gallery format portfolios.
+	 *
+	 * @param \WP_Post $post Current post.
+	 * @return void
+	 */
+	public function render_portfolio_gallery_meta_box( $post ) {
+		$image_ids             = $this->get_gallery_image_ids( $post->ID );
+		$gallery_display_style = $this->normalize_gallery_display_style(
+			get_post_meta( $post->ID, '_wpdino_gallery_display_style', true )
+		);
+		?>
+		<div class="wpdino-gallery-metabox">
+			<div class="wpdino-gallery-display-style">
+				<label for="wpdino_gallery_display_style"><?php esc_html_e( 'Gallery Display', 'dinofolio' ); ?></label>
+				<div class="wpdino-format-group">
+					<?php foreach ( $this->get_gallery_display_style_options() as $option_value => $option_label ) : ?>
+						<label>
+							<input
+								type="radio"
+								name="wpdino_gallery_display_style"
+								value="<?php echo esc_attr( $option_value ); ?>"
+								<?php checked( $gallery_display_style, $option_value ); ?>
+							/>
+							<?php echo esc_html( $option_label ); ?>
+						</label>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<p class="description"><?php esc_html_e( 'Upload multiple images and drag them to reorder.', 'dinofolio' ); ?></p>
+			<ul id="wpdino-gallery-images" class="wpdino-gallery-images">
+				<?php foreach ( $image_ids as $image_id ) : ?>
+					<?php
+					$thumbnail_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
+					if ( ! $thumbnail_url ) {
+						continue;
+					}
+					?>
+					<li class="wpdino-gallery-item" data-id="<?php echo esc_attr( $image_id ); ?>">
+						<span class="wpdino-gallery-drag" aria-hidden="true" title="<?php esc_attr_e( 'Drag to reorder', 'dinofolio' ); ?>"></span>
+						<img src="<?php echo esc_url( $thumbnail_url ); ?>" alt="" />
+						<button type="button" class="wpdino-gallery-remove" aria-label="<?php esc_attr_e( 'Remove image', 'dinofolio' ); ?>">&times;</button>
+						<input type="hidden" name="wpdino_gallery_images[]" value="<?php echo esc_attr( $image_id ); ?>" />
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<p>
+				<button type="button" class="button button-secondary" id="wpdino-gallery-add"><?php esc_html_e( 'Add Images', 'dinofolio' ); ?></button>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Save metabox values.
 	 *
 	 * @param int $post_id Current post ID.
@@ -286,6 +348,18 @@ class Portfolio_Meta_Boxes {
 		}
 
 		update_post_meta( $post_id, '_wpdino_attributes', $attributes );
+		$this->migrate_legacy_portfolio_format_meta( $post_id );
+
+		$gallery_image_ids = array();
+		if ( isset( $_POST['wpdino_gallery_images'] ) && is_array( $_POST['wpdino_gallery_images'] ) ) {
+			$gallery_image_ids = $this->sanitize_gallery_image_ids( wp_unslash( $_POST['wpdino_gallery_images'] ) );
+		}
+		update_post_meta( $post_id, '_wpdino_gallery_images', $gallery_image_ids );
+
+		$gallery_display_style = isset( $_POST['wpdino_gallery_display_style'] )
+			? $this->normalize_gallery_display_style( sanitize_key( wp_unslash( $_POST['wpdino_gallery_display_style'] ) ) )
+			: 'grid';
+		update_post_meta( $post_id, '_wpdino_gallery_display_style', $gallery_display_style );
 	}
 
 	/**
@@ -384,6 +458,19 @@ class Portfolio_Meta_Boxes {
 			array()
 		);
 		$related_projects_count = $this->get_related_projects_count( $post_id );
+		$portfolio_format = $this->get_portfolio_post_format( $post_id );
+		$gallery_images   = array();
+
+		$gallery_display_style = 'grid';
+		if ( $this->is_gallery_format( $post_id ) ) {
+			$gallery_display_style = $this->normalize_gallery_display_style(
+				get_post_meta( $post_id, '_wpdino_gallery_display_style', true )
+			);
+			$gallery_images = $this->get_gallery_images_data(
+				$post_id,
+				$this->get_gallery_display_image_size( $gallery_display_style, $featured_image_size )
+			);
+		}
 
 		$clean_attributes = array();
 		if ( is_array( $attributes ) ) {
@@ -400,13 +487,21 @@ class Portfolio_Meta_Boxes {
 			}
 		}
 
+		$show_featured_image = ( 'off' !== $featured_image_display );
+		if ( $this->is_gallery_format( $post_id ) && ! empty( $gallery_images ) ) {
+			$show_featured_image = false;
+		}
+
 		$template_data = array(
 			'date_display'        => $date_display,
 			'date_label'          => $date_label,
 			'date_value'          => $date_of_work ? $date_of_work : get_the_date( '', $post_id ),
+			'portfolio_format'        => $portfolio_format,
+			'gallery_images'          => $gallery_images,
+			'gallery_display_style'   => $gallery_display_style,
 			'featured_image_id'   => get_post_thumbnail_id( $post_id ),
 			'featured_image_size' => $featured_image_size,
-			'featured_image_url'  => ( 'off' === $featured_image_display ) ? '' : get_the_post_thumbnail_url( $post_id, $featured_image_size ),
+			'featured_image_url'  => $show_featured_image ? get_the_post_thumbnail_url( $post_id, $featured_image_size ) : '',
 			'external_url'        => $external_url,
 			'button_label'        => $button_label ? $button_label : __( 'Launch', 'dinofolio' ),
 			'attributes'          => $clean_attributes,
@@ -443,7 +538,26 @@ class Portfolio_Meta_Boxes {
 			DINOFOLIO_VERSION
 		);
 
-		$post_id = get_queried_object_id();
+		$post_id          = get_queried_object_id();
+		$gallery_images        = array();
+		$gallery_display_style = 'grid';
+		if ( $post_id && $this->is_gallery_format( $post_id ) ) {
+			$gallery_images        = $this->get_gallery_image_ids( $post_id );
+			$gallery_display_style = $this->normalize_gallery_display_style(
+				get_post_meta( $post_id, '_wpdino_gallery_display_style', true )
+			);
+		}
+		$needs_script = false;
+
+		if ( ! empty( $gallery_images ) ) {
+			$this->enqueue_single_gallery_lightbox_assets();
+			$needs_script = true;
+		}
+
+		if ( ! empty( $gallery_images ) && 'slider' === $gallery_display_style ) {
+			$needs_script = true;
+		}
+
 		if ( $post_id && 'carousel' === $this->normalize_related_projects_style(
 			$this->get_effective_meta(
 				$post_id,
@@ -453,10 +567,19 @@ class Portfolio_Meta_Boxes {
 				array()
 			)
 		) ) {
+			$needs_script = true;
+		}
+
+		if ( $needs_script ) {
+			$script_deps = array();
+			if ( ! empty( $gallery_images ) && class_exists( '\WPDINO_Portfolio_Display' ) ) {
+				$script_deps[] = \WPDINO_Portfolio_Display::get_glightbox_script_handle();
+			}
+
 			wp_enqueue_script(
 				'dinofolio-single-portfolio-meta',
 				DINOFOLIO_URL . 'assets/js/single-portfolio-meta.js',
-				array(),
+				$script_deps,
 				DINOFOLIO_VERSION,
 				true
 			);
@@ -486,13 +609,29 @@ class Portfolio_Meta_Boxes {
 			DINOFOLIO_VERSION
 		);
 
+		wp_enqueue_media();
 		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script(
 			'dinofolio-portfolio-meta-admin',
 			DINOFOLIO_URL . 'includes/admin/assets/js/portfolio-meta.js',
-			array( 'jquery', 'jquery-ui-datepicker' ),
+			array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'media-editor' ),
 			DINOFOLIO_VERSION,
 			true
+		);
+
+		wp_localize_script(
+			'dinofolio-portfolio-meta-admin',
+			'wpdinoPortfolioMeta',
+			array(
+				'i18n' => array(
+					'addImages'      => esc_html__( 'Add Images', 'dinofolio' ),
+					'selectImages'   => esc_html__( 'Select Gallery Images', 'dinofolio' ),
+					'insertImages'   => esc_html__( 'Add to Gallery', 'dinofolio' ),
+					'removeImage'    => esc_html__( 'Remove image', 'dinofolio' ),
+					'dragToReorder'  => esc_html__( 'Drag to reorder', 'dinofolio' ),
+				),
+			)
 		);
 	}
 
@@ -646,6 +785,192 @@ class Portfolio_Meta_Boxes {
 			<span class="wpdino-range-value" id="wpdino_related_projects_number_value"><?php echo esc_html( $value ); ?></span>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render ON / DEFAULT / OFF toggle radios.
+	 *
+	 * @param string $key Field key.
+	 * @param string $value Field value.
+	 * @return void
+	 */
+	/**
+	 * Gallery display style options for admin UI.
+	 *
+	 * @return array
+	 */
+	private function get_gallery_display_style_options() {
+		return array(
+			'grid'   => esc_html__( 'Grid', 'dinofolio' ),
+			'slider' => esc_html__( 'Slider', 'dinofolio' ),
+		);
+	}
+
+	/**
+	 * Normalize gallery display style values.
+	 *
+	 * @param string $style Raw style value.
+	 * @return string
+	 */
+	private function normalize_gallery_display_style( $style ) {
+		$style = sanitize_key( (string) $style );
+
+		return in_array( $style, array( 'grid', 'slider' ), true ) ? $style : 'grid';
+	}
+
+	/**
+	 * Resolve the portfolio post format, with legacy meta fallback.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return string Either "standard" or "gallery".
+	 */
+	private function get_portfolio_post_format( $post_id ) {
+		$format = get_post_format( $post_id );
+
+		if ( 'gallery' === $format ) {
+			return 'gallery';
+		}
+
+		$legacy_format = get_post_meta( $post_id, '_wpdino_portfolio_format', true );
+		if ( 'gallery' === $legacy_format ) {
+			return 'gallery';
+		}
+
+		return 'standard';
+	}
+
+	/**
+	 * Whether a portfolio item uses the gallery post format.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return bool
+	 */
+	private function is_gallery_format( $post_id ) {
+		return 'gallery' === $this->get_portfolio_post_format( $post_id );
+	}
+
+	/**
+	 * Migrate legacy custom format meta to the native post format taxonomy.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	private function migrate_legacy_portfolio_format_meta( $post_id ) {
+		if ( ! metadata_exists( 'post', $post_id, '_wpdino_portfolio_format' ) ) {
+			return;
+		}
+
+		$legacy_format = get_post_meta( $post_id, '_wpdino_portfolio_format', true );
+
+		if ( 'gallery' === $legacy_format && 'gallery' !== get_post_format( $post_id ) ) {
+			set_post_format( $post_id, 'gallery' );
+		}
+
+		delete_post_meta( $post_id, '_wpdino_portfolio_format' );
+	}
+
+	/**
+	 * Get stored gallery attachment IDs for a portfolio post.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return int[]
+	 */
+	private function get_gallery_image_ids( $post_id ) {
+		$stored = get_post_meta( $post_id, '_wpdino_gallery_images', true );
+
+		if ( ! is_array( $stored ) ) {
+			return array();
+		}
+
+		return $this->sanitize_gallery_image_ids( $stored );
+	}
+
+	/**
+	 * Sanitize and validate gallery attachment IDs while preserving order.
+	 *
+	 * @param array $image_ids Raw image IDs.
+	 * @return int[]
+	 */
+	private function sanitize_gallery_image_ids( $image_ids ) {
+		$sanitized = array();
+
+		foreach ( (array) $image_ids as $image_id ) {
+			$image_id = absint( $image_id );
+			if ( $image_id < 1 || ! wp_attachment_is_image( $image_id ) ) {
+				continue;
+			}
+			if ( in_array( $image_id, $sanitized, true ) ) {
+				continue;
+			}
+			$sanitized[] = $image_id;
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Resolve the image size used for gallery output.
+	 *
+	 * @param string $display_style Gallery display style.
+	 * @param string $featured_image_size Featured image size for grid layouts.
+	 * @return string
+	 */
+	private function get_gallery_display_image_size( $display_style, $featured_image_size ) {
+		if ( 'slider' === $this->normalize_gallery_display_style( $display_style ) ) {
+			return 'dinofolio-gallery-slider';
+		}
+
+		return $featured_image_size;
+	}
+
+	/**
+	 * Build gallery image data for frontend templates.
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $image_size Registered image size.
+	 * @return array
+	 */
+	private function get_gallery_images_data( $post_id, $image_size ) {
+		$images = array();
+
+		foreach ( $this->get_gallery_image_ids( $post_id ) as $image_id ) {
+			$display_url = wp_get_attachment_image_url( $image_id, $image_size );
+			$full_url    = wp_get_attachment_image_url( $image_id, 'full' );
+
+			if ( ! $display_url || ! $full_url ) {
+				continue;
+			}
+
+			$images[] = array(
+				'id'          => $image_id,
+				'url'         => $display_url,
+				'full_url'    => $full_url,
+				'alt'         => get_post_meta( $image_id, '_wp_attachment_image_alt', true ),
+				'image_size'  => $image_size,
+			);
+		}
+
+		return $images;
+	}
+
+	/**
+	 * Enqueue GLightbox assets for single portfolio galleries.
+	 *
+	 * @return void
+	 */
+	private function enqueue_single_gallery_lightbox_assets() {
+		if ( ! class_exists( '\WPDINO_Portfolio_Display' ) ) {
+			return;
+		}
+
+		$display = \WPDINO_Portfolio_Display::get_instance();
+
+		if ( ! wp_style_is( \WPDINO_Portfolio_Display::get_glightbox_style_handle(), 'registered' ) ) {
+			$display->register_listing_assets();
+		}
+
+		wp_enqueue_style( \WPDINO_Portfolio_Display::get_glightbox_style_handle() );
+		wp_enqueue_script( \WPDINO_Portfolio_Display::get_glightbox_script_handle() );
 	}
 
 	/**

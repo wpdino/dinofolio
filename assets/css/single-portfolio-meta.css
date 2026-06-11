@@ -18,6 +18,168 @@
 	overflow: hidden;
 }
 
+.dinofolio-portfolio-gallery {
+	margin: 0 0 1.5rem;
+}
+
+.dinofolio-portfolio-gallery.is-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.dinofolio-gallery-item {
+	margin: 0;
+	overflow: hidden;
+	border-radius: 5px;
+	background: #f3f4f6;
+}
+
+.dinofolio-gallery-item a {
+	display: block;
+	line-height: 0;
+}
+
+.dinofolio-gallery-image {
+	display: block;
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+	transition: transform 0.25s ease;
+}
+
+.dinofolio-gallery-item a:hover .dinofolio-gallery-image,
+.dinofolio-gallery-item a:focus .dinofolio-gallery-image {
+	transform: scale(1.03);
+}
+
+.dinofolio-portfolio-gallery.is-slider {
+	overflow: visible;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel-shell {
+	position: relative;
+	overflow: visible;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel {
+	--dinofolio-gallery-arrow-size: 2.5rem;
+	--dinofolio-gallery-arrow-offset: 3.25rem;
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel-viewport {
+	width: 100%;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel-viewport::-webkit-scrollbar {
+	display: none;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel-track {
+	display: flex;
+	gap: 0;
+	width: max-content;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-slide {
+	flex: 0 0 auto;
+	scroll-snap-align: start;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-item a {
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-image {
+	width: 100%;
+	height: 100%;
+	max-height: none;
+	object-fit: cover;
+	background: #f3f4f6;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-nav {
+	position: absolute;
+	top: 50%;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--dinofolio-gallery-arrow-size);
+	height: var(--dinofolio-gallery-arrow-size);
+	padding: 0;
+	border: 1px solid #d7dce5;
+	border-radius: 999px;
+	background: #fff;
+	color: #191919;
+	line-height: 0;
+	cursor: pointer;
+	opacity: 0.35;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+	transform: translateY(-50%);
+	transition: opacity 0.25s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-prev {
+	left: calc(-1 * var(--dinofolio-gallery-arrow-offset));
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-next {
+	right: calc(-1 * var(--dinofolio-gallery-arrow-offset));
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel:hover .dinofolio-carousel-nav:not(:disabled),
+.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel:focus-within .dinofolio-carousel-nav:not(:disabled) {
+	opacity: 1;
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-nav:hover:not(:disabled),
+.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-nav:focus-visible:not(:disabled) {
+	opacity: 1;
+	background: #f5f7fb;
+	border-color: #b8c3d9;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-nav:disabled {
+	opacity: 0.2;
+	cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+	.dinofolio-portfolio-gallery.is-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 560px) {
+	.dinofolio-portfolio-gallery.is-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-carousel {
+		--dinofolio-gallery-arrow-offset: 0.5rem;
+		--dinofolio-gallery-arrow-size: 2.25rem;
+	}
+
+	.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-prev {
+		left: 0.25rem;
+	}
+
+	.dinofolio-portfolio-gallery.is-slider .dinofolio-carousel-next {
+		right: 0.25rem;
+	}
+}
+
 .dinofolio-project-details {
 	margin-bottom: 1.75rem;
 }

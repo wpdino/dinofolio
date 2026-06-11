@@ -225,7 +225,7 @@
 	transform: scale(1);
 }
 
-.dinofolio-item-image {
+.dinofolio .dinofolio-item-image {
 	width: 100%;
 	height: auto;
 	display: block;
@@ -240,23 +240,23 @@
 	padding: 1.25rem 1.35rem 1.4rem;
 }
 
-.dinofolio-item-title {
+.dinofolio .dinofolio-item-title {
 	margin: 0 0 0.5rem;
 	font-size: 1.15rem;
 	line-height: 1.35;
 }
 
-.dinofolio-item-title a {
+.dinofolio .dinofolio-item-title a {
 	color: var(--dinofolio-text);
-	text-decoration: none;
+	text-decoration: none !important;
 	transition: color 0.2s ease;
 }
 
-.dinofolio-item-title a:hover {
+.dinofolio .dinofolio-item-title a:hover {
 	color: var(--dinofolio-accent);
 }
 
-.dinofolio-item-categories {
+.dinofolio .dinofolio-item-categories {
 	display: flex;
 	align-items: center;
 	gap: 0.4rem;
@@ -265,7 +265,7 @@
 	margin-bottom: 0.65rem;
 }
 
-.dinofolio-category-icon {
+.dinofolio .dinofolio-category-icon {
 	flex-shrink: 0;
 	width: 0.95rem;
 	height: 0.95rem;
@@ -273,25 +273,25 @@
 	opacity: 0.9;
 }
 
-.dinofolio-item-categories-list {
+.dinofolio .dinofolio-item-categories-list {
 	display: inline;
 	line-height: 1.4;
 }
 
-.dinofolio-item-categories a {
+.dinofolio .dinofolio-item-categories a {
 	color: inherit;
 	text-decoration: none;
 }
 
-.dinofolio-item-categories a:hover {
+.dinofolio .dinofolio-item-categories a:hover {
 	color: var(--dinofolio-accent);
 }
 
-.dinofolio-category-sep {
+.dinofolio .dinofolio-category-sep {
 	color: var(--dinofolio-muted);
 }
 
-.dinofolio-item-excerpt {
+.dinofolio .dinofolio-item-excerpt {
 	color: var(--dinofolio-muted);
 	font-size: 0.92rem;
 	line-height: 1.6;
@@ -306,28 +306,28 @@
 	margin-top: 0.25rem;
 }
 
-.dinofolio-button-link {
+.dinofolio .dinofolio-button-link {
 	display: inline-block;
 	padding: 0.55rem 1.1rem;
 	border-radius: 4px;
 	background: var(--dinofolio-accent);
 	color: var(--dinofolio-button-text);
-	text-decoration: none;
+	text-decoration: none !important;
 	font-size: 0.88rem;
 	font-weight: 500;
 	transition: background 0.2s ease, color 0.2s ease;
 }
 
-.dinofolio-button-link:hover {
+.dinofolio .dinofolio-button-link:hover {
 	background: var(--dinofolio-hover);
 	color: var(--dinofolio-button-text);
 }
-.dinofolio-button-link:visited {
+.dinofolio .dinofolio-button-link:visited {
 	color: var(--dinofolio-button-text);
 }
 
 /* View All footer CTA */
-.dinofolio-view-all {
+.dinofolio .dinofolio-view-all {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -337,7 +337,7 @@
 	width: 100%;
 }
 
-.dinofolio-view-all .dinofolio-view-all-btn {
+.dinofolio .dinofolio-view-all .dinofolio-view-all-btn {
 	display: inline-block;
 	min-width: 10rem;
 	padding: 0.65rem 1.75rem;
@@ -415,11 +415,11 @@
 }
 
 /* Category filter */
-.dinofolio-filter {
+.dinofolio .dinofolio-filter {
 	margin-bottom: 1.25rem;
 }
 
-.dinofolio-filter ul {
+.dinofolio .dinofolio-filter ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem 0.75rem;
@@ -428,7 +428,7 @@
 	padding: 0;
 }
 
-.dinofolio-filter a {
+.dinofolio .dinofolio-filter a {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.35rem;
@@ -445,22 +445,22 @@
 		transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dinofolio-filter a:hover {
+.dinofolio .dinofolio-filter a:hover {
 	transform: translateY(-1px);
 }
 
-.dinofolio-filter .dinofolio-current-cat a,
-.dinofolio-filter a:hover {
+.dinofolio .dinofolio-filter .dinofolio-current-cat a,
+.dinofolio .dinofolio-filter a:hover {
 	background: var(--dinofolio-accent);
 	border-color: var(--dinofolio-accent);
 	color: #fff;
 }
 
-.dinofolio-filter .dinofolio-current-cat a {
+.dinofolio .dinofolio-filter .dinofolio-current-cat a {
 	transform: scale(1.02);
 }
 
-.dinofolio-filter.dinofolio-show-filter-count .dinofolio-filter-count {
+.dinofolio .dinofolio-filter.dinofolio-show-filter-count .dinofolio-filter-count {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -475,23 +475,23 @@
 	transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.dinofolio-filter.dinofolio-show-filter-count .dinofolio-current-cat .dinofolio-filter-count {
+.dinofolio .dinofolio-filter.dinofolio-show-filter-count .dinofolio-current-cat .dinofolio-filter-count {
 	background: rgba(255, 255, 255, 0.28);
 }
 
 /* Pagination */
-.dinofolio-pagination {
+.dinofolio .dinofolio-pagination {
 	margin-top: 2rem;
 	text-align: center;
 }
 
-.dinofolio-pagination .dinofolio-pagination-wrapper {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper {
 	display: block;
 }
 
-.dinofolio-pagination .dinofolio-pagination-items,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-items,
 .dinofolio-pagination .dinofolio-pagination-wrapper > .dinofolio-page-numbers,
-.dinofolio-pagination ul.dinofolio-page-numbers {
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers {
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -505,18 +505,18 @@
 	box-shadow: none;
 }
 
-.dinofolio-pagination ul.dinofolio-page-numbers li {
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers li {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers,
 .dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers,
-.dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers,
-.dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers,
-.dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers,
-.dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers,
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers,
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -534,17 +534,17 @@
 	transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
-.dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-current,
-.dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers.dinofolio-current,
-.dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers.dinofolio-current {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-current,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers.dinofolio-current,
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers.dinofolio-current {
 	background: var(--dinofolio-accent);
 	border-color: var(--dinofolio-accent);
 	color: #fff;
 }
 
-.dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-dots,
-.dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers.dinofolio-dots,
-.dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers.dinofolio-dots {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-dots,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers.dinofolio-dots,
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers.dinofolio-dots {
 	min-width: auto;
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
@@ -553,27 +553,27 @@
 	color: var(--dinofolio-muted);
 }
 
-.dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers:hover,
-.dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers:hover,
-.dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers:hover {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers:hover,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers:hover,
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers:hover {
 	border-color: var(--dinofolio-accent);
 	color: var(--dinofolio-accent);
 }
 
-.dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers:focus-visible,
-.dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers:focus-visible,
-.dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers:focus-visible {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers:focus-visible,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers:focus-visible,
+.dinofolio .dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers:focus-visible {
 	outline: 2px solid var(--dinofolio-accent);
 	outline-offset: 2px;
 }
 
-.dinofolio-pagination .dinofolio-pagination-prev,
-.dinofolio-pagination .dinofolio-pagination-next {
+.dinofolio .dinofolio-pagination .dinofolio-pagination-prev,
+.dinofolio .dinofolio-pagination .dinofolio-pagination-next {
 	display: inline;
 }
 
 /* Empty state */
-.dinofolio-no-posts {
+.dinofolio .dinofolio-no-posts {
 	padding: 2rem;
 	text-align: center;
 	color: var(--dinofolio-muted);
