@@ -205,13 +205,16 @@
 
 	function renderControl(control, attributes, setAttributes) {
 		var value = getAttributeValue(attributes, control);
-		var layout = attributes.layout || 'grid';
-		var hideColumns = control.name === 'columns' && layout === 'list';
+		var style = attributes.style || 'standard';
+		var isOverlayStyle = style === 'overlay';
 		var hideReadMoreLabel = control.name === 'readMoreLabel' && !attributes.showReadMore;
 		var hideViewAllFields =
 			(control.name === 'viewAllText' || control.name === 'viewAllLink') && !attributes.showViewAll;
+		var hideOverlayFields =
+			isOverlayStyle &&
+			(control.name === 'showReadMore' || control.name === 'readMoreLabel' || control.name === 'showCategories');
 
-		if (hideColumns || hideReadMoreLabel || hideViewAllFields) {
+		if (hideReadMoreLabel || hideViewAllFields || hideOverlayFields) {
 			return null;
 		}
 

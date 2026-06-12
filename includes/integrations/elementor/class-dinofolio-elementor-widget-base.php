@@ -129,7 +129,35 @@ class Elementor_Widget_Base extends Widget_Base {
 	public function get_style_depends() {
 		$component = $this->get_component();
 
-		return $component ? $component->get_style_handles() : array();
+		if ( ! $component ) {
+			return array();
+		}
+
+		$handles = $component->get_style_handles();
+
+		if ( 'portfolio' === $component->get_name() && class_exists( 'WPDINO_Portfolio_Display' ) && \WPDINO_Portfolio_Display::is_elementor_preview() ) {
+			$handles[] = 'dinofolio-portfolio-listing-editor';
+		}
+
+		return $handles;
+	}
+
+	/**
+	 * Enqueue listing scripts (Isotope + dinofolio.js) for portfolio widgets in Elementor.
+	 *
+	 * @return array
+	 */
+	public function get_script_depends() {
+		$component = $this->get_component();
+
+		if ( ! $component || 'portfolio' !== $component->get_name() ) {
+			return array();
+		}
+
+		return array(
+			'dinofolio-isotope',
+			\WPDINO_Portfolio_Display::get_listing_script_handle(),
+		);
 	}
 
 	/**

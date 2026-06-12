@@ -38,7 +38,7 @@ class Portfolio_Component extends Component_Base {
 	 * @return string
 	 */
 	public function get_description() {
-		return esc_html__( 'Display a filterable portfolio grid, masonry, or list of projects.', 'dinofolio' );
+		return esc_html__( 'Display a filterable portfolio grid or masonry gallery with standard or overlay cards.', 'dinofolio' );
 	}
 
 	/**
@@ -68,14 +68,15 @@ class Portfolio_Component extends Component_Base {
 			'tags'            => array(),
 			'orderBy'         => 'date',
 			'order'           => 'desc',
-			'style'           => 'classic',
+			'style'           => 'standard',
 			'hoverEffect'     => 'zoom',
 			'accentColor'     => '',
 			'hoverColor'      => '',
 			'buttonTextColor' => '',
 			'mutedColor'      => '',
-			'gap'             => 24,
-			'radius'          => 8,
+			'gap'                 => 24,
+			'radius'              => 8,
+			'enableParallax'      => false,
 		);
 	}
 
@@ -116,7 +117,7 @@ class Portfolio_Component extends Component_Base {
 	 * @return array
 	 */
 	public function get_editor_style_handles() {
-		return array( 'dinofolio-portfolio-listing-editor' );
+		return array( 'dinofolio-portfolio-listing', 'dinofolio-portfolio-listing-editor' );
 	}
 
 	/**
@@ -134,9 +135,19 @@ class Portfolio_Component extends Component_Base {
 				'value'      => array(
 					'grid'    => esc_html__( 'Grid', 'dinofolio' ),
 					'masonry' => esc_html__( 'Masonry', 'dinofolio' ),
-					'list'    => esc_html__( 'List', 'dinofolio' ),
 				),
 				'std'        => 'grid',
+			),
+			array(
+				'type'       => 'dropdown',
+				'heading'    => esc_html__( 'Style', 'dinofolio' ),
+				'param_name' => 'style',
+				'section'    => 'content',
+				'value'      => array(
+					'standard' => esc_html__( 'Standard', 'dinofolio' ),
+					'overlay'  => esc_html__( 'Overlay', 'dinofolio' ),
+				),
+				'std'        => 'standard',
 			),
 			array(
 				'type'       => 'number',
@@ -211,6 +222,14 @@ class Portfolio_Component extends Component_Base {
 				'param_name'  => 'showFilterCount',
 				'section'     => 'content',
 				'description' => esc_html__( 'Show the number of projects in each filter tab.', 'dinofolio' ),
+				'std'         => 'no',
+			),
+			array(
+				'type'        => 'checkbox',
+				'heading'     => esc_html__( 'Image Parallax', 'dinofolio' ),
+				'param_name'  => 'enableParallax',
+				'section'     => 'content',
+				'description' => esc_html__( 'Subtle parallax movement on portfolio thumbnails.', 'dinofolio' ),
 				'std'         => 'no',
 			),
 			array(
@@ -294,17 +313,6 @@ class Portfolio_Component extends Component_Base {
 					'asc'  => esc_html__( 'Ascending', 'dinofolio' ),
 				),
 				'std'        => 'desc',
-			),
-			array(
-				'type'       => 'dropdown',
-				'heading'    => esc_html__( 'Card Style', 'dinofolio' ),
-				'param_name' => 'style',
-				'section'    => 'style',
-				'value'      => array(
-					'classic' => esc_html__( 'Classic', 'dinofolio' ),
-					'overlay' => esc_html__( 'Overlay', 'dinofolio' ),
-				),
-				'std'        => 'classic',
 			),
 			array(
 				'type'       => 'dropdown',

@@ -88,7 +88,9 @@ class Gutenberg_Block_Base {
 
 		$editor_style_handles = $this->component->get_editor_style_handles();
 		if ( ! empty( $editor_style_handles ) ) {
-			$args['editor_style'] = $editor_style_handles[0];
+			$args['editor_style'] = 1 === count( $editor_style_handles )
+				? $editor_style_handles[0]
+				: $editor_style_handles;
 		}
 
 		if ( wp_script_is( $editor_script, 'registered' ) || file_exists( $script_path ) ) {

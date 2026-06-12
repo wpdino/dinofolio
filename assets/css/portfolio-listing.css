@@ -21,11 +21,13 @@
 
 .dinofolio {
 	--dinofolio-gap: 24px;
+	--dinofolio-columns: 3;
 	--dinofolio-radius: 8px;
 	--dinofolio-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-	--dinofolio-accent: #1a8960; 
+	--dinofolio-accent: #1a8960;
 	--dinofolio-hover: #1a8970;
-	--dinofolio-button-text: #fff;	
+	--dinofolio-button-text: #fff;
+	--dinofolio-text: #1a1a1a;
 	--dinofolio-muted: #666;
 	margin: 0 0 2rem;
 }
@@ -38,6 +40,7 @@
 .dinofolio.dinofolio-layout-grid .dinofolio-items-list {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
+	align-items: start;
 }
 
 .dinofolio.dinofolio-layout-grid.dinofolio-columns-2 .dinofolio-items-list {
@@ -50,12 +53,6 @@
 
 .dinofolio.dinofolio-layout-grid.dinofolio-columns-4 .dinofolio-items-list {
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-/* List layout */
-.dinofolio.dinofolio-layout-list .dinofolio-items-list {
-	display: flex;
-	flex-direction: column;
 }
 
 /* Masonry layout (CSS columns — natural image heights create stagger) */
@@ -112,6 +109,87 @@
 	overflow: hidden;
 }
 
+/* First-load fade — inner content only so Isotope can still animate item opacity on filter */
+@keyframes dinofolio-item-fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+.dinofolio .dinofolio-item > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation: dinofolio-item-fade-in 0.55s ease both;
+}
+
+.dinofolio .dinofolio-item:nth-child(6n + 1) > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation-delay: 0ms;
+}
+
+.dinofolio .dinofolio-item:nth-child(6n + 2) > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation-delay: 45ms;
+}
+
+.dinofolio .dinofolio-item:nth-child(6n + 3) > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation-delay: 90ms;
+}
+
+.dinofolio .dinofolio-item:nth-child(6n + 4) > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation-delay: 135ms;
+}
+
+.dinofolio .dinofolio-item:nth-child(6n + 5) > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation-delay: 180ms;
+}
+
+.dinofolio .dinofolio-item:nth-child(6n + 6) > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+	animation-delay: 225ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dinofolio .dinofolio-item > :is(.dinofolio-item-thumbnail, .dinofolio-item-details) {
+		animation: none;
+	}
+}
+
+/* Classic grid cards — image + visible details below */
+.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) {
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border-radius: var(--dinofolio-radius);
+	box-shadow: var(--dinofolio-shadow);
+}
+
+.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail {
+	position: relative;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	flex-shrink: 0;
+	border-radius: var(--dinofolio-radius) var(--dinofolio-radius) 0 0;
+}
+
+.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail > a {
+	display: block;
+	height: 100%;
+}
+
+.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail .dinofolio-item-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: cover;
+}
+
+.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-details {
+	flex: 0 0 auto;
+	display: block;
+}
+
 /* Category filter — CSS-only transitions (JS only toggles .dinofolio-filter-hidden) */
 .dinofolio.dinofolio-has-category-filter {
 	--dinofolio-filter-duration: 0.42s;
@@ -160,7 +238,9 @@
 		box-shadow calc(var(--dinofolio-filter-duration) - 0.06s) var(--dinofolio-filter-ease);
 }
 
-.dinofolio.dinofolio-has-category-filter.dinofolio-layout-masonry .dinofolio-item.dinofolio-filter-hidden {
+.dinofolio.dinofolio-has-category-filter.dinofolio-layout-masonry .dinofolio-item.dinofolio-filter-hidden,
+.dinofolio.dinofolio-has-category-filter.dinofolio-layout-grid .dinofolio-item.dinofolio-filter-hidden,
+.dinofolio.dinofolio-has-category-filter.dinofolio-style-overlay .dinofolio-item.dinofolio-filter-hidden {
 	display: none !important;
 	max-height: none;
 }
@@ -177,19 +257,95 @@
 	}
 }
 
+/* Isotope layout (filter reflow + masonry) */
+.dinofolio.dinofolio-uses-isotope .dinofolio-items-list {
+	display: block !important;
+	column-count: unset !important;
+	grid-template-columns: unset !important;
+	flex-direction: unset !important;
+}
+
+/* Isotope gutter is horizontal only (fitRows + masonry) — margin-bottom is the row/column gap */
+.dinofolio.dinofolio-uses-isotope .dinofolio-item {
+	margin-bottom: var(--dinofolio-gap);
+}
+
+/* Isotope positions items absolutely — avoid flex/grid conflicts on cards */
+.dinofolio.dinofolio-uses-isotope.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay),
+.dinofolio.dinofolio-uses-isotope.dinofolio-layout-masonry .dinofolio-item--overlay {
+	display: block;
+}
+
+.dinofolio.dinofolio-uses-isotope .dinofolio-item {
+	width: calc(
+		(100% - (var(--dinofolio-gap) * (var(--dinofolio-columns) - 1)))
+		/ var(--dinofolio-columns)
+	);
+}
+
+.dinofolio.dinofolio-uses-isotope.dinofolio-has-category-filter .dinofolio-item {
+	transition: none;
+	max-height: none;
+}
+
+.dinofolio.dinofolio-uses-isotope.dinofolio-has-category-filter .dinofolio-item.dinofolio-filter-hidden {
+	display: none !important;
+}
+
+/* Image parallax */
+.dinofolio.dinofolio-parallax-enabled .dinofolio-item-thumbnail,
+.dinofolio.dinofolio-parallax-enabled .dinofolio-overlay-card {
+	overflow: hidden;
+}
+
+.dinofolio.dinofolio-parallax-enabled .dinofolio-item-thumbnail > a,
+.dinofolio.dinofolio-parallax-enabled .dinofolio-overlay-card {
+	overflow: hidden;
+}
+
+.dinofolio.dinofolio-parallax-enabled .dinofolio-parallax-target {
+	display: block;
+	width: 100%;
+	will-change: transform;
+	transform: translate3d(0, 0, 0);
+	transform-origin: center center;
+	backface-visibility: hidden;
+}
+
+.dinofolio.dinofolio-parallax-enabled.dinofolio-layout-masonry .dinofolio-parallax-target,
+.dinofolio.dinofolio-parallax-enabled.dinofolio-style-overlay .dinofolio-overlay-card .dinofolio-parallax-target {
+	height: auto;
+}
+
+.dinofolio.dinofolio-parallax-enabled.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-parallax-target {
+	height: 100%;
+}
+
+.dinofolio.dinofolio-parallax-enabled.dinofolio-style-overlay .dinofolio-overlay-card {
+	background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dinofolio.dinofolio-parallax-enabled .dinofolio-parallax-target {
+		transform: none !important;
+		will-change: auto;
+	}
+}
+
 .dinofolio-item-thumbnail {
 	position: relative;
 	overflow: hidden;
 	line-height: 0;
 }
 
-.dinofolio-item-thumbnail a {
+.dinofolio-item-thumbnail a:not(.dinofolio-overlay-action) {
 	display: block;
 }
 
 .dinofolio-item-thumbnail.dinofolio-lightbox > a.glightbox.dinofolio-lightbox-link {
 	position: relative;
 	display: block;
+	height: 100%;
 }
 
 /* Lightbox zoom icon on hover */
@@ -227,12 +383,16 @@
 
 .dinofolio .dinofolio-item-image {
 	width: 100%;
-	height: auto;
 	display: block;
 	transition: transform 0.35s ease;
 }
 
-.dinofolio-item:hover .dinofolio-item-image {
+.dinofolio.dinofolio-layout-masonry .dinofolio-item-image {
+	height: auto;
+}
+
+.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image,
+.dinofolio.dinofolio-layout-masonry .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image {
 	transform: scale(1.04);
 }
 
@@ -361,57 +521,152 @@
 	outline-offset: 3px;
 }
 
-/* List layout items */
-.dinofolio.dinofolio-layout-list .dinofolio-item {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: stretch;
+/* Overlay style — image-only tiles; meta + icons on hover */
+.dinofolio.dinofolio-style-overlay .dinofolio-item.dinofolio-item--overlay {
+	padding: 0;
+	background: transparent;
+	box-shadow: none;
+	overflow: visible;
 }
 
-.dinofolio.dinofolio-layout-list .dinofolio-item-thumbnail {
-	flex: 0 0 38%;
-	max-width: 38%;
+.dinofolio.dinofolio-style-overlay .dinofolio-item--overlay .dinofolio-item-details {
+	display: none !important;
 }
 
-.dinofolio.dinofolio-layout-list .dinofolio-item-details {
-	flex: 1 1 62%;
-	max-width: 62%;
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-card {
+	position: relative;
+	overflow: hidden;
+	border-radius: var(--dinofolio-radius);
+	box-shadow: var(--dinofolio-shadow);
+	background: #111;
 }
 
-/* Overlay style */
-.dinofolio.dinofolio-style-overlay .dinofolio-item-thumbnail,
-.dinofolio.dinofolio-style-overlay .dinofolio-item-thumbnail[style*="background-image"] {
-	min-height: 260px;
-	background-size: cover;
-	background-position: center;
+/* Grid overlay — uniform square tiles */
+.dinofolio.dinofolio-layout-grid.dinofolio-style-overlay .dinofolio-overlay-card {
+	aspect-ratio: 1 / 1;
 }
 
-.dinofolio.dinofolio-style-overlay .dinofolio-item-thumbnail > a {
+.dinofolio.dinofolio-layout-grid.dinofolio-style-overlay .dinofolio-overlay-card .dinofolio-item-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Masonry overlay — natural image heights (same as masonry standard) */
+.dinofolio.dinofolio-layout-masonry.dinofolio-style-overlay .dinofolio-is-masonry-item .dinofolio-overlay-card .dinofolio-item-image {
+	width: 100%;
+	height: auto;
+	max-width: none;
+	object-fit: unset;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-card .dinofolio-item-image {
+	display: block;
+	transition: transform 0.45s ease;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-card .dinofolio-item-image {
+	transform: scale(1.06);
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-panel {
 	position: absolute;
 	inset: 0;
-	z-index: 1;
-}
-
-.dinofolio-item-overlay {
-	position: absolute;
-	inset: 0;
+	z-index: 2;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
-	padding: 1.25rem;
-	background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.15) 55%, transparent 100%);
-	color: #fff;
-	z-index: 2;
+	justify-content: space-between;
+	padding: 1.35rem;
+	background: rgba(0, 0, 0, 0);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.35s ease, background 0.35s ease, visibility 0.35s ease;
 	pointer-events: none;
 }
 
-.dinofolio-item-overlay a {
+.dinofolio.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-panel {
+	opacity: 1;
+	visibility: visible;
+	background: rgba(0, 0, 0, 0.48);
 	pointer-events: auto;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-actions {
+	flex: 1 1 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.85rem;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 3.1rem;
+	height: 3.1rem;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.94);
+	color: #1a1a1a;
+	text-decoration: none !important;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+	transform: translateY(8px) scale(0.94);
+	opacity: 0;
+	transition:
+		transform 0.32s ease,
+		opacity 0.32s ease,
+		background 0.2s ease,
+		color 0.2s ease;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-action .dinofolio-overlay-icon {
+	display: block;
+	width: 1.35rem;
+	height: 1.35rem;
+	flex-shrink: 0;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-action {
+	transform: translateY(0) scale(1);
+	opacity: 1;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-action:hover,
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-action:focus-visible {
+	background: #fff;
+	color: var(--dinofolio-accent);
+}
+
+.dinofolio-overlay-caption {
+	color: #fff;
+	transform: translateY(14px);
+	opacity: 0;
+	transition: transform 0.35s ease 0.04s, opacity 0.35s ease 0.04s;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-caption {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-caption .dinofolio-item-title {
+	margin: 0 0 0.35rem;
+	font-size: 1.1rem;
+	line-height: 1.35;
 	color: #fff;
 }
 
-.dinofolio-item-overlay .dinofolio-item-excerpt {
+.dinofolio.dinofolio-style-overlay .dinofolio-overlay-caption .dinofolio-item-excerpt {
+	margin: 0;
 	color: rgba(255, 255, 255, 0.88);
+	font-size: 0.88rem;
+	line-height: 1.55;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 /* Category filter */
@@ -587,6 +842,10 @@
 	.dinofolio.dinofolio-layout-masonry.dinofolio-columns-4 .dinofolio-items-list {
 		column-count: 3;
 	}
+
+	.dinofolio.dinofolio-uses-isotope.dinofolio-columns-4 {
+		--dinofolio-columns: 3;
+	}
 }
 
 @media (max-width: 767px) {
@@ -602,11 +861,11 @@
 		column-count: 2;
 	}
 
-	.dinofolio.dinofolio-layout-list .dinofolio-item-thumbnail,
-	.dinofolio.dinofolio-layout-list .dinofolio-item-details {
-		flex: 0 0 100%;
-		max-width: 100%;
+	.dinofolio.dinofolio-uses-isotope.dinofolio-columns-3,
+	.dinofolio.dinofolio-uses-isotope.dinofolio-columns-4 {
+		--dinofolio-columns: 2;
 	}
+
 }
 
 @media (max-width: 480px) {
@@ -619,5 +878,9 @@
 
 	.dinofolio.dinofolio-layout-masonry .dinofolio-items-list {
 		column-count: 1;
+	}
+
+	.dinofolio.dinofolio-uses-isotope {
+		--dinofolio-columns: 1;
 	}
 }

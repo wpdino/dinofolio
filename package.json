@@ -17,7 +17,8 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start",
 		"test:e2e": "wp-scripts test-e2e",
-		"test:unit": "wp-scripts test-unit-js"
+		"test:unit": "wp-scripts test-unit-js",
+		"minify:dinofolio": "terser assets/js/dinofolio.js -o assets/js/dinofolio.min.js -c -m --comments false"
 	},
 	"keywords": [
 		"wordpress",
@@ -38,7 +39,10 @@
 		"url": "https://github.com/wpdino/dinofolio/issues"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^24.6.0"
+		"@wordpress/scripts": "^24.6.0",
+		"imagesloaded": "^5.0.0",
+		"isotope-layout": "^3.0.6",
+		"terser": "^5.48.0"
 	},
 	"dependencies": {
 		"@wordpress/api-fetch": "^6.0.1",

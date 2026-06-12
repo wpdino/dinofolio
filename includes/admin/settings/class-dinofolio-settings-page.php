@@ -1101,10 +1101,10 @@ class DinoFolio_Settings {
 				'name'    => $prefix . 'style',
 				'label'   => esc_html__( 'Card Style', 'dinofolio' ),
 				'options' => array(
-					'classic' => esc_html__( 'Classic', 'dinofolio' ),
-					'overlay' => esc_html__( 'Overlay', 'dinofolio' ),
+					'standard' => esc_html__( 'Standard', 'dinofolio' ),
+					'overlay'  => esc_html__( 'Overlay', 'dinofolio' ),
 				),
-				'default' => 'classic',
+				'default' => 'standard',
 			),
 			array(
 				'type'    => 'select',
@@ -1195,7 +1195,6 @@ class DinoFolio_Settings {
 				'options' => array(
 					'grid'    => esc_html__( 'Grid', 'dinofolio' ),
 					'masonry' => esc_html__( 'Masonry', 'dinofolio' ),
-					'list'    => esc_html__( 'List', 'dinofolio' ),
 				),
 				'default' => 'grid',
 			),

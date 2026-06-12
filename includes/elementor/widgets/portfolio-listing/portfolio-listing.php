@@ -99,8 +99,21 @@ class Portfolio_Listing extends Widget_Base {
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'grid',
 				'options' => array(
-					'grid' => esc_html__( 'Grid', 'dinofolio' ),
-					'list' => esc_html__( 'List', 'dinofolio' ),
+					'grid'    => esc_html__( 'Grid', 'dinofolio' ),
+					'masonry' => esc_html__( 'Masonry', 'dinofolio' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'style',
+			array(
+				'label'   => esc_html__( 'Style', 'dinofolio' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'standard',
+				'options' => array(
+					'standard' => esc_html__( 'Standard', 'dinofolio' ),
+					'overlay'  => esc_html__( 'Overlay', 'dinofolio' ),
 				),
 			)
 		);
@@ -214,18 +227,33 @@ class Portfolio_Listing extends Widget_Base {
 	 */
 	private function build_render_attributes( $settings ) {
 		$layout     = ! empty( $settings['layout'] ) ? sanitize_key( $settings['layout'] ) : 'grid';
+		$style      = ! empty( $settings['style'] ) ? sanitize_key( $settings['style'] ) : 'standard';
 		$order_by   = ! empty( $settings['order_by'] ) ? sanitize_key( $settings['order_by'] ) : 'date';
 		$order      = ! empty( $settings['order'] ) ? strtoupper( sanitize_key( $settings['order'] ) ) : 'DESC';
 		$columns    = ! empty( $settings['columns'] ) ? absint( $settings['columns'] ) : 3;
 		$post_count = ! empty( $settings['posts_to_show'] ) ? absint( $settings['posts_to_show'] ) : 12;
 
-		$allowed_layouts  = array( 'grid', 'list' );
+		$allowed_layouts  = array( 'grid', 'masonry' );
+		$allowed_styles   = array( 'standard', 'overlay' );
 		$allowed_order_by = array( 'date', 'title', 'rand' );
 		$allowed_order    = array( 'ASC', 'DESC' );
 		$allowed_columns  = array( 2, 3, 4 );
 
 		if ( ! in_array( $layout, $allowed_layouts, true ) ) {
 			$layout = 'grid';
+		}
+
+		if ( 'overlay' === $layout || 'list' === $layout ) {
+			$layout = 'grid';
+			$style  = 'overlay';
+		}
+
+		if ( 'classic' === $style ) {
+			$style = 'standard';
+		}
+
+		if ( ! in_array( $style, $allowed_styles, true ) ) {
+			$style = 'standard';
 		}
 
 		if ( ! in_array( $order_by, $allowed_order_by, true ) ) {
@@ -246,6 +274,7 @@ class Portfolio_Listing extends Widget_Base {
 
 		return array(
 			'layout'         => $layout,
+			'style'          => $style,
 			'columns'        => $columns,
 			'postsToShow'    => $post_count,
 			'showExcerpt'    => ( isset( $settings['show_excerpt'] ) && 'yes' === $settings['show_excerpt'] ),

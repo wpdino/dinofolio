@@ -1,6 +1,55 @@
 /**
  * Gutenberg editor preview: block selectable, hover on cards, links do not navigate.
+ * Listing JS (Isotope, parallax) does not run here — use native CSS layouts.
  */
+
+/* Fallback if isotope class is ever present without JS (editor SSR preview) */
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope .dinofolio-items-list {
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+	column-count: unset !important;
+	gap: var(--dinofolio-gap);
+}
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-grid.dinofolio-columns-2 .dinofolio-items-list,
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-masonry.dinofolio-columns-2 .dinofolio-items-list {
+	grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-grid.dinofolio-columns-4 .dinofolio-items-list,
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-masonry.dinofolio-columns-4 .dinofolio-items-list {
+	grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-masonry .dinofolio-items-list {
+	display: block !important;
+	column-count: 3;
+	column-gap: var(--dinofolio-gap);
+	grid-template-columns: unset !important;
+}
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-masonry.dinofolio-columns-2 .dinofolio-items-list {
+	column-count: 2;
+}
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-masonry.dinofolio-columns-4 .dinofolio-items-list {
+	column-count: 4;
+}
+
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope .dinofolio-item {
+	width: auto !important;
+	margin-bottom: 0;
+}
+
+.dinofolio-listing--editor-preview.dinofolio-uses-isotope.dinofolio-layout-masonry .dinofolio-item {
+	margin-bottom: var(--dinofolio-gap);
+}
+
+.dinofolio-listing--editor-preview .dinofolio-parallax-target {
+	transform: none !important;
+	will-change: auto;
+}
 
 .dinofolio-listing--editor-preview a,
 .dinofolio-listing--editor-preview button,
@@ -20,8 +69,26 @@
 	cursor: default;
 }
 
-.dinofolio-listing--editor-preview .dinofolio-item:hover .dinofolio-item-image {
+.dinofolio-listing--editor-preview.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image,
+.dinofolio-listing--editor-preview.dinofolio-layout-masonry .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image {
 	transform: scale(1.04);
+}
+
+/* Overlay layout hover preview in the editor */
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-panel {
+	opacity: 1;
+	visibility: visible;
+	background: rgba(0, 0, 0, 0.48);
+}
+
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-action,
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-caption {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-card .dinofolio-item-image {
+	transform: scale(1.06);
 }
 
 /* No zoom icon in editor preview (lightbox is front-end only) */

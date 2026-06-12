@@ -45,6 +45,7 @@ class Gutenberg_Integration {
 		add_filter( 'block_categories_all', array( $this, 'register_category' ), 10, 2 );
 		add_action( 'init', array( $this, 'register_blocks' ), 15 );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
 	}
 
 	/**
@@ -121,6 +122,24 @@ class Gutenberg_Integration {
 		if ( wp_style_is( 'dinofolio-elementor', 'registered' ) ) {
 			wp_enqueue_style( 'dinofolio-elementor' );
 		}
+	}
+
+	/**
+	 * Enqueue listing styles in the block editor canvas iframe.
+	 *
+	 * @return void
+	 */
+	public function enqueue_block_assets() {
+		if ( ! is_admin() || ! class_exists( 'WPDINO_Portfolio_Display' ) ) {
+			return;
+		}
+
+		if ( function_exists( 'wp_should_load_block_editor_scripts_and_styles' )
+			&& ! wp_should_load_block_editor_scripts_and_styles() ) {
+			return;
+		}
+
+		\WPDINO_Portfolio_Display::get_instance()->enqueue_listing_assets();
 	}
 
 	/**
