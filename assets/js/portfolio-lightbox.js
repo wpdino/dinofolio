@@ -35,7 +35,7 @@
 			selector: getLightboxSelector(),
 			touchNavigation: true,
 			loop: true,
-			autoplayVideos: false,
+			autoplayVideos: true,
 			closeButton: true,
 			closeOnOutsideClick: true,
 			escKey: true,
@@ -44,6 +44,20 @@
 			skin: 'clean',
 			openEffect: 'fade',
 			closeEffect: 'fade',
+			plyr: {
+				css: false,
+				js: false,
+				config: {
+					muted: false,
+					hideControls: true,
+					youtube: {
+						noCookie: true,
+						rel: 0,
+						showinfo: 0,
+						iv_load_policy: 3,
+					},
+				},
+			},
 		} );
 	}
 

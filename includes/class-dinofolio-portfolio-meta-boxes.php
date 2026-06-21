@@ -52,6 +52,8 @@ class Portfolio_Meta_Boxes {
 	 * Constructor.
 	 */
 	public function __construct() {
+		Portfolio_Video_Admin::init();
+
 		add_action( 'add_meta_boxes', array( $this, 'register_portfolio_meta_boxes' ) );
 		add_action( 'save_post_wpdino_portfolio', array( $this, 'save_portfolio_meta_boxes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_portfolio_meta_admin_assets' ) );
@@ -126,7 +128,16 @@ class Portfolio_Meta_Boxes {
 		if ( 'default' === $values['featured_image_display'] ) {
 			$show_featured_size_row = ( 'off' !== $default_featured_display );
 		}
+
+		$video_values = $this->get_video_field_values( $post->ID );
 		?>
+		<div class="wpdino-portfolio-meta-tabs" data-wpdino-meta-tabs>
+			<div class="wpdino-portfolio-meta-tabs__nav" role="tablist" aria-label="<?php esc_attr_e( 'Portfolio item settings', 'dinofolio' ); ?>">
+				<button type="button" class="wpdino-portfolio-meta-tabs__tab is-active" role="tab" aria-selected="true" aria-controls="wpdino-portfolio-meta-panel-general" id="wpdino-portfolio-meta-tab-general" data-wpdino-meta-tab="general"><?php esc_html_e( 'General', 'dinofolio' ); ?></button>
+				<button type="button" class="wpdino-portfolio-meta-tabs__tab" role="tab" aria-selected="false" aria-controls="wpdino-portfolio-meta-panel-video" id="wpdino-portfolio-meta-tab-video" data-wpdino-meta-tab="video"><?php esc_html_e( 'Video', 'dinofolio' ); ?></button>
+			</div>
+
+			<div class="wpdino-portfolio-meta-tabs__panel is-active" role="tabpanel" id="wpdino-portfolio-meta-panel-general" aria-labelledby="wpdino-portfolio-meta-tab-general" data-wpdino-meta-panel="general">
 		<table class="form-table wpdino-portfolio-meta-table" role="presentation">
 			<tbody>
 				<tr>
@@ -228,6 +239,150 @@ class Portfolio_Meta_Boxes {
 				});
 			})();
 		</script>
+			</div>
+
+			<div class="wpdino-portfolio-meta-tabs__panel" role="tabpanel" id="wpdino-portfolio-meta-panel-video" aria-labelledby="wpdino-portfolio-meta-tab-video" data-wpdino-meta-panel="video" hidden>
+				<?php $this->render_portfolio_video_tab( $video_values ); ?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render the Video tab in the portfolio meta box.
+	 *
+	 * @param array $values Video field values.
+	 * @return void
+	 */
+	private function render_portfolio_video_tab( $values ) {
+		?>
+		<div class="wpdino-portfolio-video-sections">
+			<section class="wpdino-portfolio-video-section">
+				<h3 class="wpdino-portfolio-video-section__title"><?php esc_html_e( 'Video in Lightbox', 'dinofolio' ); ?></h3>
+				<p class="description"><?php esc_html_e( 'Opens the selected video in the listing lightbox instead of the featured image. Requires the listing lightbox option to be enabled. You can also use the video thumbnail as the portfolio featured image.', 'dinofolio' ); ?></p>
+				<table class="form-table wpdino-portfolio-meta-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Enable Video in Lightbox', 'dinofolio' ); ?></th>
+							<td><?php $this->render_video_on_off_field( 'video_lightbox', $values['video_lightbox'] ); ?></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="wpdino-video-fields" data-wpdino-video-fields="lightbox" <?php echo 'on' === $values['video_lightbox'] ? '' : 'hidden'; ?>>
+					<?php $this->render_video_source_fields( 'video_lightbox', $values['video_lightbox_type'], $values['video_lightbox_url'], $values['video_lightbox_mp4_id'] ); ?>
+				</div>
+			</section>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Get stored video field values for the meta box.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return array
+	 */
+	private function get_video_field_values( $post_id ) {
+		$lightbox_mp4_id = absint( get_post_meta( $post_id, '_wpdino_video_lightbox_mp4_id', true ) );
+
+		return array(
+			'video_lightbox'           => 'on' === get_post_meta( $post_id, '_wpdino_video_lightbox', true ) ? 'on' : 'off',
+			'video_lightbox_type'      => Portfolio_Video::normalize_type( get_post_meta( $post_id, '_wpdino_video_lightbox_type', true ) ),
+			'video_lightbox_url'       => (string) get_post_meta( $post_id, '_wpdino_video_lightbox_url', true ),
+			'video_lightbox_mp4_id'    => $lightbox_mp4_id,
+			'video_lightbox_mp4_label' => $this->get_video_attachment_label( $lightbox_mp4_id ),
+		);
+	}
+
+	/**
+	 * Human-readable label for a selected MP4 attachment.
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 * @return string
+	 */
+	private function get_video_attachment_label( $attachment_id ) {
+		$attachment_id = absint( $attachment_id );
+
+		if ( $attachment_id < 1 ) {
+			return '';
+		}
+
+		$title = get_the_title( $attachment_id );
+
+		/* translators: %d: media attachment ID. */
+		return $title ? $title : sprintf( esc_html__( 'Attachment #%d', 'dinofolio' ), $attachment_id );
+	}
+
+	/**
+	 * Render ON / OFF toggle for video sections.
+	 *
+	 * @param string $key   Field key.
+	 * @param string $value Current value.
+	 * @return void
+	 */
+	private function render_video_on_off_field( $key, $value ) {
+		?>
+		<div class="wpdino-toggle-group wpdino-toggle-group--binary" data-wpdino-video-toggle="<?php echo esc_attr( $key ); ?>">
+			<label><input type="radio" name="wpdino_<?php echo esc_attr( $key ); ?>" value="on" <?php checked( $value, 'on' ); ?>> <?php esc_html_e( 'On', 'dinofolio' ); ?></label>
+			<label><input type="radio" name="wpdino_<?php echo esc_attr( $key ); ?>" value="off" <?php checked( $value, 'off' ); ?>> <?php esc_html_e( 'Off', 'dinofolio' ); ?></label>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render shared video source controls.
+	 *
+	 * @param string $prefix Field prefix.
+	 * @param string $type   Video type.
+	 * @param string $url    External URL.
+	 * @param int    $mp4_id MP4 attachment ID.
+	 * @return void
+	 */
+	private function render_video_source_fields( $prefix, $type, $url, $mp4_id ) {
+		$type        = Portfolio_Video::normalize_type( $type );
+		$label       = $this->get_video_attachment_label( $mp4_id );
+		$section_key = 'lightbox';
+		?>
+		<table class="form-table wpdino-portfolio-meta-table" role="presentation">
+			<tbody>
+				<tr>
+					<th scope="row"><label for="<?php echo esc_attr( $prefix ); ?>_type"><?php esc_html_e( 'Video Type', 'dinofolio' ); ?></label></th>
+					<td>
+						<select id="<?php echo esc_attr( $prefix ); ?>_type" name="<?php echo esc_attr( $prefix ); ?>_type" class="wpdino-video-type-select" data-wpdino-video-type="<?php echo esc_attr( $section_key ); ?>">
+							<option value="mp4" <?php selected( $type, 'mp4' ); ?>><?php esc_html_e( 'MP4 file', 'dinofolio' ); ?></option>
+							<option value="youtube" <?php selected( $type, 'youtube' ); ?>><?php esc_html_e( 'YouTube', 'dinofolio' ); ?></option>
+							<option value="vimeo" <?php selected( $type, 'vimeo' ); ?>><?php esc_html_e( 'Vimeo', 'dinofolio' ); ?></option>
+						</select>
+					</td>
+				</tr>
+				<tr class="wpdino-video-url-row" data-wpdino-video-url-row="<?php echo esc_attr( $section_key ); ?>" <?php echo 'mp4' === $type ? 'style="display:none;"' : ''; ?>>
+					<th scope="row"><label for="<?php echo esc_attr( $prefix ); ?>_url"><?php esc_html_e( 'Video URL', 'dinofolio' ); ?></label></th>
+					<td>
+						<input type="url" class="regular-text code" id="<?php echo esc_attr( $prefix ); ?>_url" name="<?php echo esc_attr( $prefix ); ?>_url" value="<?php echo esc_attr( $url ); ?>" placeholder="<?php echo esc_attr( 'youtube' === $type ? 'https://www.youtube.com/watch?v=' : ( 'vimeo' === $type ? 'https://vimeo.com/' : 'https://' ) ); ?>">
+						<p class="description"><?php esc_html_e( 'Paste a public YouTube or Vimeo URL.', 'dinofolio' ); ?></p>
+						<?php if ( 'lightbox' === $section_key ) : ?>
+						<div class="wpdino-video-thumb-preview" data-wpdino-video-thumb-preview="lightbox" hidden>
+							<img alt="">
+							<button type="button" class="button button-secondary wpdino-set-featured-from-video" data-wpdino-thumb-section="lightbox"><?php esc_html_e( 'Use as Featured Image', 'dinofolio' ); ?></button>
+							<p class="description wpdino-video-thumb-status"></p>
+						</div>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<tr class="wpdino-video-mp4-row" data-wpdino-video-mp4-row="<?php echo esc_attr( $section_key ); ?>" <?php echo 'mp4' !== $type ? 'style="display:none;"' : ''; ?>>
+					<th scope="row"><?php esc_html_e( 'MP4 File', 'dinofolio' ); ?></th>
+					<td>
+						<div class="wpdino-video-mp4-control" data-wpdino-video-mp4="<?php echo esc_attr( $section_key ); ?>">
+							<input type="hidden" id="<?php echo esc_attr( $prefix ); ?>_mp4_id" name="<?php echo esc_attr( $prefix ); ?>_mp4_id" value="<?php echo esc_attr( $mp4_id ); ?>">
+							<span class="wpdino-video-mp4-label" data-wpdino-video-mp4-label="<?php echo esc_attr( $section_key ); ?>" <?php echo $label ? '' : 'hidden'; ?>><?php echo esc_html( $label ); ?></span>
+							<button type="button" class="button button-secondary wpdino-video-mp4-select" data-wpdino-video-mp4-select="<?php echo esc_attr( $section_key ); ?>"><?php esc_html_e( 'Select MP4', 'dinofolio' ); ?></button>
+							<button type="button" class="button-link-delete wpdino-video-mp4-remove" data-wpdino-video-mp4-remove="<?php echo esc_attr( $section_key ); ?>" <?php echo $mp4_id ? '' : 'style="display:none;"'; ?>><?php esc_html_e( 'Remove', 'dinofolio' ); ?></button>
+						</div>
+						<p class="description"><?php esc_html_e( 'Upload or choose an MP4 video from the Media Library.', 'dinofolio' ); ?></p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 		<?php
 	}
 
@@ -352,7 +507,9 @@ class Portfolio_Meta_Boxes {
 
 		$gallery_image_ids = array();
 		if ( isset( $_POST['wpdino_gallery_images'] ) && is_array( $_POST['wpdino_gallery_images'] ) ) {
-			$gallery_image_ids = $this->sanitize_gallery_image_ids( wp_unslash( $_POST['wpdino_gallery_images'] ) );
+			$gallery_image_ids = $this->sanitize_gallery_image_ids(
+				array_map( 'absint', wp_unslash( $_POST['wpdino_gallery_images'] ) )
+			);
 		}
 		update_post_meta( $post_id, '_wpdino_gallery_images', $gallery_image_ids );
 
@@ -360,6 +517,38 @@ class Portfolio_Meta_Boxes {
 			? $this->normalize_gallery_display_style( sanitize_key( wp_unslash( $_POST['wpdino_gallery_display_style'] ) ) )
 			: 'grid';
 		update_post_meta( $post_id, '_wpdino_gallery_display_style', $gallery_display_style );
+
+		$video_lightbox_type = isset( $_POST['video_lightbox_type'] )
+			? Portfolio_Video::normalize_type( sanitize_key( wp_unslash( $_POST['video_lightbox_type'] ) ) )
+			: 'mp4';
+
+		$this->save_video_meta_fields(
+			$post_id,
+			array(
+				'enabled' => isset( $_POST['wpdino_video_lightbox'] ) && 'on' === sanitize_key( wp_unslash( $_POST['wpdino_video_lightbox'] ) ) ? 'on' : 'off',
+				'type'    => $video_lightbox_type,
+				'url'     => isset( $_POST['video_lightbox_url'] ) ? esc_url_raw( wp_unslash( $_POST['video_lightbox_url'] ) ) : '',
+				'mp4_id'  => isset( $_POST['video_lightbox_mp4_id'] )
+					? Portfolio_Video::sanitize_mp4_attachment_id( absint( wp_unslash( $_POST['video_lightbox_mp4_id'] ) ) )
+					: 0,
+			)
+		);
+	}
+
+	/**
+	 * Save video tab fields.
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $fields  Sanitized video field values.
+	 * @return void
+	 */
+	private function save_video_meta_fields( $post_id, $fields ) {
+		$type = isset( $fields['type'] ) ? Portfolio_Video::normalize_type( $fields['type'] ) : 'mp4';
+
+		update_post_meta( $post_id, '_wpdino_video_lightbox', ! empty( $fields['enabled'] ) && 'on' === $fields['enabled'] ? 'on' : 'off' );
+		update_post_meta( $post_id, '_wpdino_video_lightbox_type', $type );
+		update_post_meta( $post_id, '_wpdino_video_lightbox_url', Portfolio_Video::sanitize_video_url( $type, isset( $fields['url'] ) ? $fields['url'] : '' ) );
+		update_post_meta( $post_id, '_wpdino_video_lightbox_mp4_id', isset( $fields['mp4_id'] ) ? absint( $fields['mp4_id'] ) : 0 );
 	}
 
 	/**
@@ -620,6 +809,37 @@ class Portfolio_Meta_Boxes {
 			true
 		);
 
+		$video_admin_deps = array(
+			'jquery',
+			'dinofolio-portfolio-meta-admin',
+		);
+
+		if ( function_exists( 'use_block_editor_for_post_type' ) && use_block_editor_for_post_type( 'wpdino_portfolio' ) ) {
+			$video_admin_deps[] = 'wp-edit-post';
+		}
+
+		wp_enqueue_script(
+			'dinofolio-portfolio-video-admin',
+			DINOFOLIO_URL . 'includes/admin/assets/js/portfolio-video-admin.js',
+			$video_admin_deps,
+			DINOFOLIO_VERSION,
+			true
+		);
+
+		wp_localize_script(
+			'dinofolio-portfolio-video-admin',
+			'wpdinoPortfolioVideo',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'dinofolio_portfolio_video_admin' ),
+				'i18n'    => array(
+					'useFeaturedImage' => esc_html__( 'Use as Featured Image', 'dinofolio' ),
+					'featuredImageSet' => esc_html__( 'This is the Featured Image', 'dinofolio' ),
+					'thumbError'       => esc_html__( 'Unable to set featured image from video.', 'dinofolio' ),
+				),
+			)
+		);
+
 		wp_localize_script(
 			'dinofolio-portfolio-meta-admin',
 			'wpdinoPortfolioMeta',
@@ -630,6 +850,8 @@ class Portfolio_Meta_Boxes {
 					'insertImages'   => esc_html__( 'Add to Gallery', 'dinofolio' ),
 					'removeImage'    => esc_html__( 'Remove image', 'dinofolio' ),
 					'dragToReorder'  => esc_html__( 'Drag to reorder', 'dinofolio' ),
+					'selectVideo'    => esc_html__( 'Select MP4 Video', 'dinofolio' ),
+					'useVideo'       => esc_html__( 'Use Video', 'dinofolio' ),
 				),
 			)
 		);

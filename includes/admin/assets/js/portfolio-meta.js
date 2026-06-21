@@ -1,6 +1,7 @@
 jQuery(function($) {
 	var hasUnsavedMetaChanges = false;
 	var i18n = (window.wpdinoPortfolioMeta && window.wpdinoPortfolioMeta.i18n) ? window.wpdinoPortfolioMeta.i18n : {};
+	var videoFrames = {};
 
 	var markDirty = function() {
 		hasUnsavedMetaChanges = true;
@@ -232,6 +233,107 @@ jQuery(function($) {
 			$relatedCountValue.text($(this).val());
 		});
 	}
+
+	var activateMetaTab = function(tabName) {
+		var $tabsRoot = $('[data-wpdino-meta-tabs]');
+		if (!$tabsRoot.length) {
+			return;
+		}
+
+		$tabsRoot.find('[data-wpdino-meta-tab]').each(function() {
+			var isActive = $(this).data('wpdino-meta-tab') === tabName;
+			$(this).toggleClass('is-active', isActive).attr('aria-selected', isActive ? 'true' : 'false');
+		});
+
+		$tabsRoot.find('[data-wpdino-meta-panel]').each(function() {
+			var isActive = $(this).data('wpdino-meta-panel') === tabName;
+			$(this).toggleClass('is-active', isActive).prop('hidden', !isActive);
+		});
+	};
+
+	$(document).on('click', '[data-wpdino-meta-tab]', function(event) {
+		event.preventDefault();
+		activateMetaTab($(this).data('wpdino-meta-tab'));
+		markDirty();
+	});
+
+	var syncVideoTypeFields = function($scope) {
+		var section = $scope.data('wpdino-video-type');
+		var type = $scope.val();
+
+		$('[data-wpdino-video-url-row="' + section + '"]').toggle(type !== 'mp4');
+		$('[data-wpdino-video-mp4-row="' + section + '"]').toggle(type === 'mp4');
+	};
+
+	$('.wpdino-video-type-select').each(function() {
+		syncVideoTypeFields($(this));
+	});
+
+	$(document).on('change', '.wpdino-video-type-select', function() {
+		syncVideoTypeFields($(this));
+		markDirty();
+	});
+
+	var syncVideoSectionVisibility = function() {
+		var enabled = $('input[name="wpdino_video_lightbox"]:checked').val() === 'on';
+		$('[data-wpdino-video-fields="lightbox"]').prop('hidden', !enabled);
+	};
+
+	syncVideoSectionVisibility();
+
+	$(document).on('change', 'input[name="wpdino_video_lightbox"]', function() {
+		syncVideoSectionVisibility();
+		markDirty();
+	});
+
+	var getVideoFieldPrefix = function() {
+		return 'video_lightbox';
+	};
+
+	$(document).on('click', '[data-wpdino-video-mp4-select]', function(event) {
+		event.preventDefault();
+
+		var section = $(this).data('wpdino-video-mp4-select');
+		var prefix = getVideoFieldPrefix();
+
+		if (videoFrames[section]) {
+			videoFrames[section].open();
+			return;
+		}
+
+		videoFrames[section] = wp.media({
+			title: i18n.selectVideo || 'Select MP4 Video',
+			button: { text: i18n.useVideo || 'Use Video' },
+			library: { type: 'video' },
+			multiple: false,
+		});
+
+		videoFrames[section].on('select', function() {
+			var attachment = videoFrames[section].state().get('selection').first().toJSON();
+			var $idField = $('#' + prefix + '_mp4_id');
+			var $label = $('[data-wpdino-video-mp4-label="' + section + '"]');
+			var $remove = $('[data-wpdino-video-mp4-remove="' + section + '"]');
+
+			$idField.val(attachment.id);
+			$label.text(attachment.title || attachment.filename || ('#' + attachment.id)).prop('hidden', false);
+			$remove.show();
+			markDirty();
+		});
+
+		videoFrames[section].open();
+	});
+
+	$(document).on('click', '[data-wpdino-video-mp4-remove]', function(event) {
+		event.preventDefault();
+
+		var section = $(this).data('wpdino-video-mp4-remove');
+		var prefix = getVideoFieldPrefix();
+
+		$('#' + prefix + '_mp4_id').val('');
+		$('[data-wpdino-video-mp4-label="' + section + '"]').text('').prop('hidden', true);
+		$(this).hide();
+		markDirty();
+	});
 
 	// Track changes inside the portfolio meta boxes.
 	$(document).on('input change', '#wpdino_portfolio_meta input, #wpdino_portfolio_meta select, #wpdino_portfolio_meta textarea, #wpdino_portfolio_gallery input, #wpdino_portfolio_gallery button', function() {

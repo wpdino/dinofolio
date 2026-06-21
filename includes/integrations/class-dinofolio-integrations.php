@@ -41,14 +41,49 @@ class Integrations {
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-util.php';
 		require_once DINOFOLIO_PATH . 'includes/integrations/class-dinofolio-shortcode-integration.php';
 		require_once DINOFOLIO_PATH . 'includes/integrations/class-dinofolio-gutenberg-integration.php';
-		require_once DINOFOLIO_PATH . 'includes/integrations/class-dinofolio-elementor-integration.php';
 		require_once DINOFOLIO_PATH . 'includes/integrations/class-dinofolio-wpbakery-integration.php';
 
 		// Default-first: Gutenberg integration is initialized first.
 		Gutenberg_Integration::instance();
 		Shortcode_Integration::instance();
-		Elementor_Integration::instance();
+		$this->init_elementor_integration();
 		WPBakery_Integration::instance();
+	}
+
+	/**
+	 * Load Elementor integration only when Elementor is available.
+	 *
+	 * @return void
+	 */
+	private function init_elementor_integration() {
+		add_action( 'elementor/loaded', array( $this, 'boot_elementor_integration' ), 0 );
+
+		if ( did_action( 'elementor/loaded' ) ) {
+			$this->boot_elementor_integration();
+		}
+	}
+
+	/**
+	 * Bootstrap Elementor widgets once Elementor core is ready.
+	 *
+	 * @return void
+	 */
+	public function boot_elementor_integration() {
+		static $booted = false;
+
+		if ( $booted || ! did_action( 'elementor/loaded' ) ) {
+			return;
+		}
+
+		if ( ! class_exists( '\Elementor\Widget_Base' ) ) {
+			add_action( 'elementor/init', array( $this, 'boot_elementor_integration' ), 9 );
+			return;
+		}
+
+		$booted = true;
+
+		require_once DINOFOLIO_PATH . 'includes/integrations/class-dinofolio-elementor-integration.php';
+		Elementor_Integration::instance();
 	}
 }
 

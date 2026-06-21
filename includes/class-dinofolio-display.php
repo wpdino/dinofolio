@@ -114,6 +114,24 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Plyr style handle (used by GLightbox for video slides).
+	 *
+	 * @return string
+	 */
+	public static function get_plyr_style_handle() {
+		return 'dinofolio-plyr';
+	}
+
+	/**
+	 * Plyr script handle (used by GLightbox for video slides).
+	 *
+	 * @return string
+	 */
+	public static function get_plyr_script_handle() {
+		return 'dinofolio-plyr';
+	}
+
+	/**
 	 * Portfolio lightbox initializer script handle.
 	 *
 	 * @return string
@@ -167,10 +185,25 @@ class WPDINO_Portfolio_Display {
 			'3.3.0'
 		);
 
+		wp_register_style(
+			self::get_plyr_style_handle(),
+			DINOFOLIO_URL . 'assets/vendor/plyr/plyr.min.css',
+			array(),
+			'3.7.8'
+		);
+
+		wp_register_script(
+			self::get_plyr_script_handle(),
+			DINOFOLIO_URL . 'assets/vendor/plyr/plyr.min.js',
+			array(),
+			'3.7.8',
+			true
+		);
+
 		wp_register_script(
 			self::get_glightbox_script_handle(),
 			DINOFOLIO_URL . 'assets/vendor/glightbox/glightbox.min.js',
-			array(),
+			array( self::get_plyr_script_handle() ),
 			'3.3.0',
 			true
 		);
@@ -178,7 +211,7 @@ class WPDINO_Portfolio_Display {
 		wp_register_script(
 			self::get_portfolio_lightbox_script_handle(),
 			DINOFOLIO_URL . 'assets/js/portfolio-lightbox.js',
-			array( self::get_glightbox_script_handle() ),
+			array( self::get_glightbox_script_handle(), self::get_plyr_script_handle() ),
 			DINOFOLIO_VERSION,
 			true
 		);
@@ -291,7 +324,9 @@ class WPDINO_Portfolio_Display {
 			$this->register_listing_assets();
 		}
 
+		wp_enqueue_style( self::get_plyr_style_handle() );
 		wp_enqueue_style( self::get_glightbox_style_handle() );
+		wp_enqueue_script( self::get_plyr_script_handle() );
 		wp_enqueue_script( self::get_glightbox_script_handle() );
 		wp_enqueue_script( self::get_portfolio_lightbox_script_handle() );
 	}
@@ -1085,14 +1120,20 @@ class WPDINO_Portfolio_Display {
 
 		$has_caption = ! empty( $attributes['showTitle'] ) || ! empty( $attributes['showExcerpt'] );
 
+		$video_settings     = \DinoFolio\Portfolio_Video::get_item_settings( $post_id );
+		$lightbox_video     = $video_settings['lightbox'];
+		$use_video_lightbox = ! empty( $attributes['lightbox'] ) && ! empty( $lightbox_video['enabled'] );
+
 		if ( ! empty( $attributes['lightbox'] ) ) {
 			self::flag_lightbox_assets();
 		}
 
 		$classes[] = 'dinofolio-item--overlay';
 
+		$overlay_classes = array( 'dinofolio-item-thumbnail', 'dinofolio-overlay-card' );
+
 		$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
-		$output .= '<div class="dinofolio-item-thumbnail dinofolio-overlay-card">';
+		$output .= '<div class="' . esc_attr( implode( ' ', $overlay_classes ) ) . '">';
 
 		$output .= wp_get_attachment_image(
 			$thumbnail_id,
@@ -1108,7 +1149,12 @@ class WPDINO_Portfolio_Display {
 
 		$output .= '<div class="dinofolio-overlay-actions">';
 
-		if ( ! empty( $attributes['lightbox'] ) ) {
+		if ( $use_video_lightbox ) {
+			$output .= '<a ' . $this->get_video_lightbox_link_attributes( $lightbox_video, get_the_title(), 'dinofolio-overlay-action dinofolio-overlay-action--video' ) . '>';
+			$output .= $this->get_overlay_video_icon_svg();
+			$output .= '<span class="screen-reader-text">' . esc_html__( 'Play video in lightbox', 'dinofolio' ) . '</span>';
+			$output .= '</a>';
+		} elseif ( ! empty( $attributes['lightbox'] ) ) {
 			$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
 			$output    .= '<a ' . $this->get_lightbox_link_attributes( $full_image[0], get_the_title(), 'dinofolio-overlay-action dinofolio-overlay-action--zoom' ) . '>';
 			$output    .= $this->get_overlay_zoom_icon_svg();
@@ -1188,6 +1234,71 @@ class WPDINO_Portfolio_Display {
 	 * @param string $extra_classes  Optional extra CSS classes for the anchor.
 	 * @return string HTML attributes.
 	 */
+	/**
+	 * Build attributes for a GLightbox video link.
+	 *
+	 * @param array  $video         Video settings.
+	 * @param string $title         Accessible label.
+	 * @param string $extra_classes Optional CSS classes.
+	 * @return string
+	 */
+	private function get_video_lightbox_link_attributes( $video, $title = '', $extra_classes = '' ) {
+		$gallery_id = self::$listing_gallery_id ? self::$listing_gallery_id : 'dinofolio-gallery';
+		$class      = 'glightbox dinofolio-lightbox-link dinofolio-video-lightbox-link';
+
+		if ( $extra_classes ) {
+			$class .= ' ' . $extra_classes;
+		}
+
+		$atts = array(
+			'href'         => esc_url( $video['url'] ),
+			'class'        => $class,
+			'data-gallery' => esc_attr( $gallery_id ),
+			'data-type'    => 'video',
+			'aria-label'   => esc_attr( $title ? $title : __( 'Play video in lightbox', 'dinofolio' ) ),
+		);
+
+		if ( $title ) {
+			$atts['data-title'] = esc_attr( $title );
+		}
+
+		$html = '';
+
+		foreach ( $atts as $name => $value ) {
+			if ( '' === $value ) {
+				continue;
+			}
+
+			$html .= sprintf( ' %s="%s"', $name, $value );
+		}
+
+		return trim( $html );
+	}
+
+	/**
+	 * Play icon overlay for video lightbox thumbnails.
+	 *
+	 * @return string
+	 */
+	private function get_lightbox_video_icon_html() {
+		if ( self::is_block_editor_preview() ) {
+			return '';
+		}
+
+		$svg = '<svg class="dinofolio-play-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>';
+
+		return '<span class="dinofolio-lightbox-video-icon" aria-hidden="true">' . $svg . '</span>';
+	}
+
+	/**
+	 * Play icon for overlay layout video action.
+	 *
+	 * @return string
+	 */
+	private function get_overlay_video_icon_svg() {
+		return '<svg class="dinofolio-overlay-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>';
+	}
+
 	private function get_lightbox_link_attributes( $image_url, $title = '', $extra_classes = '' ) {
 		$gallery_id = self::$listing_gallery_id ? self::$listing_gallery_id : 'dinofolio-gallery';
 
@@ -1271,19 +1382,23 @@ class WPDINO_Portfolio_Display {
 	 * @return string Image HTML
 	 */
 	private function get_portfolio_item_image( $attributes, $post_id ) {
-		
+
 		$image_size = $attributes['imageSize'];
 		if ( ! empty( $attributes['layout'] ) && 'masonry' === $attributes['layout'] ) {
 			$image_size = 'large';
 		}
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
-		
+
 		if ( ! $thumbnail_id ) {
 			return '';
 		}
 
+		$video_settings     = \DinoFolio\Portfolio_Video::get_item_settings( $post_id );
+		$lightbox_video     = $video_settings['lightbox'];
+		$use_video_lightbox = ! empty( $attributes['lightbox'] ) && ! empty( $lightbox_video['enabled'] );
+
 		$classes = array( 'dinofolio-item-thumbnail' );
-		
+
 		if ( $attributes['lightbox'] ) {
 			$classes[] = 'dinofolio-lightbox';
 		}
@@ -1299,14 +1414,20 @@ class WPDINO_Portfolio_Display {
 			'alt'   => esc_attr( get_the_title() ),
 		);
 
-		$output = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+		$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 
-		if ( $attributes['lightbox'] ) {
+		if ( $use_video_lightbox ) {
+			self::flag_lightbox_assets();
+			$output .= '<a ' . $this->get_video_lightbox_link_attributes( $lightbox_video, get_the_title() ) . '>';
+			$output .= wp_get_attachment_image( $thumbnail_id, $image_size, false, $image_attrs );
+			$output .= $this->get_lightbox_video_icon_html();
+			$output .= '</a>';
+		} elseif ( $attributes['lightbox'] ) {
 			$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
 			$output    .= '<a ' . $this->get_lightbox_link_attributes( $full_image[0], get_the_title() ) . '>';
 			$output    .= wp_get_attachment_image( $thumbnail_id, $image_size, false, $image_attrs );
-			$output .= $this->get_lightbox_zoom_icon_html();
-			$output .= '</a>';
+			$output    .= $this->get_lightbox_zoom_icon_html();
+			$output    .= '</a>';
 		} else {
 			$output .= '<a href="' . esc_url( get_permalink() ) . '">';
 			$output .= wp_get_attachment_image( $thumbnail_id, $image_size, false, $image_attrs );
@@ -1314,7 +1435,7 @@ class WPDINO_Portfolio_Display {
 		}
 
 		$output .= '</div>';
-		
+
 		return $output;
 	}
 

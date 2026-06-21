@@ -1022,7 +1022,7 @@ class DinoFolio_Settings {
 		);
 
 		$general_fields = array_merge( $general_fields, $default_settings_fields );
-		
+
 		// Add widgets subsection
 		if ( ! empty( $widget_fields ) ) {
 			$general_fields[] = array(

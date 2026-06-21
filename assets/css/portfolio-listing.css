@@ -381,6 +381,38 @@
 	transform: scale(1);
 }
 
+.dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-lightbox-video-icon {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	opacity: 0;
+	background: rgba(0, 0, 0, 0.4);
+	transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.dinofolio-item-thumbnail.dinofolio-lightbox:hover .dinofolio-lightbox-video-icon,
+.dinofolio-item:hover .dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-lightbox-video-icon {
+	opacity: 1;
+}
+
+.dinofolio-lightbox-video-icon .dinofolio-play-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	color: #fff;
+	filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+	transform: scale(0.92);
+	transition: transform 0.3s ease;
+}
+
+.dinofolio-item-thumbnail.dinofolio-lightbox:hover .dinofolio-play-icon,
+.dinofolio-item:hover .dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-play-icon {
+	transform: scale(1);
+}
+
 .dinofolio .dinofolio-item-image {
 	width: 100%;
 	display: block;

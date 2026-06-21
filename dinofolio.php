@@ -98,6 +98,9 @@ final class Plugin {
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-legacy-settings.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-display.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-template.php';
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-video.php';
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-video-thumb.php';
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-video-admin.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-meta-boxes.php';
 		require_once DINOFOLIO_PATH . 'includes/components/class-dinofolio-component-base.php';
 		require_once DINOFOLIO_PATH . 'includes/components/class-dinofolio-components.php';

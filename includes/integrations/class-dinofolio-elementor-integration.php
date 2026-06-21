@@ -7,8 +7,6 @@
 
 namespace DinoFolio;
 
-use Elementor\Plugin;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -40,11 +38,6 @@ class Elementor_Integration {
 	 * Constructor.
 	 */
 	private function __construct() {
-		if ( ! did_action( 'elementor/loaded' ) ) {
-			add_action( 'elementor/init', array( $this, 'bootstrap' ), 9 );
-			return;
-		}
-
 		$this->bootstrap();
 	}
 
@@ -54,10 +47,30 @@ class Elementor_Integration {
 	 * @return void
 	 */
 	public function bootstrap() {
+		if ( ! class_exists( '\Elementor\Widget_Base' ) ) {
+			return;
+		}
+
+		static $hooked = false;
+
+		if ( $hooked ) {
+			return;
+		}
+
+		$hooked = true;
+
 		require_once DINOFOLIO_PATH . 'includes/integrations/elementor/class-dinofolio-elementor-widget-base.php';
 
 		add_action( 'elementor/elements/categories_registered', array( $this, 'register_category' ) );
 		add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ) );
+
+		if ( did_action( 'elementor/elements/categories_registered' ) && class_exists( '\Elementor\Plugin' ) ) {
+			$this->register_category( \Elementor\Plugin::instance()->elements_manager );
+		}
+
+		if ( did_action( 'elementor/widgets/register' ) && class_exists( '\Elementor\Plugin' ) ) {
+			$this->register_widgets( \Elementor\Plugin::instance()->widgets_manager );
+		}
 	}
 
 	/**
