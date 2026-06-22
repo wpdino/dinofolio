@@ -18,7 +18,9 @@ if ( empty( $dinofolio_related_item ) || ! is_array( $dinofolio_related_item ) )
 <li class="dinofolio-related-card">
 	<a class="dinofolio-related-link" href="<?php echo esc_url( $dinofolio_related_item['url'] ); ?>">
 		<?php if ( ! empty( $dinofolio_related_item['thumbnail_url'] ) ) : ?>
-			<img class="dinofolio-related-thumb" src="<?php echo esc_url( $dinofolio_related_item['thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $dinofolio_related_item['title'] ); ?>">
+			<span class="dinofolio-related-thumb-wrap">
+				<img class="dinofolio-related-thumb" src="<?php echo esc_url( $dinofolio_related_item['thumbnail_url'] ); ?>" alt="<?php echo esc_attr( $dinofolio_related_item['title'] ); ?>">
+			</span>
 		<?php endif; ?>
 		<span class="dinofolio-related-title"><?php echo esc_html( $dinofolio_related_item['title'] ); ?></span>
 	</a>

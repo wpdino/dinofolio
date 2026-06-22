@@ -54,14 +54,9 @@
 			}
 
 			if (control.type === 'number') {
-				if (raw === undefined || raw === null || raw === '') {
-					sanitized[key] = parseInt(control.default, 10) || 0;
-					return;
-				}
-
 				sanitized[key] = parseInt(raw, 10);
-				if (isNaN(sanitized[key])) {
-					sanitized[key] = parseInt(control.default, 10) || 0;
+				if (isNaN(sanitized[key]) || sanitized[key] < 1) {
+					sanitized[key] = parseInt(control.default, 10) || 120;
 				}
 				return;
 			}
@@ -208,13 +203,16 @@
 		var style = attributes.style || 'standard';
 		var isOverlayStyle = style === 'overlay';
 		var hideReadMoreLabel = control.name === 'readMoreLabel' && !attributes.showReadMore;
+		var hideExcerptLength = control.name === 'excerptLength' && !attributes.showExcerpt;
+		var hideLoadMoreLabel = control.name === 'loadMoreLabel' && attributes.paginationMode !== 'load_more';
+		var hideLoadMoreTrigger = control.name === 'loadMoreTrigger' && attributes.paginationMode !== 'load_more';
 		var hideViewAllFields =
 			(control.name === 'viewAllText' || control.name === 'viewAllLink') && !attributes.showViewAll;
 		var hideOverlayFields =
 			isOverlayStyle &&
 			(control.name === 'showReadMore' || control.name === 'readMoreLabel' || control.name === 'showCategories');
 
-		if (hideReadMoreLabel || hideViewAllFields || hideOverlayFields) {
+		if (hideReadMoreLabel || hideExcerptLength || hideLoadMoreLabel || hideLoadMoreTrigger || hideViewAllFields || hideOverlayFields) {
 			return null;
 		}
 
@@ -338,6 +336,28 @@
 		return grouped;
 	}
 
+	function renderSectionPanels(sectionKeys, attributes, setAttributes, initiallyOpenKey) {
+		return sectionKeys.map(function (sectionKey) {
+			var sectionControls = groupedControls[sectionKey] || [];
+
+			if (!sectionControls.length) {
+				return null;
+			}
+
+			return el(
+				PanelBody,
+				{
+					key: sectionKey,
+					title: sections[sectionKey] || sectionKey,
+					initialOpen: sectionKey === initiallyOpenKey
+				},
+				sectionControls.map(function (control) {
+					return renderControl(control, attributes, setAttributes);
+				})
+			);
+		});
+	}
+
 	var controls = blockConfig.controls || [];
 	var groupedControls = groupControlsBySection(controls);
 
@@ -365,25 +385,26 @@
 				el(
 					InspectorControls,
 					{},
-					Object.keys(groupedControls).map(function (sectionKey) {
-						var sectionControls = groupedControls[sectionKey];
-
-						if (!sectionControls.length) {
-							return null;
-						}
-
-						return el(
-							PanelBody,
-							{
-								key: sectionKey,
-								title: sections[sectionKey] || sectionKey,
-								initialOpen: sectionKey === 'content'
-							},
-							sectionControls.map(function (control) {
-								return renderControl(control, attributes, setAttributes);
-							})
-						);
-					})
+					renderSectionPanels(
+						Object.keys(groupedControls).filter(function (sectionKey) {
+							return sectionKey !== 'style';
+						}),
+						attributes,
+						setAttributes,
+						'content'
+					)
+				),
+				el(
+					InspectorControls,
+					{ group: 'styles' },
+					renderSectionPanels(
+						Object.keys(groupedControls).filter(function (sectionKey) {
+							return sectionKey === 'style';
+						}),
+						attributes,
+						setAttributes,
+						'style'
+					)
 				),
 				el(
 					'div',

@@ -81,7 +81,9 @@
 	background: rgba(0, 0, 0, 0.48);
 }
 
-.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-action,
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-action:nth-child(1),
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-action:nth-child(2),
+.dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-action:nth-child(3),
 .dinofolio-listing--editor-preview.dinofolio-style-overlay .dinofolio-item--overlay:hover .dinofolio-overlay-caption {
 	opacity: 1;
 	transform: translateY(0) scale(1);

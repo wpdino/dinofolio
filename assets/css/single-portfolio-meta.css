@@ -7,7 +7,7 @@
 .dinofolio-meta-heading {
 	margin: 0 0 1rem;
 	font-size: 1.25rem;
-	font-weight: 600;
+	font-weight: 500;
 	line-height: 1.3;
 	color: #111;
 	letter-spacing: -0.01em;
@@ -16,6 +16,13 @@
 .dinofolio-featured-image-wrap {
 	margin: 0 0 1.5rem;
 	overflow: hidden;
+	border-radius: 10px;
+}
+
+.dinofolio-featured-image {
+	display: block;
+	width: 100%;
+	height: auto;
 }
 
 .dinofolio-portfolio-gallery {
@@ -272,7 +279,6 @@
 	height: 100%;
 	background: #fff;
 	text-decoration: none;
-	overflow: hidden;
 	transition: box-shadow 0.2s ease, border-color 0.2s ease;
 	text-decoration: none !important;
 }
@@ -282,29 +288,36 @@
 	border-color: #cfd9ec;
 }
 
+.dinofolio-related-thumb-wrap {
+	display: block;
+	overflow: hidden;
+	border-radius: 10px;
+	margin-bottom: 1.25rem;
+	background: #f3f4f6;
+}
+
 .dinofolio-related-thumb {
 	display: block;
 	width: 100%;
 	aspect-ratio: 16 / 10;
 	object-fit: cover;
-	background: #f3f4f6;
-	margin-bottom: 1rem;
 	transform: scale(1);
 	transform-origin: center center;
 	transition: transform 0.35s ease;
+	will-change: transform;
 }
 
 .dinofolio-related-link:hover .dinofolio-related-thumb,
-.dinofolio-related-link:focus .dinofolio-related-thumb {
+.dinofolio-related-link:focus-visible .dinofolio-related-thumb {
 	transform: scale(1.08);
 }
 
 .dinofolio-related-title {
 	display: block;
 	color: #191919;
-	font-size: 0.94rem;
+	font-size: 1rem;
 	line-height: 1.35;
-	font-weight: 600;
+	font-weight: 500;
 }
 
 /* Grid layout */

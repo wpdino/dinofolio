@@ -157,6 +157,13 @@ class Util {
 			}
 		}
 
+		if ( ! empty( $param['dependency']['element'] ) && isset( $param['dependency']['value'] ) ) {
+			$dependency_value = $param['dependency']['value'];
+			$control_args['condition'] = array(
+				$param['dependency']['element'] => is_array( $dependency_value ) ? $dependency_value : $dependency_value,
+			);
+		}
+
 		return array(
 			'name' => $param_name,
 			'args' => $control_args,
@@ -211,6 +218,14 @@ class Util {
 				'unique_values'  => true,
 				'display_inline' => true,
 				'values'         => $term_options,
+			);
+		}
+
+		if ( ! empty( $param['dependency']['element'] ) && isset( $param['dependency']['value'] ) ) {
+			$dependency_value = $param['dependency']['value'];
+			$vc_param['dependency'] = array(
+				'element' => $param['dependency']['element'],
+				'value'   => is_array( $dependency_value ) ? $dependency_value : array( $dependency_value ),
 			);
 		}
 

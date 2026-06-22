@@ -58,6 +58,13 @@ class WPDINO_Portfolio_Display {
 	private static $listing_script_deps = array();
 
 	/**
+	 * Whether a listing with AJAX load more was rendered.
+	 *
+	 * @var bool
+	 */
+	private static $listing_load_more_needed = false;
+
+	/**
 	 * Gallery group id for the listing currently being rendered.
 	 *
 	 * @var string
@@ -86,6 +93,9 @@ class WPDINO_Portfolio_Display {
 		
 		// Register shortcode
 		add_shortcode( 'dinofolio', array( $this, 'shortcode_handler' ) );
+
+		add_action( 'wp_ajax_dinofolio_load_more', array( $this, 'ajax_load_more' ) );
+		add_action( 'wp_ajax_nopriv_dinofolio_load_more', array( $this, 'ajax_load_more' ) );
 
 		add_action( 'init', array( $this, 'register_listing_assets' ) );
 
@@ -252,6 +262,16 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Mark that AJAX load more should load listing scripts and config.
+	 *
+	 * @return void
+	 */
+	public static function flag_listing_load_more() {
+		self::$listing_load_more_needed = true;
+		self::flag_listing_script( 'dinofolio' );
+	}
+
+	/**
 	 * Mark that category filter / listing JS should load on this request.
 	 *
 	 * @return void
@@ -290,6 +310,21 @@ class WPDINO_Portfolio_Display {
 		);
 
 		wp_enqueue_script( self::get_listing_script_handle() );
+
+		if ( self::$listing_load_more_needed ) {
+			wp_localize_script(
+				self::get_listing_script_handle(),
+				'dinofolioListing',
+				array(
+					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'dinofolio_load_more' ),
+					'i18n'    => array(
+						'loading' => esc_html__( 'Loading...', 'dinofolio' ),
+						'error'   => esc_html__( 'Unable to load more projects. Please try again.', 'dinofolio' ),
+					),
+				)
+			);
+		}
 	}
 
 	/**
@@ -484,10 +519,13 @@ class WPDINO_Portfolio_Display {
 			'showTitle'       => (bool) $this->settings->get_setting( 'taxonomy_show_title', true ),
 			'showCategories'  => (bool) $this->settings->get_setting( 'taxonomy_show_categories', true ),
 			'showExcerpt'     => (bool) $this->settings->get_setting( 'taxonomy_show_excerpt', true ),
+			'excerptLength'   => 120,
 			'showReadMore'    => (bool) $this->settings->get_setting( 'taxonomy_show_read_more', true ),
 			'readMoreLabel'   => $this->settings->get_setting( 'taxonomy_read_more_label', esc_html__( 'View Project', 'dinofolio' ) ),
 			'lightbox'        => (bool) $this->settings->get_setting( 'taxonomy_lightbox', true ),
-			'showPagination'  => (bool) $this->settings->get_setting( 'taxonomy_show_pagination', true ),
+			'paginationMode'  => (bool) $this->settings->get_setting( 'taxonomy_show_pagination', true ) ? 'pagination' : 'none',
+			'loadMoreLabel'   => esc_html__( 'Load More', 'dinofolio' ),
+			'loadMoreTrigger' => 'click',
 			'showViewAll'     => false,
 			'viewAllText'     => '',
 			'viewAllLink'     => '',
@@ -497,12 +535,12 @@ class WPDINO_Portfolio_Display {
 			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
 			'style'           => $this->settings->get_setting( 'taxonomy_style', 'standard' ),
 			'hoverEffect'     => $this->settings->get_setting( 'taxonomy_hover_effect', 'zoom' ),
-			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '' ),
+			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '#1a8960' ),
 			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
 			'buttonTextColor' => $this->settings->get_setting( 'taxonomy_button_text_color', '' ),
 			'mutedColor'      => $this->settings->get_setting( 'taxonomy_muted_color', '' ),
 			'gap'             => $this->settings->get_setting( 'taxonomy_gap', 24 ),
-			'radius'          => $this->settings->get_setting( 'taxonomy_radius', 8 ),
+			'radius'          => $this->settings->get_setting( 'taxonomy_radius', 10 ),
 		);
 
 		if ( $term->taxonomy === $this->taxonomies[0] ) {
@@ -702,6 +740,14 @@ class WPDINO_Portfolio_Display {
 			$normalized['tags'] = \DinoFolio\Util::sanitize_taxonomy_term_ids( $normalized['tags'] );
 		}
 
+		if ( isset( $normalized['showPagination'] ) && ! isset( $normalized['paginationMode'] ) ) {
+			$normalized['paginationMode'] = $normalized['showPagination'] ? 'pagination' : 'none';
+		}
+
+		if ( isset( $normalized['pagination_type'] ) && ! isset( $normalized['paginationMode'] ) ) {
+			$normalized['paginationMode'] = sanitize_key( (string) $normalized['pagination_type'] );
+		}
+
 		$enabled_features = $this->settings->get_setting( 'enabled_features', array( 'pagination' ) );
 		if ( ! is_array( $enabled_features ) ) {
 			$enabled_features = array( 'pagination' );
@@ -714,6 +760,7 @@ class WPDINO_Portfolio_Display {
 			'columns'        => $this->settings->get_setting( 'columns', 3 ),
 			'postsToShow'    => $this->settings->get_setting( 'items_per_page', 12 ),
 			'showExcerpt'    => $this->settings->get_setting( 'show_excerpt', true ),
+			'excerptLength'  => 120,
 			'showReadMore'   => true,
 			'readMoreLabel'  => esc_html__( 'View Project', 'dinofolio' ),
 			'imageSize'      => $this->settings->get_setting( 'image_size', 'large' ),
@@ -728,19 +775,21 @@ class WPDINO_Portfolio_Display {
 			'viewAllText'    => esc_html__( 'View All', 'dinofolio' ),
 			'viewAllLink'    => '',
 			'className'      => '',
-			'showPagination' => in_array( 'pagination', $enabled_features, true ),
+			'paginationMode' => in_array( 'pagination', $enabled_features, true ) ? 'pagination' : 'none',
+			'loadMoreLabel'  => esc_html__( 'Load More', 'dinofolio' ),
+			'loadMoreTrigger' => 'click',
 			'showTitle'      => true,
 			'showMeta'       => true,
 			'showCategories' => true,
 			'lightbox'        => $this->settings->get_setting( 'enable_lightbox', true ),
 			'hoverEffect'     => $this->settings->get_setting( 'hover_effect', 'zoom' ),
 			'style'           => $this->settings->get_setting( 'portfolio_style', 'standard' ),
-			'accentColor'     => '',
+			'accentColor'     => '#1a8960',
 			'hoverColor'      => '',
 			'buttonTextColor' => '',
 			'mutedColor'      => '',
 			'gap'                 => 24,
-			'radius'              => 8,
+			'radius'              => 10,
 			'enableParallax'      => false,
 		);
 
@@ -751,13 +800,23 @@ class WPDINO_Portfolio_Display {
 		$merged['columns']      = max( 1, min( 6, intval( $merged['columns'] ) ) );
 		$merged['postsToShow']  = max( 1, min( 100, intval( $merged['postsToShow'] ) ) );
 		$merged['showExcerpt']  = (bool) $merged['showExcerpt'];
+		$merged['excerptLength'] = $this->normalize_excerpt_length(
+			isset( $merged['excerptLength'] ) ? $merged['excerptLength'] : 120
+		);
 		$merged['showReadMore'] = (bool) $merged['showReadMore'];
 		$merged['showTitle']    = (bool) $merged['showTitle'];
 		$merged['showCategories'] = (bool) $merged['showCategories'];
 		$merged['showFilter']      = (bool) $merged['showFilter'];
 		$merged['showFilterCount'] = (bool) $merged['showFilterCount'];
 		$merged['showViewAll']  = (bool) $merged['showViewAll'];
-		$merged['showPagination'] = (bool) $merged['showPagination'];
+		$merged['paginationMode'] = $this->normalize_pagination_mode( isset( $merged['paginationMode'] ) ? $merged['paginationMode'] : 'pagination' );
+		$merged['loadMoreLabel'] = ! empty( $merged['loadMoreLabel'] )
+			? sanitize_text_field( $merged['loadMoreLabel'] )
+			: esc_html__( 'Load More', 'dinofolio' );
+		$merged['loadMoreTrigger'] = $this->normalize_load_more_trigger(
+			isset( $merged['loadMoreTrigger'] ) ? $merged['loadMoreTrigger'] : 'click'
+		);
+		$merged['showPagination'] = ( 'pagination' === $merged['paginationMode'] );
 		$merged['lightbox']            = (bool) $merged['lightbox'];
 		$merged['enableParallax']      = (bool) $merged['enableParallax'];
 
@@ -876,23 +935,37 @@ class WPDINO_Portfolio_Display {
 	 * @return array
 	 */
 	private function get_listing_js_config( $attributes ) {
-		$uses_isotope = ! empty( $attributes['showFilter'] ) || 'masonry' === $attributes['layout'];
-		$needs_script = $uses_isotope
+		$pagination_mode = isset( $attributes['paginationMode'] ) ? $attributes['paginationMode'] : 'none';
+		$uses_isotope    = ! empty( $attributes['showFilter'] ) || 'masonry' === $attributes['layout'];
+		$needs_script    = $uses_isotope
 			|| ! empty( $attributes['enableParallax'] )
-			|| ! empty( $attributes['showFilter'] );
+			|| ! empty( $attributes['showFilter'] )
+			|| 'load_more' === $pagination_mode;
 
 		if ( ! $needs_script ) {
 			return array();
 		}
 
-		return array(
-			'layout'    => $attributes['layout'],
-			'columns'   => (int) $attributes['columns'],
-			'gap'       => (int) $attributes['gap'],
-			'filter'    => (bool) $attributes['showFilter'],
-			'isotope'   => $uses_isotope,
-			'parallax'  => ! empty( $attributes['enableParallax'] ),
+		$config = array(
+			'layout'          => $attributes['layout'],
+			'columns'         => (int) $attributes['columns'],
+			'gap'             => (int) $attributes['gap'],
+			'filter'          => (bool) $attributes['showFilter'],
+			'showFilterCount' => ! empty( $attributes['showFilterCount'] ),
+			'isotope'         => $uses_isotope,
+			'parallax'        => ! empty( $attributes['enableParallax'] ),
 		);
+
+		if ( 'load_more' === $pagination_mode ) {
+			$config['loadMore']        = true;
+			$config['loadMoreTrigger'] = $this->normalize_load_more_trigger(
+				isset( $attributes['loadMoreTrigger'] ) ? $attributes['loadMoreTrigger'] : 'click'
+			);
+			$config['query']           = $this->get_load_more_query_payload( $attributes );
+			self::flag_listing_load_more();
+		}
+
+		return $config;
 	}
 
 	/**
@@ -934,7 +1007,6 @@ class WPDINO_Portfolio_Display {
 			'dinofolio-layout-' . $attributes['layout'],
 			'dinofolio-columns-' . $attributes['columns'],
 			'dinofolio-style-' . $attributes['style'],
-			'dinofolio-hover-' . $attributes['hoverEffect'],
 		);
 
 		$listing_config = $this->get_listing_js_config( $attributes );
@@ -997,21 +1069,21 @@ class WPDINO_Portfolio_Display {
 		// Add portfolio items wrapper - match SCSS structure
 		$output .= '<div class="dinofolio-items-list">';
 
-		// Loop through posts
-		while ( $query->have_posts() ) {
-			$query->the_post();
-			$output .= $this->get_portfolio_item_html( $attributes );
-		}
+		$output .= $this->get_portfolio_items_html( $query, $attributes );
 
 		$output .= '</div>'; // Close portfolio grid
 
-		// Add pagination if enabled
-		if ( $attributes['showPagination'] && $query->max_num_pages > 1 ) {
+		$pagination_mode = isset( $attributes['paginationMode'] ) ? $attributes['paginationMode'] : 'none';
+
+		// Add pagination or load more when enabled.
+		if ( 'pagination' === $pagination_mode && $query->max_num_pages > 1 ) {
 			$output .= $this->get_pagination_html( $query, $attributes );
+		} elseif ( 'load_more' === $pagination_mode && $query->max_num_pages > 1 ) {
+			$output .= $this->get_load_more_html( $query, $attributes );
 		}
 
-		// Add view all link if enabled
-		if ( $attributes['showViewAll'] && ! empty( $attributes['viewAllLink'] ) ) {
+		// Add view all link if enabled.
+		if ( $attributes['showViewAll'] ) {
 			$output .= $this->get_view_all_html( $attributes );
 		}
 
@@ -1055,27 +1127,25 @@ class WPDINO_Portfolio_Display {
 
 		// Default grid / masonry card structure
 		$details_html = '';
+		if ( $attributes['showCategories'] && $terms && ! is_wp_error( $terms ) ) {
+			$details_html .= $this->get_portfolio_item_categories_html( $terms );
+		}
 		if ( $attributes['showTitle'] ) {
 			$details_html .= '<h3 class="dinofolio-item-title">';
 			$details_html .= '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
 			$details_html .= '</h3>';
 		}
-		if ( $attributes['showCategories'] && $terms && ! is_wp_error( $terms ) ) {
-			$details_html .= $this->get_portfolio_item_categories_html( $terms );
-		}
 		if ( $attributes['showExcerpt'] ) {
-			$excerpt = get_the_excerpt();
-			if ( $excerpt && ! empty( $attributes['layout'] ) && 'masonry' === $attributes['layout'] ) {
-				$excerpt = wp_trim_words( $excerpt, 18, '…' );
-			}
+			$excerpt = $this->get_listing_excerpt_text( $post_id );
+			$excerpt = $this->trim_listing_excerpt( $excerpt, $attributes );
 			if ( $excerpt ) {
-				$details_html .= '<div class="dinofolio-item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
+				$details_html .= $this->get_portfolio_item_excerpt_html( $excerpt );
 			}
 		}
 		if ( $attributes['showReadMore'] ) {
 			$read_more_label = ! empty( $attributes['readMoreLabel'] ) ? $attributes['readMoreLabel'] : esc_html__( 'View Project', 'dinofolio' );
 			$details_html .= '<div class="dinofolio-item-button">';
-			$details_html .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-button-link">' . esc_html( $read_more_label ) . '</a>';
+			$details_html .= $this->get_read_more_link_html( get_permalink(), $read_more_label );
 			$details_html .= '</div>';
 		}
 
@@ -1089,12 +1159,171 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
-	 * SVG icon shown before portfolio category names.
+	 * Build "View Project" link markup.
+	 *
+	 * @param string $url   Destination URL.
+	 * @param string $label Link label.
+	 * @return string
+	 */
+	private function get_read_more_link_html( $url, $label ) {
+		$output  = '<a href="' . esc_url( $url ) . '" class="dinofolio-button-link">';
+		$output .= '<span class="dinofolio-button-link-text">' . esc_html( $label ) . '</span>';
+		$output .= '<span class="dinofolio-button-link-icon" aria-hidden="true">';
+		$output .= $this->get_read_more_icon_svg();
+		$output .= '</span>';
+		$output .= '</a>';
+
+		return $output;
+	}
+
+	/**
+	 * Circled arrow icon for read-more links.
 	 *
 	 * @return string
 	 */
-	private function get_category_icon_svg() {
-		return '<svg class="dinofolio-category-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>';
+	private function get_read_more_icon_svg() {
+		return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.25"/><path d="m10 8 4 4-4 4"/></svg>';
+	}
+
+	/**
+	 * Build category list markup for a portfolio item.
+	 *
+	 * @param array $terms WP_Term objects.
+	 * @return string
+	 */
+	private function get_portfolio_item_categories_html( $terms ) {
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return '';
+		}
+
+		$pills = array();
+
+		foreach ( $terms as $term ) {
+			if ( ! $term instanceof \WP_Term ) {
+				continue;
+			}
+
+			$icon_html = class_exists( '\DinoFolio\Portfolio_Category_Icon' )
+				? \DinoFolio\Portfolio_Category_Icon::render_icon_html( $term )
+				: '';
+
+			$pills[] = '<a class="dinofolio-category-pill" href="' . esc_url( get_term_link( $term ) ) . '">'
+				. $icon_html
+				. '<span class="dinofolio-category-pill-label">' . esc_html( $term->name ) . '</span>'
+				. '</a>';
+		}
+
+		if ( empty( $pills ) ) {
+			return '';
+		}
+
+		return '<div class="dinofolio-item-categories">' . implode( '', $pills ) . '</div>';
+	}
+
+	/**
+	 * Build excerpt markup for listing cards.
+	 *
+	 * @param string $excerpt Post excerpt text.
+	 * @return string
+	 */
+	private function get_portfolio_item_excerpt_html( $excerpt ) {
+		$excerpt = trim( (string) $excerpt );
+
+		if ( '' === $excerpt ) {
+			return '';
+		}
+
+		$excerpt_content = wp_kses_post( $excerpt );
+
+		if ( '' === trim( wp_strip_all_tags( $excerpt_content ) ) ) {
+			return '';
+		}
+
+		if ( false === strpos( $excerpt_content, '<p' ) ) {
+			$excerpt_content = '<p>' . $excerpt_content . '</p>';
+		}
+
+		return '<div class="dinofolio-item-excerpt">' . $excerpt_content . '</div>';
+	}
+
+	/**
+	 * Normalize excerpt character limit.
+	 *
+	 * @param mixed $length Raw excerpt length.
+	 * @return int
+	 */
+	private function normalize_excerpt_length( $length ) {
+		$length = (int) $length;
+
+		if ( $length < 1 ) {
+			$length = 120;
+		}
+
+		return max( 20, min( 1000, $length ) );
+	}
+
+	/**
+	 * Get raw excerpt text for listing cards without WordPress' default word trim.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return string
+	 */
+	private function get_listing_excerpt_text( $post_id = 0 ) {
+		$post_id = $post_id ? (int) $post_id : (int) get_the_ID();
+		$post    = get_post( $post_id );
+
+		if ( ! $post ) {
+			return '';
+		}
+
+		$excerpt = trim( (string) $post->post_excerpt );
+
+		if ( '' !== $excerpt ) {
+			return $excerpt;
+		}
+
+		$content = (string) $post->post_content;
+		$content = strip_shortcodes( $content );
+		$content = excerpt_remove_blocks( $content );
+		$content = wp_strip_all_tags( $content );
+		$content = str_replace( array( "\r\n", "\r", "\n" ), ' ', $content );
+		$content = preg_replace( '/\s+/', ' ', $content );
+
+		return trim( (string) $content );
+	}
+
+	/**
+	 * Trim excerpt based on listing settings.
+	 *
+	 * @param string $excerpt    Raw excerpt text.
+	 * @param array  $attributes Listing attributes.
+	 * @return string
+	 */
+	private function trim_listing_excerpt( $excerpt, $attributes ) {
+		$excerpt = trim( (string) $excerpt );
+
+		if ( '' === $excerpt ) {
+			return '';
+		}
+
+		$char_limit = $this->normalize_excerpt_length(
+			isset( $attributes['excerptLength'] ) ? $attributes['excerptLength'] : 120
+		);
+		$excerpt    = wp_strip_all_tags( $excerpt );
+
+		if ( function_exists( 'mb_strlen' ) && function_exists( 'mb_substr' ) ) {
+			if ( mb_strlen( $excerpt ) > $char_limit ) {
+				return rtrim( mb_substr( $excerpt, 0, $char_limit ) ) . '…';
+			}
+
+			return $excerpt;
+		}
+
+		if ( strlen( $excerpt ) > $char_limit ) {
+			return rtrim( substr( $excerpt, 0, $char_limit ) ) . '…';
+		}
+
+		return $excerpt;
 	}
 
 	/**
@@ -1177,9 +1406,10 @@ class WPDINO_Portfolio_Display {
 			}
 
 			if ( ! empty( $attributes['showExcerpt'] ) ) {
-				$excerpt = get_the_excerpt();
+				$excerpt = $this->get_listing_excerpt_text( $post_id );
+				$excerpt = $this->trim_listing_excerpt( $excerpt, $attributes );
 				if ( $excerpt ) {
-					$output .= '<div class="dinofolio-item-excerpt">' . wp_kses_post( $excerpt ) . '</div>';
+					$output .= $this->get_portfolio_item_excerpt_html( $excerpt );
 				}
 			}
 
@@ -1337,41 +1567,6 @@ class WPDINO_Portfolio_Display {
 		}
 
 		return trim( $html );
-	}
-
-	/**
-	 * Build category list markup for a portfolio item.
-	 *
-	 * @param array $terms WP_Term objects.
-	 * @return string
-	 */
-	private function get_portfolio_item_categories_html( $terms ) {
-		if ( empty( $terms ) || is_wp_error( $terms ) ) {
-			return '';
-		}
-
-		$term_links = array();
-
-		foreach ( $terms as $term ) {
-			if ( ! $term instanceof \WP_Term ) {
-				continue;
-			}
-
-			$term_links[] = '<a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a>';
-		}
-
-		if ( empty( $term_links ) ) {
-			return '';
-		}
-
-		$output  = '<div class="dinofolio-item-categories">';
-		$output .= $this->get_category_icon_svg();
-		$output .= '<span class="dinofolio-item-categories-list">';
-		$output .= implode( '<span class="dinofolio-category-sep" aria-hidden="true">, </span>', $term_links );
-		$output .= '</span>';
-		$output .= '</div>';
-
-		return $output;
 	}
 
 	/**
@@ -1737,10 +1932,21 @@ class WPDINO_Portfolio_Display {
 	 * @return string View all HTML
 	 */
 	private function get_view_all_html( $attributes ) {
-		
+		$url = ! empty( $attributes['viewAllLink'] )
+			? $attributes['viewAllLink']
+			: get_post_type_archive_link( $this->post_type );
+
+		if ( empty( $url ) ) {
+			return '';
+		}
+
+		$label = ! empty( $attributes['viewAllText'] )
+			? $attributes['viewAllText']
+			: esc_html__( 'View All', 'dinofolio' );
+
 		$output = '<div class="dinofolio-view-all">';
-		$output .= '<a href="' . esc_url( $attributes['viewAllLink'] ) . '" class="dinofolio-view-all-btn dinofolio-button-link">';
-		$output .= esc_html( $attributes['viewAllText'] );
+		$output .= '<a href="' . esc_url( $url ) . '" class="dinofolio-view-all-btn dinofolio-button-link">';
+		$output .= esc_html( $label );
 		$output .= '</a>';
 		$output .= '</div>';
 
@@ -1758,6 +1964,214 @@ class WPDINO_Portfolio_Display {
 		$message = apply_filters( 'wpdino_portfolio_no_posts_message', esc_html__( 'No portfolio items found.', 'dinofolio' ), $attributes );
 		
 		return '<div class="dinofolio-no-posts">' . $message . '</div>';
+	}
+
+	/**
+	 * Normalize pagination mode value.
+	 *
+	 * @param mixed $mode Raw pagination mode.
+	 * @return string
+	 */
+	private function normalize_pagination_mode( $mode ) {
+		$mode = sanitize_key( (string) $mode );
+
+		if ( in_array( $mode, array( 'none', 'pagination', 'load_more' ), true ) ) {
+			return $mode;
+		}
+
+		return 'pagination';
+	}
+
+	/**
+	 * Normalize load more trigger value.
+	 *
+	 * @param mixed $trigger Raw load more trigger.
+	 * @return string
+	 */
+	private function normalize_load_more_trigger( $trigger ) {
+		$trigger = sanitize_key( (string) $trigger );
+
+		if ( in_array( $trigger, array( 'click', 'in_view' ), true ) ) {
+			return $trigger;
+		}
+
+		return 'click';
+	}
+
+	/**
+	 * Build HTML for all items in a portfolio query.
+	 *
+	 * @param WP_Query $query      Portfolio query.
+	 * @param array    $attributes Listing attributes.
+	 * @return string
+	 */
+	private function get_portfolio_items_html( $query, $attributes ) {
+		$output = '';
+
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$output .= $this->get_portfolio_item_html( $attributes );
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Attributes required to rebuild a listing for AJAX load more.
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @return array
+	 */
+	private function get_load_more_query_payload( $attributes ) {
+		$keys = array(
+			'layout',
+			'columns',
+			'postsToShow',
+			'showTitle',
+			'showCategories',
+			'showExcerpt',
+			'excerptLength',
+			'showReadMore',
+			'readMoreLabel',
+			'imageSize',
+			'lightbox',
+			'orderBy',
+			'order',
+			'categories',
+			'tags',
+			'style',
+			'hoverEffect',
+			'enableParallax',
+			'gap',
+			'radius',
+			'accentColor',
+			'hoverColor',
+			'buttonTextColor',
+			'mutedColor',
+			'className',
+			'showFilter',
+			'showFilterCount',
+		);
+
+		$payload = array();
+
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $attributes ) ) {
+				$payload[ $key ] = $attributes[ $key ];
+			}
+		}
+
+		return $payload;
+	}
+
+	/**
+	 * Load more button markup for AJAX pagination.
+	 *
+	 * @param WP_Query $query      Portfolio query.
+	 * @param array    $attributes Listing attributes.
+	 * @return string
+	 */
+	private function get_load_more_html( $query, $attributes ) {
+		$total_pages  = (int) $query->max_num_pages;
+		$current_page = max( 1, (int) $query->get( 'paged' ) );
+
+		if ( $total_pages <= 1 || $current_page >= $total_pages ) {
+			return '';
+		}
+
+		$label = ! empty( $attributes['loadMoreLabel'] )
+			? $attributes['loadMoreLabel']
+			: esc_html__( 'Load More', 'dinofolio' );
+		$trigger = $this->normalize_load_more_trigger(
+			isset( $attributes['loadMoreTrigger'] ) ? $attributes['loadMoreTrigger'] : 'click'
+		);
+		$wrap_classes = 'dinofolio-load-more';
+
+		if ( 'in_view' === $trigger ) {
+			$wrap_classes .= ' dinofolio-load-more--in-view';
+		}
+
+		$output  = '<div class="' . esc_attr( $wrap_classes ) . '" data-max-pages="' . esc_attr( $total_pages ) . '" data-current-page="' . esc_attr( $current_page ) . '" data-load-more-trigger="' . esc_attr( $trigger ) . '">';
+
+		if ( 'click' === $trigger ) {
+			$output .= '<button type="button" class="dinofolio-load-more-btn" data-page="' . esc_attr( $current_page ) . '" aria-busy="false">';
+			$output .= '<span class="dinofolio-load-more-btn-text">' . esc_html( $label ) . '</span>';
+			$output .= '</button>';
+		}
+		$output .= '<div class="dinofolio-load-more-preloader" hidden aria-hidden="true">';
+		$output .= '<span class="dinofolio-load-more-preloader-dots" aria-hidden="true">';
+		$output .= '<span class="dinofolio-load-more-preloader-dot"></span>';
+		$output .= '<span class="dinofolio-load-more-preloader-dot"></span>';
+		$output .= '<span class="dinofolio-load-more-preloader-dot"></span>';
+		$output .= '</span>';
+		$output .= '<span class="dinofolio-load-more-preloader-text">' . esc_html__( 'Loading', 'dinofolio' ) . '</span>';
+		$output .= '</div>';
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * AJAX handler for portfolio load more requests.
+	 *
+	 * @return void
+	 */
+	public function ajax_load_more() {
+		check_ajax_referer( 'dinofolio_load_more', 'nonce' );
+
+		$page = isset( $_POST['page'] ) ? max( 1, absint( wp_unslash( $_POST['page'] ) ) ) : 1;
+
+		$attributes = array();
+		if ( isset( $_POST['attributes'] ) ) {
+			$decoded = json_decode( wp_unslash( (string) $_POST['attributes'] ), true );
+			if ( is_array( $decoded ) ) {
+				$attributes = $decoded;
+			}
+		}
+
+		if ( isset( $_POST['galleryId'] ) ) {
+			self::$listing_gallery_id = sanitize_key( wp_unslash( (string) $_POST['galleryId'] ) );
+		}
+
+		$attributes['paged'] = $page;
+		$attributes          = $this->merge_attributes_with_defaults( $attributes );
+
+		$query = new WP_Query( $this->build_query( $attributes ) );
+
+		if ( ! $query->have_posts() ) {
+			wp_send_json_error(
+				array(
+					'message' => esc_html__( 'No more portfolio items found.', 'dinofolio' ),
+				),
+				404
+			);
+		}
+
+		$html = $this->get_portfolio_items_html( $query, $attributes );
+		wp_reset_postdata();
+
+		$response = array(
+			'html'     => $html,
+			'page'     => $page,
+			'maxPages' => (int) $query->max_num_pages,
+			'hasMore'  => $page < (int) $query->max_num_pages,
+		);
+
+		if ( ! empty( $attributes['showFilter'] ) ) {
+			$filter_terms = array();
+
+			foreach ( $this->get_filter_terms_for_query( $query ) as $term ) {
+				$filter_terms[] = array(
+					'slug'   => $term->slug,
+					'name'   => $term->name,
+					'filter' => '.dinofolio-cat-' . $term->slug,
+				);
+			}
+
+			$response['filterTerms'] = $filter_terms;
+		}
+
+		wp_send_json_success( $response );
 	}
 
 	/**
@@ -1811,6 +2225,7 @@ class WPDINO_Portfolio_Display {
 			'columns'        => 3,
 			'posts_to_show'  => 12,
 			'show_excerpt'   => 'true',
+			'excerpt_length' => 120,
 			'show_read_more' => 'true', 
 			'image_size'     => 'large',
 			'order_by'       => 'date',
@@ -1821,7 +2236,11 @@ class WPDINO_Portfolio_Display {
 			'show_view_all'  => 'false',
 			'view_all_text'  => 'View All',
 			'view_all_link'  => '',
-			'class_name'     => '',
+			'class_name'      => '',
+			'pagination_mode' => 'pagination',
+			'pagination_type' => 'pagination',
+			'load_more_label' => esc_html__( 'Load More', 'dinofolio' ),
+			'load_more_trigger' => 'click',
 			'show_pagination' => 'true',
 			'show_title'     => 'true',
 			'show_meta'      => 'true',
@@ -1837,6 +2256,7 @@ class WPDINO_Portfolio_Display {
 			'columns'        => intval( $attributes['columns'] ),
 			'postsToShow'    => intval( $attributes['posts_to_show'] ),
 			'showExcerpt'    => filter_var( $attributes['show_excerpt'], FILTER_VALIDATE_BOOLEAN ),
+			'excerptLength'  => $this->normalize_excerpt_length( $attributes['excerpt_length'] ),
 			'showReadMore'   => filter_var( $attributes['show_read_more'], FILTER_VALIDATE_BOOLEAN ),
 			'imageSize'      => sanitize_text_field( $attributes['image_size'] ),
 			'orderBy'        => sanitize_text_field( $attributes['order_by'] ),
@@ -1847,7 +2267,15 @@ class WPDINO_Portfolio_Display {
 			'viewAllText'    => sanitize_text_field( $attributes['view_all_text'] ),
 			'viewAllLink'    => esc_url_raw( $attributes['view_all_link'] ),
 			'className'      => sanitize_text_field( $attributes['class_name'] ),
-			'showPagination' => filter_var( $attributes['show_pagination'], FILTER_VALIDATE_BOOLEAN ),
+			'paginationMode' => $this->normalize_pagination_mode(
+				! empty( $attributes['pagination_mode'] )
+					? $attributes['pagination_mode']
+					: ( ! empty( $attributes['pagination_type'] ) ? $attributes['pagination_type'] : ( filter_var( $attributes['show_pagination'], FILTER_VALIDATE_BOOLEAN ) ? 'pagination' : 'none' ) )
+			),
+			'loadMoreLabel'  => ! empty( $attributes['load_more_label'] ) ? sanitize_text_field( $attributes['load_more_label'] ) : esc_html__( 'Load More', 'dinofolio' ),
+			'loadMoreTrigger' => $this->normalize_load_more_trigger(
+				! empty( $attributes['load_more_trigger'] ) ? $attributes['load_more_trigger'] : 'click'
+			),
 			'showTitle'      => filter_var( $attributes['show_title'], FILTER_VALIDATE_BOOLEAN ),
 			'showMeta'       => filter_var( $attributes['show_meta'], FILTER_VALIDATE_BOOLEAN ),
 			'showCategories' => filter_var( $attributes['show_categories'], FILTER_VALIDATE_BOOLEAN ),

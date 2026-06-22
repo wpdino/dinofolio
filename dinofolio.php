@@ -95,6 +95,7 @@ final class Plugin {
 
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-admin-menus.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-custom-post.php';
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-category-icon.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-legacy-settings.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-display.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-template.php';
