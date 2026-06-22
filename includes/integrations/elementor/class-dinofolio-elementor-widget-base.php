@@ -155,6 +155,7 @@ class Elementor_Widget_Base extends Widget_Base {
 		}
 
 		return array(
+			'elementor-frontend',
 			'dinofolio-isotope',
 			\WPDINO_Portfolio_Display::get_listing_script_handle(),
 		);
@@ -234,6 +235,14 @@ class Elementor_Widget_Base extends Widget_Base {
 
 			$this->end_controls_section();
 		}
+
+		/**
+		 * Fires after Elementor controls are registered for a DinoFolio widget.
+		 *
+		 * @param self           $widget    Widget instance.
+		 * @param Component_Base $component Component instance.
+		 */
+		do_action( 'dinofolio_register_elementor_controls', $this, $component );
 	}
 
 	/**
@@ -258,7 +267,28 @@ class Elementor_Widget_Base extends Widget_Base {
 
 		$attributes = Util::normalize_atts( $settings, $component, 'elementor' );
 
-		echo $component->render( $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		/**
+		 * Fires before an Elementor DinoFolio widget is rendered.
+		 *
+		 * @param array          $attributes Normalized widget attributes.
+		 * @param Component_Base $component  Component instance.
+		 * @param self           $widget     Widget instance.
+		 */
+		do_action( 'dinofolio_before_render_elementor_widget', $attributes, $component, $this );
+
+		$output = $component->render( $attributes );
+
+		/**
+		 * Filter Elementor DinoFolio widget output.
+		 *
+		 * @param string         $output     Rendered HTML.
+		 * @param array          $attributes Normalized widget attributes.
+		 * @param Component_Base $component  Component instance.
+		 * @param self           $widget     Widget instance.
+		 */
+		$output = apply_filters( 'dinofolio_render_elementor_widget_output', $output, $attributes, $component, $this );
+
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

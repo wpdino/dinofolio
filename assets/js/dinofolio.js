@@ -4,21 +4,38 @@
 ( function () {
 	'use strict';
 
-	var initializedBlocks = new WeakSet();
 	var parallaxBlocks = [];
 	var parallaxTicking = false;
 	var parallaxListenersBound = false;
 	var elementorListingsBound = false;
+
+	var ELEMENTOR_PORTFOLIO_WIDGET_TYPES = {
+		'dinofolio-portfolio.default': true,
+		'dinofolio-portfolio-listing.default': true,
+	};
 
 	function prefersReducedMotion() {
 		return window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
 	}
 
 	function isElementorPreviewContext() {
-		return (
+		if (
 			document.body.classList.contains( 'elementor-page' ) ||
 			/elementor-preview=/.test( window.location.search )
-		);
+		) {
+			return true;
+		}
+
+		// Elementor live preview iframe runs frontend scripts in edit mode.
+		if (
+			window.elementorFrontend &&
+			typeof window.elementorFrontend.isEditMode === 'function' &&
+			window.elementorFrontend.isEditMode()
+		) {
+			return true;
+		}
+
+		return false;
 	}
 
 	function isEditorContext() {
@@ -303,9 +320,11 @@
 	function initCssFilter( block ) {
 		var filterBar = block.querySelector( '.dinofolio-filter' );
 
-		if ( ! filterBar ) {
+		if ( ! filterBar || filterBar.dataset.dinofolioFilterBound === '1' ) {
 			return;
 		}
+
+		filterBar.dataset.dinofolioFilterBound = '1';
 
 		filterBar.addEventListener( 'click', function ( event ) {
 			var link = event.target.closest( 'a[data-filter]' );
@@ -492,17 +511,68 @@
 		} );
 	}
 
-	function initListingBlock( block ) {
-		if ( initializedBlocks.has( block ) ) {
+	function destroyListingBlock( block ) {
+		if ( ! block ) {
 			return;
 		}
 
-		initializedBlocks.add( block );
+		if ( block.dinofolioIsotope && typeof block.dinofolioIsotope.destroy === 'function' ) {
+			block.dinofolioIsotope.destroy();
+		}
+
+		delete block.dinofolioIsotope;
+
+		var loadMore = block.querySelector( '.dinofolio-load-more' );
+
+		if ( loadMore ) {
+			if ( loadMore.dinofolioLoadMoreObserver ) {
+				loadMore.dinofolioLoadMoreObserver.disconnect();
+				loadMore.dinofolioLoadMoreObserver = null;
+			}
+
+			delete loadMore.dataset.dinofolioLoadMoreBound;
+			delete loadMore.dataset.dinofolioLoadMoreLoading;
+		}
+
+		var filterBar = block.querySelector( '.dinofolio-filter' );
+
+		if ( filterBar ) {
+			delete filterBar.dataset.dinofolioFilterBound;
+		}
+
+		var parallaxIndex = parallaxBlocks.indexOf( block );
+
+		if ( parallaxIndex !== -1 ) {
+			parallaxBlocks.splice( parallaxIndex, 1 );
+		}
+
+		delete block.dataset.dinofolioListingInit;
+	}
+
+	function initListingBlock( block, options ) {
+		options = options || {};
+
+		if ( ! block || ! block.getAttribute( 'data-dinofolio-config' ) ) {
+			return;
+		}
+
+		if ( block.dataset.dinofolioListingInit === '1' && ! options.force ) {
+			return;
+		}
+
+		if ( options.force ) {
+			destroyListingBlock( block );
+		}
 
 		var config = parseConfig( block );
+		var initComplete = true;
 
 		if ( config.isotope ) {
-			initIsotope( block, config );
+			var isotopeInstance = initIsotope( block, config );
+
+			if ( ! isotopeInstance && typeof window.Isotope !== 'function' ) {
+				initComplete = false;
+			}
 		} else if ( config.filter ) {
 			initCssFilter( block );
 		}
@@ -514,6 +584,10 @@
 
 		if ( config.loadMore ) {
 			initLoadMore( block, config );
+		}
+
+		if ( initComplete ) {
+			block.dataset.dinofolioListingInit = '1';
 		}
 	}
 
@@ -807,49 +881,125 @@
 		window.addEventListener( 'resize', onParallaxScroll, { passive: true } );
 	}
 
-	function bootListings( root ) {
-		if ( isEditorContext() ) {
+	function bootListings( root, options ) {
+		options = options || {};
+
+		if ( ! options.force && isEditorContext() ) {
 			return;
 		}
 
 		var scope = root || document;
 
-		scope.querySelectorAll( '.dinofolio[data-dinofolio-config]' ).forEach( initListingBlock );
+		scope.querySelectorAll( '.dinofolio[data-dinofolio-config]' ).forEach( function ( block ) {
+			initListingBlock( block, options );
+		} );
 		bindParallaxListeners();
 	}
 
+	function scheduleListingInit( root, options ) {
+		window.requestAnimationFrame( function () {
+			window.requestAnimationFrame( function () {
+				bootListings( root, options );
+			} );
+		} );
+	}
+
+	function getElementorScopeRoot( $scope ) {
+		return $scope && $scope[ 0 ] ? $scope[ 0 ] : null;
+	}
+
+	function isElementorPortfolioWidget( $scope ) {
+		if ( ! $scope || typeof $scope.data !== 'function' ) {
+			return false;
+		}
+
+		var widgetType = $scope.data( 'widget_type' ) || '';
+
+		return !! ELEMENTOR_PORTFOLIO_WIDGET_TYPES[ widgetType ];
+	}
+
+	function getElementorHooks() {
+		if ( ! window.elementorFrontend || ! window.elementorFrontend.hooks ) {
+			return null;
+		}
+
+		if ( typeof window.elementorFrontend.hooks.addAction !== 'function' ) {
+			return null;
+		}
+
+		return window.elementorFrontend.hooks;
+	}
+
+	function onElementorPortfolioWidgetReady( $scope ) {
+		scheduleListingInit( getElementorScopeRoot( $scope ), { force: true } );
+	}
+
 	function bindElementorListings() {
-		if ( elementorListingsBound || ! window.elementorFrontend || ! window.elementorFrontend.hooks ) {
-			return;
+		if ( elementorListingsBound ) {
+			return true;
+		}
+
+		var hooks = getElementorHooks();
+
+		if ( ! hooks ) {
+			return false;
 		}
 
 		elementorListingsBound = true;
 
-		window.elementorFrontend.hooks.addAction(
+		var widgetHooks = [
 			'frontend/element_ready/dinofolio-portfolio.default',
-			function ( $scope ) {
-				var root = $scope && $scope[ 0 ];
+			'frontend/element_ready/dinofolio-portfolio-listing.default',
+		];
 
-				if ( ! root ) {
+		widgetHooks.forEach( function ( hookName ) {
+			hooks.addAction( hookName, onElementorPortfolioWidgetReady );
+		} );
+
+		hooks.addAction(
+			'frontend/element_ready/widget',
+			function ( $scope ) {
+				if ( ! isElementorPortfolioWidget( $scope ) ) {
 					return;
 				}
 
-				bootListings( root );
+				onElementorPortfolioWidgetReady( $scope );
 			}
 		);
+
+		return true;
 	}
 
 	function scheduleElementorBind() {
-		if ( window.elementorFrontend ) {
-			bindElementorListings();
-			return;
+		var retryCount = 0;
+		var maxRetries = 50;
+
+		function tryBind() {
+			if ( bindElementorListings() ) {
+				return;
+			}
+
+			if ( retryCount >= maxRetries ) {
+				return;
+			}
+
+			retryCount += 1;
+			window.setTimeout( tryBind, 100 );
 		}
 
-		window.addEventListener( 'elementor/frontend/init', bindElementorListings );
+		function onElementorFrontendInit() {
+			retryCount = 0;
+			tryBind();
+		}
 
 		if ( window.jQuery ) {
-			window.jQuery( window ).on( 'elementor/frontend/init', bindElementorListings );
+			window.jQuery( window ).on( 'elementor/frontend/init', onElementorFrontendInit );
+		} else {
+			window.addEventListener( 'elementor/frontend/init', onElementorFrontendInit );
 		}
+
+		// Script may load after elementorFrontend exists but before hooks are attached.
+		tryBind();
 	}
 
 	function initListings() {

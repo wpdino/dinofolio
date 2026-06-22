@@ -100,6 +100,22 @@ class Components {
 
 			$this->components[ $slug ] = $instance;
 		}
+
+		/**
+		 * Filter registered DinoFolio components.
+		 *
+		 * Pro can register additional component instances.
+		 *
+		 * @param Component_Base[] $components Loaded components keyed by slug.
+		 */
+		$this->components = apply_filters( 'dinofolio_register_components', $this->components );
+
+		/**
+		 * Fires after DinoFolio components are registered.
+		 *
+		 * @param Component_Base[] $components Loaded components keyed by slug.
+		 */
+		do_action( 'dinofolio_components_loaded', $this->components );
 	}
 }
 

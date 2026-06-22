@@ -48,6 +48,11 @@ class Integrations {
 		Shortcode_Integration::instance();
 		$this->init_elementor_integration();
 		WPBakery_Integration::instance();
+
+		/**
+		 * Fires after DinoFolio builder integrations are bootstrapped.
+		 */
+		do_action( 'dinofolio_integrations_loaded' );
 	}
 
 	/**

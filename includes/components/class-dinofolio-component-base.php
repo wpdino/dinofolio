@@ -42,6 +42,24 @@ abstract class Component_Base {
 	 * @return array
 	 */
 	public function get_params() {
+		$params = $this->define_component_params();
+
+		/**
+		 * Filter component control definitions for Gutenberg, Elementor, WPBakery, and shortcodes.
+		 *
+		 * @param array          $params  Param definitions.
+		 * @param string         $slug    Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		return apply_filters( 'dinofolio_component_params', $params, $this->get_name(), $this );
+	}
+
+	/**
+	 * Component-specific parameter schema.
+	 *
+	 * @return array
+	 */
+	protected function define_component_params() {
 		return array();
 	}
 
@@ -51,6 +69,24 @@ abstract class Component_Base {
 	 * @return array
 	 */
 	public function get_param_sections() {
+		$sections = $this->define_param_sections();
+
+		/**
+		 * Filter inspector sections for a component.
+		 *
+		 * @param array          $sections Section labels keyed by slug.
+		 * @param string         $slug     Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		return apply_filters( 'dinofolio_component_param_sections', $sections, $this->get_name(), $this );
+	}
+
+	/**
+	 * Default section labels for components.
+	 *
+	 * @return array
+	 */
+	protected function define_param_sections() {
 		return array(
 			'content' => esc_html__( 'Display', 'dinofolio' ),
 			'query'   => esc_html__( 'Query', 'dinofolio' ),
@@ -72,6 +108,24 @@ abstract class Component_Base {
 	 * @return array
 	 */
 	public function get_defaults() {
+		$defaults = $this->define_defaults();
+
+		/**
+		 * Filter default component attributes.
+		 *
+		 * @param array          $defaults Default attributes.
+		 * @param string         $slug     Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		return apply_filters( 'dinofolio_component_defaults', $defaults, $this->get_name(), $this );
+	}
+
+	/**
+	 * Component-specific default attributes.
+	 *
+	 * @return array
+	 */
+	protected function define_defaults() {
 		return array();
 	}
 
@@ -137,6 +191,24 @@ abstract class Component_Base {
 	 * @return array
 	 */
 	public function get_style_handles() {
+		$handles = $this->define_style_handles();
+
+		/**
+		 * Filter frontend style handles for a component.
+		 *
+		 * @param array          $handles Style handles.
+		 * @param string         $slug    Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		return apply_filters( 'dinofolio_component_style_handles', $handles, $this->get_name(), $this );
+	}
+
+	/**
+	 * Component-specific frontend style handles.
+	 *
+	 * @return array
+	 */
+	protected function define_style_handles() {
 		return array();
 	}
 
@@ -146,6 +218,24 @@ abstract class Component_Base {
 	 * @return array
 	 */
 	public function get_editor_style_handles() {
+		$handles = $this->define_editor_style_handles();
+
+		/**
+		 * Filter editor-only style handles for a component.
+		 *
+		 * @param array          $handles Style handles.
+		 * @param string         $slug    Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		return apply_filters( 'dinofolio_component_editor_style_handles', $handles, $this->get_name(), $this );
+	}
+
+	/**
+	 * Component-specific editor style handles.
+	 *
+	 * @return array
+	 */
+	protected function define_editor_style_handles() {
 		return array();
 	}
 
@@ -193,6 +283,13 @@ abstract class Component_Base {
 			);
 		}
 
-		return $controls;
+		/**
+		 * Filter Elementor control definitions for a component.
+		 *
+		 * @param array          $controls  Control definitions.
+		 * @param string         $slug      Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		return apply_filters( 'dinofolio_component_elementor_controls', $controls, $this->get_name(), $this );
 	}
 }

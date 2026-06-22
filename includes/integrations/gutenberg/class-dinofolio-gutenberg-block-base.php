@@ -56,12 +56,18 @@ class Gutenberg_Block_Base {
 			wp_localize_script(
 				$editor_script,
 				'dinofolioBlockConfig_' . str_replace( '-', '_', $slug ),
-				array(
-					'sections' => $this->component->get_param_sections(),
-					'controls' => Util::params_to_editor_controls(
-						$this->component->get_params(),
-						$this->component->get_defaults()
+				apply_filters(
+					'dinofolio_block_editor_config',
+					array(
+						'sections' => $this->component->get_param_sections(),
+						'controls' => Util::params_to_editor_controls(
+							$this->component->get_params(),
+							$this->component->get_defaults()
+						),
+						'isPro'    => dinofolio_is_pro(),
 					),
+					$slug,
+					$this->component
 				)
 			);
 		}
@@ -97,6 +103,15 @@ class Gutenberg_Block_Base {
 			$args['editor_script'] = $editor_script;
 		}
 
+		/**
+		 * Filter Gutenberg block registration arguments.
+		 *
+		 * @param array          $args      Block type args.
+		 * @param string         $slug      Component slug.
+		 * @param Component_Base $component Component instance.
+		 */
+		$args = apply_filters( 'dinofolio_register_block_type_args', $args, $slug, $this->component );
+
 		register_block_type( $this->component->get_block_name(), $args );
 	}
 
@@ -116,6 +131,23 @@ class Gutenberg_Block_Base {
 		$attributes = Util::sanitize_block_attributes( $attributes, $schema );
 		$attributes = Util::normalize_atts( $attributes, $this->component );
 
-		return $this->component->render( $attributes );
+		/**
+		 * Fires before a DinoFolio block is rendered.
+		 *
+		 * @param array          $attributes Normalized block attributes.
+		 * @param Component_Base $component  Component instance.
+		 */
+		do_action( 'dinofolio_before_render_block', $attributes, $this->component );
+
+		$output = $this->component->render( $attributes );
+
+		/**
+		 * Filter rendered DinoFolio block output.
+		 *
+		 * @param string         $output     Rendered HTML.
+		 * @param array          $attributes Normalized block attributes.
+		 * @param Component_Base $component  Component instance.
+		 */
+		return apply_filters( 'dinofolio_render_block_output', $output, $attributes, $this->component );
 	}
 }

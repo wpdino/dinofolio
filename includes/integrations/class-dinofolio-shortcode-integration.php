@@ -51,9 +51,29 @@ class Shortcode_Integration {
 			foreach ( $component->get_shortcodes() as $tag ) {
 				add_shortcode(
 					$tag,
-					function( $atts = array() ) use ( $component ) {
-						$atts = Util::normalize_atts( (array) $atts, $component );
-						return $component->render( $atts );
+					function( $atts = array() ) use ( $component, $tag ) {
+						$atts = Util::normalize_atts( (array) $atts, $component, 'shortcode' );
+
+						/**
+						 * Fires before a DinoFolio shortcode is rendered.
+						 *
+						 * @param array          $atts      Normalized shortcode attributes.
+						 * @param string         $tag       Shortcode tag.
+						 * @param Component_Base $component Component instance.
+						 */
+						do_action( 'dinofolio_before_render_shortcode', $atts, $tag, $component );
+
+						$output = $component->render( $atts );
+
+						/**
+						 * Filter DinoFolio shortcode output.
+						 *
+						 * @param string         $output    Rendered HTML.
+						 * @param array          $atts      Normalized shortcode attributes.
+						 * @param string         $tag       Shortcode tag.
+						 * @param Component_Base $component Component instance.
+						 */
+						return apply_filters( 'dinofolio_shortcode_output', $output, $atts, $tag, $component );
 					}
 				);
 			}

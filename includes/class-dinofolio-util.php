@@ -469,7 +469,13 @@ class Util {
 			}
 		}
 
-		return wp_parse_args( $atts, $defaults );
+		return apply_filters(
+			'dinofolio_normalize_component_atts',
+			wp_parse_args( $atts, $defaults ),
+			$atts,
+			$component,
+			$source
+		);
 	}
 
 	/**

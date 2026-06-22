@@ -46,7 +46,7 @@ class Portfolio_Component extends Component_Base {
 	 *
 	 * @return array
 	 */
-	public function get_defaults() {
+	protected function define_defaults() {
 		return array(
 			'layout'          => 'grid',
 			'columns'         => 3,
@@ -88,7 +88,7 @@ class Portfolio_Component extends Component_Base {
 	 *
 	 * @return array
 	 */
-	public function get_param_sections() {
+	protected function define_param_sections() {
 		return array(
 			'content' => esc_html__( 'Display', 'dinofolio' ),
 			'style'   => esc_html__( 'Style', 'dinofolio' ),
@@ -110,7 +110,7 @@ class Portfolio_Component extends Component_Base {
 	 *
 	 * @return array
 	 */
-	public function get_style_handles() {
+	protected function define_style_handles() {
 		return array( 'dinofolio-portfolio-listing' );
 	}
 
@@ -119,7 +119,7 @@ class Portfolio_Component extends Component_Base {
 	 *
 	 * @return array
 	 */
-	public function get_editor_style_handles() {
+	protected function define_editor_style_handles() {
 		return array( 'dinofolio-portfolio-listing', 'dinofolio-portfolio-listing-editor' );
 	}
 
@@ -128,7 +128,7 @@ class Portfolio_Component extends Component_Base {
 	 *
 	 * @return array
 	 */
-	public function get_params() {
+	protected function define_component_params() {
 		return array(
 			array(
 				'type'       => 'dropdown',
@@ -425,6 +425,15 @@ class Portfolio_Component extends Component_Base {
 
 		$attributes = Util::normalize_atts( $attributes, $this );
 
-		return \WPDINO_Portfolio_Display::get_instance()->render_portfolio_listing( $attributes );
+		$output = \WPDINO_Portfolio_Display::get_instance()->render_portfolio_listing( $attributes );
+
+		/**
+		 * Filter portfolio component render output.
+		 *
+		 * @param string $output     Rendered HTML.
+		 * @param array  $attributes Normalized attributes.
+		 * @param self   $component  Component instance.
+		 */
+		return apply_filters( 'dinofolio_portfolio_component_output', $output, $attributes, $this );
 	}
 }

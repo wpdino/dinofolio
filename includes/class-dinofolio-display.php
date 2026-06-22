@@ -485,6 +485,14 @@ class WPDINO_Portfolio_Display {
 
 		// Merge attributes with defaults from settings and block defaults
 		$attributes = $this->merge_attributes_with_defaults( $attributes );
+
+		/**
+		 * Fires before a portfolio listing is rendered.
+		 *
+		 * @param array $attributes Merged listing attributes.
+		 * @param array $extra_args Extra query arguments.
+		 */
+		do_action( 'dinofolio_before_render_listing', $attributes, $extra_args );
 		
 		// Build the query arguments
 		$query_args = $this->build_query( $attributes, $extra_args );
@@ -493,7 +501,16 @@ class WPDINO_Portfolio_Display {
 		$portfolio_query = new WP_Query( $query_args );
 		
 		// Generate and return the HTML output
-		return $this->generate_portfolio_html( $portfolio_query, $attributes );
+		$output = $this->generate_portfolio_html( $portfolio_query, $attributes );
+
+		/**
+		 * Filter portfolio listing render output.
+		 *
+		 * @param string   $output          Rendered HTML.
+		 * @param array    $attributes      Merged listing attributes.
+		 * @param WP_Query $portfolio_query Portfolio query instance.
+		 */
+		return apply_filters( 'dinofolio_listing_output', $output, $attributes, $portfolio_query );
 	}
 
 	/**
@@ -861,6 +878,14 @@ class WPDINO_Portfolio_Display {
 		// Validate order
 		$merged['order'] = in_array( strtoupper( $merged['order'] ), array( 'ASC', 'DESC' ) ) ? $merged['order'] : 'desc';
 
+		/**
+		 * Filter merged portfolio listing attributes.
+		 *
+		 * @param array $merged     Sanitized listing attributes.
+		 * @param array $attributes Raw incoming attributes.
+		 */
+		$merged = apply_filters( 'dinofolio_listing_attributes', $merged, $attributes );
+
 		return apply_filters( 'wpdino_portfolio_merged_attributes', $merged, $attributes );
 	}
 
@@ -965,7 +990,13 @@ class WPDINO_Portfolio_Display {
 			self::flag_listing_load_more();
 		}
 
-		return $config;
+		/**
+		 * Filter frontend listing JavaScript config.
+		 *
+		 * @param array $config     Listing JS config.
+		 * @param array $attributes Merged listing attributes.
+		 */
+		return apply_filters( 'dinofolio_listing_js_config', $config, $attributes );
 	}
 
 	/**
@@ -1053,6 +1084,15 @@ class WPDINO_Portfolio_Display {
 			}
 		}
 
+		/**
+		 * Filter listing container CSS classes.
+		 *
+		 * @param array    $container_classes Container class names.
+		 * @param array    $attributes        Merged listing attributes.
+		 * @param WP_Query $query             Portfolio query.
+		 */
+		$container_classes = apply_filters( 'dinofolio_listing_container_classes', $container_classes, $attributes, $query );
+
 		if ( ! empty( $listing_config ) && ! self::is_block_editor_preview() ) {
 			$this->flag_listing_scripts_for_config( $listing_config );
 			$config_attr = ' data-dinofolio-config="' . esc_attr( wp_json_encode( $listing_config ) ) . '"';
@@ -1092,6 +1132,23 @@ class WPDINO_Portfolio_Display {
 		// Reset post data
 		wp_reset_postdata();
 
+		/**
+		 * Filter generated portfolio listing HTML.
+		 *
+		 * @param string   $output     Listing HTML.
+		 * @param array    $attributes Merged listing attributes.
+		 * @param WP_Query $query      Portfolio query.
+		 */
+		$output = apply_filters( 'dinofolio_listing_html', $output, $attributes, $query );
+
+		/**
+		 * Fires after a portfolio listing HTML is generated.
+		 *
+		 * @param array    $attributes Merged listing attributes.
+		 * @param WP_Query $query      Portfolio query.
+		 */
+		do_action( 'dinofolio_after_render_listing', $attributes, $query );
+
 		return $output;
 	}
 
@@ -1122,7 +1179,7 @@ class WPDINO_Portfolio_Display {
 				$classes[] = 'dinofolio-is-masonry-item';
 			}
 
-			return $this->get_portfolio_overlay_item_html( $attributes, $post_id, $classes );
+			return apply_filters( 'dinofolio_portfolio_item_html', $this->get_portfolio_overlay_item_html( $attributes, $post_id, $classes ), $attributes, $post_id );
 		}
 
 		// Default grid / masonry card structure
@@ -1155,7 +1212,7 @@ class WPDINO_Portfolio_Display {
 			$output .= '<div class="dinofolio-item-details">' . $details_html . '</div>';
 		}
 		$output .= '</div>';
-		return $output;
+		return apply_filters( 'dinofolio_portfolio_item_html', $output, $attributes, $post_id );
 	}
 
 	/**
@@ -2061,7 +2118,13 @@ class WPDINO_Portfolio_Display {
 			}
 		}
 
-		return $payload;
+		/**
+		 * Filter AJAX load-more query payload attributes.
+		 *
+		 * @param array $payload    Attributes sent to the browser.
+		 * @param array $attributes Merged listing attributes.
+		 */
+		return apply_filters( 'dinofolio_load_more_query_payload', $payload, $attributes );
 	}
 
 	/**
@@ -2170,6 +2233,15 @@ class WPDINO_Portfolio_Display {
 
 			$response['filterTerms'] = $filter_terms;
 		}
+
+		/**
+		 * Filter AJAX load-more response payload.
+		 *
+		 * @param array    $response   Response data.
+		 * @param array    $attributes Merged listing attributes.
+		 * @param WP_Query $query      Portfolio query.
+		 */
+		$response = apply_filters( 'dinofolio_load_more_response', $response, $attributes, $query );
 
 		wp_send_json_success( $response );
 	}

@@ -93,6 +93,7 @@ final class Plugin {
 	 */
 	public function includes() {
 
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-hooks.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-admin-menus.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-custom-post.php';
 		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-portfolio-category-icon.php';
@@ -176,7 +177,14 @@ final class Plugin {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function on_plugins_loaded() {}
+	public function on_plugins_loaded() {
+		/**
+		 * Fires after DinoFolio Lite is loaded.
+		 *
+		 * Pro should bootstrap on this hook.
+		 */
+		do_action( 'dinofolio_loaded' );
+	}
 
     /**
 	 * Initialize the plugin
