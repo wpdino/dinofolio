@@ -40,6 +40,8 @@ class WPBakery_Module_Base {
 			return;
 		}
 
+		require_once DINOFOLIO_PATH . 'includes/integrations/wpbakery/class-dinofolio-wpbakery-portfolio-shortcode.php';
+
 		$params = $this->component->get_vc_params();
 
 		/**
@@ -51,12 +53,13 @@ class WPBakery_Module_Base {
 		$params = apply_filters( 'dinofolio_wpbakery_vc_params', $params, $this->component );
 
 		$map = array(
-			'name'        => $this->component->get_title(),
-			'base'        => $this->component->get_vc_shortcode_base(),
-			'description' => $this->component->get_description(),
-			'category'    => esc_html__( 'DinoFolio', 'dinofolio' ),
-			'icon'        => $this->component->get_elementor_icon(),
-			'params'      => $params,
+			'name'           => $this->component->get_title(),
+			'base'           => $this->component->get_wpbakery_shortcode_base(),
+			'description'    => $this->component->get_description(),
+			'category'       => esc_html__( 'DinoFolio', 'dinofolio' ),
+			'icon'           => 'dashicons-grid-view',
+			'php_class_name' => __NAMESPACE__ . '\\WPBakery_' . Util::slug_to_class_suffix( $this->component->get_name() ) . '_Shortcode',
+			'params'         => $params,
 		);
 
 		/**

@@ -15,9 +15,16 @@
 	var TreeSelect = components.TreeSelect;
 	var Spinner = components.Spinner;
 	var Disabled = components.Disabled;
+	var Button = components.Button;
 	var useSelect = data.useSelect;
 	var ServerSideRender = serverSideRender;
 	var __ = i18n.__;
+
+	var READ_MORE_ALIGN_OPTIONS = [
+		{ value: 'left', dashicon: 'dashicons-editor-alignleft', title: __('Align left', 'dinofolio') },
+		{ value: 'center', dashicon: 'dashicons-editor-aligncenter', title: __('Align center', 'dinofolio') },
+		{ value: 'right', dashicon: 'dashicons-editor-alignright', title: __('Align right', 'dinofolio') }
+	];
 
 	var blockConfig = window.dinofolioBlockConfig_portfolio || { controls: [], sections: {} };
 	var sections = blockConfig.sections || { content: __('Display', 'dinofolio'), query: __('Query', 'dinofolio') };
@@ -198,11 +205,53 @@
 		});
 	}
 
+	function ReadMoreAlignControl(props) {
+		var attributes = props.attributes;
+		var setAttributes = props.setAttributes;
+		var label = props.label;
+		var value = attributes.readMoreAlign || 'right';
+
+		return el(
+			BaseControl,
+			{
+				className: 'dinofolio-read-more-align-control',
+				label: label || __('Read More Alignment', 'dinofolio')
+			},
+			el(
+				'div',
+				{
+					className: 'dinofolio-read-more-align-control__buttons',
+					role: 'group',
+					'aria-label': label || __('Read More Alignment', 'dinofolio'),
+					style: { display: 'flex', gap: '4px' }
+				},
+				READ_MORE_ALIGN_OPTIONS.map(function (option) {
+					return el(
+						Button,
+						{
+							key: option.value,
+							label: option.title,
+							isPressed: value === option.value,
+							onClick: function () {
+								setAttributes({ readMoreAlign: option.value });
+							}
+						},
+						el('span', {
+							className: 'dashicons ' + option.dashicon,
+							'aria-hidden': 'true'
+						})
+					);
+				})
+			)
+		);
+	}
+
 	function renderControl(control, attributes, setAttributes) {
 		var value = getAttributeValue(attributes, control);
 		var style = attributes.style || 'standard';
 		var isOverlayStyle = style === 'overlay';
 		var hideReadMoreLabel = control.name === 'readMoreLabel' && !attributes.showReadMore;
+		var hideReadMoreAlign = control.name === 'readMoreAlign' && !attributes.showReadMore;
 		var hideExcerptLength = control.name === 'excerptLength' && !attributes.showExcerpt;
 		var hideLoadMoreLabel = control.name === 'loadMoreLabel' && attributes.paginationMode !== 'load_more';
 		var hideLoadMoreTrigger = control.name === 'loadMoreTrigger' && attributes.paginationMode !== 'load_more';
@@ -210,9 +259,9 @@
 			(control.name === 'viewAllText' || control.name === 'viewAllLink') && !attributes.showViewAll;
 		var hideOverlayFields =
 			isOverlayStyle &&
-			(control.name === 'showReadMore' || control.name === 'readMoreLabel' || control.name === 'showCategories');
+			(control.name === 'showReadMore' || control.name === 'readMoreLabel' || control.name === 'readMoreAlign' || control.name === 'showCategories');
 
-		if (hideReadMoreLabel || hideExcerptLength || hideLoadMoreLabel || hideLoadMoreTrigger || hideViewAllFields || hideOverlayFields) {
+		if (hideReadMoreLabel || hideReadMoreAlign || hideExcerptLength || hideLoadMoreLabel || hideLoadMoreTrigger || hideViewAllFields || hideOverlayFields) {
 			return null;
 		}
 
@@ -263,6 +312,15 @@
 					patch[control.name] = next;
 					setAttributes(patch);
 				}
+			});
+		}
+
+		if (control.type === 'dropdown' && control.name === 'readMoreAlign') {
+			return el(ReadMoreAlignControl, {
+				key: control.name,
+				label: control.label,
+				attributes: attributes,
+				setAttributes: setAttributes
 			});
 		}
 

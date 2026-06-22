@@ -168,6 +168,24 @@ abstract class Component_Base {
 	}
 
 	/**
+	 * WPBakery shortcode base tag.
+	 *
+	 * Prefer the explicit component tag over legacy aliases.
+	 *
+	 * @return string
+	 */
+	public function get_wpbakery_shortcode_base() {
+		$shortcodes = $this->get_shortcodes();
+		$preferred  = 'dinofolio_' . $this->get_name();
+
+		if ( in_array( $preferred, $shortcodes, true ) ) {
+			return $preferred;
+		}
+
+		return $this->get_vc_shortcode_base();
+	}
+
+	/**
 	 * Elementor icon.
 	 *
 	 * @return string
@@ -245,10 +263,15 @@ abstract class Component_Base {
 	 * @return array
 	 */
 	public function get_vc_params() {
-		$params = array();
+		$params   = array();
+		$sections = $this->get_param_sections();
 
 		foreach ( $this->get_params() as $param ) {
-			$params[] = Util::prepare_vc_param( $param );
+			$prepared = Util::prepare_vc_param( $param, $sections );
+
+			if ( ! empty( $prepared ) ) {
+				$params[] = $prepared;
+			}
 		}
 
 		return $params;

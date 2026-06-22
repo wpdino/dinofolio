@@ -48,7 +48,13 @@ class Shortcode_Integration {
 	 */
 	public function register_shortcodes() {
 		foreach ( Components::instance()->all() as $component ) {
+			$wpbakery_tag = $component->get_wpbakery_shortcode_base();
+
 			foreach ( $component->get_shortcodes() as $tag ) {
+				if ( function_exists( 'vc_map' ) && $tag === $wpbakery_tag ) {
+					continue;
+				}
+
 				add_shortcode(
 					$tag,
 					function( $atts = array() ) use ( $component, $tag ) {

@@ -59,6 +59,43 @@
 	cursor: default !important;
 }
 
+.dinofolio-listing--editor-preview .dinofolio-item-gallery-carousel .dinofolio-carousel-nav {
+	pointer-events: auto !important;
+	cursor: pointer !important;
+}
+
+/* Gallery carousel preview without listing JS config */
+.dinofolio-listing--editor-preview .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-carousel,
+.dinofolio-listing--editor-preview .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-carousel-viewport {
+	width: 100%;
+	height: 100%;
+}
+
+.dinofolio-listing--editor-preview .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-carousel-viewport {
+	overflow: hidden;
+}
+
+.dinofolio-listing--editor-preview .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide {
+	position: relative;
+	overflow: hidden;
+}
+
+.dinofolio-listing--editor-preview .dinofolio-item-gallery-carousel:not([data-dinofolio-item-gallery-bound]) .dinofolio-item-gallery-slide:not(:first-child) {
+	display: none;
+}
+
+.dinofolio-listing--editor-preview .dinofolio-item-gallery-carousel:not([data-dinofolio-item-gallery-bound]) .dinofolio-item-gallery-slide:first-child {
+	flex: 0 0 100%;
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+}
+
+.dinofolio-listing--editor-preview.dinofolio-layout-grid .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide {
+	height: 100%;
+	aspect-ratio: auto;
+}
+
 .dinofolio-listing--editor-preview .dinofolio-view-all a {
 	pointer-events: none !important;
 	cursor: default !important;

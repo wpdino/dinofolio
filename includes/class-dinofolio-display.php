@@ -286,12 +286,19 @@ class WPDINO_Portfolio_Display {
 	 * @return void
 	 */
 	public function enqueue_listing_script_assets() {
-		if ( empty( self::$listing_script_deps ) || self::is_block_editor_preview() ) {
+		if ( empty( self::$listing_script_deps ) ) {
 			return;
 		}
 
 		if ( ! wp_script_is( self::get_listing_script_handle(), 'registered' ) ) {
 			$this->register_listing_assets();
+		}
+
+		if ( self::is_block_editor_preview() ) {
+			if ( ! empty( self::$listing_script_deps['dinofolio'] ) ) {
+				wp_enqueue_script( self::get_listing_script_handle() );
+			}
+			return;
 		}
 
 		$deps = array();
@@ -436,7 +443,21 @@ class WPDINO_Portfolio_Display {
 
 		if ( self::should_enqueue_listing_editor_styles() ) {
 			wp_enqueue_style( 'dinofolio-portfolio-listing-editor' );
+			$this->enqueue_editor_gallery_carousel_script();
 		}
+	}
+
+	/**
+	 * Enqueue listing carousel script in the block editor canvas.
+	 *
+	 * @return void
+	 */
+	public function enqueue_editor_gallery_carousel_script() {
+		if ( ! wp_script_is( self::get_listing_script_handle(), 'registered' ) ) {
+			$this->register_listing_assets();
+		}
+
+		wp_enqueue_script( self::get_listing_script_handle() );
 	}
 
 	/**
@@ -714,6 +735,14 @@ class WPDINO_Portfolio_Display {
 		// Normalize alternative block attribute names coming from the JS block
 		// Map JS block props → internal props used by display renderer
 		$normalized = $attributes;
+
+		if ( class_exists( '\DinoFolio\Components' ) && class_exists( '\DinoFolio\Util' ) ) {
+			$component = \DinoFolio\Components::instance()->get( 'portfolio' );
+
+			if ( $component ) {
+				$normalized = \DinoFolio\Util::normalize_attribute_keys( $normalized, $component->get_params() );
+			}
+		}
 		// Map legacy Gutenberg block styles (is-style-*) from className.
 		if ( ! empty( $normalized['className'] ) && is_string( $normalized['className'] ) ) {
 			if ( strpos( $normalized['className'], 'is-style-grid' ) !== false ) {
@@ -780,6 +809,7 @@ class WPDINO_Portfolio_Display {
 			'excerptLength'  => 120,
 			'showReadMore'   => true,
 			'readMoreLabel'  => esc_html__( 'View Project', 'dinofolio' ),
+			'readMoreAlign'  => 'right',
 			'imageSize'      => $this->settings->get_setting( 'image_size', 'large' ),
 			'orderBy'        => 'date',
 			'order'          => 'desc',
@@ -814,13 +844,16 @@ class WPDINO_Portfolio_Display {
 		$merged = wp_parse_args( $normalized, $block_defaults );
 
 		// Type casting and validation
-		$merged['columns']      = max( 1, min( 6, intval( $merged['columns'] ) ) );
+		$merged['columns']      = max( 2, min( 4, intval( $merged['columns'] ) ) );
 		$merged['postsToShow']  = max( 1, min( 100, intval( $merged['postsToShow'] ) ) );
 		$merged['showExcerpt']  = (bool) $merged['showExcerpt'];
 		$merged['excerptLength'] = $this->normalize_excerpt_length(
 			isset( $merged['excerptLength'] ) ? $merged['excerptLength'] : 120
 		);
 		$merged['showReadMore'] = (bool) $merged['showReadMore'];
+		$merged['readMoreAlign'] = $this->normalize_read_more_align(
+			isset( $merged['readMoreAlign'] ) ? $merged['readMoreAlign'] : 'right'
+		);
 		$merged['showTitle']    = (bool) $merged['showTitle'];
 		$merged['showCategories'] = (bool) $merged['showCategories'];
 		$merged['showFilter']      = (bool) $merged['showFilter'];
@@ -837,10 +870,13 @@ class WPDINO_Portfolio_Display {
 		$merged['lightbox']            = (bool) $merged['lightbox'];
 		$merged['enableParallax']      = (bool) $merged['enableParallax'];
 
-		// Legacy: overlay/list were separate layouts — map to style + grid.
+		// Legacy: overlay/list were separate layouts — map to style + grid only when style was not set explicitly.
 		if ( 'overlay' === $merged['layout'] || 'list' === $merged['layout'] ) {
 			$merged['layout'] = 'grid';
-			$merged['style']  = 'overlay';
+
+			if ( ! array_key_exists( 'style', $attributes ) && ! array_key_exists( 'style', $normalized ) ) {
+				$merged['style'] = 'overlay';
+			}
 		}
 
 		if ( 'classic' === $merged['style'] ) {
@@ -1056,6 +1092,12 @@ class WPDINO_Portfolio_Display {
 			$container_classes[] = $attributes['className'];
 		}
 
+		if ( ! empty( $attributes['showReadMore'] ) && 'standard' === $attributes['style'] ) {
+			$container_classes[] = 'dinofolio-read-more-align-' . sanitize_html_class(
+				$this->normalize_read_more_align( isset( $attributes['readMoreAlign'] ) ? $attributes['readMoreAlign'] : 'right' )
+			);
+		}
+
 		$gallery_attr = '';
 
 		if ( $attributes['lightbox'] ) {
@@ -1092,6 +1134,8 @@ class WPDINO_Portfolio_Display {
 		 * @param WP_Query $query             Portfolio query.
 		 */
 		$container_classes = apply_filters( 'dinofolio_listing_container_classes', $container_classes, $attributes, $query );
+
+		$this->flag_gallery_carousel_assets_for_query( $query );
 
 		if ( ! empty( $listing_config ) && ! self::is_block_editor_preview() ) {
 			$this->flag_listing_scripts_for_config( $listing_config );
@@ -1172,6 +1216,11 @@ class WPDINO_Portfolio_Display {
 
 		if ( ! empty( $attributes['layout'] ) && 'masonry' === $attributes['layout'] ) {
 			$classes[] = 'dinofolio-is-masonry-item';
+		}
+
+		$gallery_image_ids = $this->get_listing_gallery_image_ids( $post_id );
+		if ( ! empty( $gallery_image_ids ) ) {
+			$classes[] = 'dinofolio-item--has-gallery';
 		}
 
 		if ( ! empty( $attributes['style'] ) && 'overlay' === $attributes['style'] ) {
@@ -1392,9 +1441,10 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	private function get_portfolio_overlay_item_html( $attributes, $post_id, $classes ) {
-		$thumbnail_id = get_post_thumbnail_id( $post_id );
+		$gallery_image_ids = $this->get_listing_gallery_image_ids( $post_id );
+		$thumbnail_id      = get_post_thumbnail_id( $post_id );
 
-		if ( ! $thumbnail_id ) {
+		if ( empty( $gallery_image_ids ) && ! $thumbnail_id ) {
 			return '';
 		}
 
@@ -1416,20 +1466,28 @@ class WPDINO_Portfolio_Display {
 
 		$classes[] = 'dinofolio-item--overlay';
 
+		if ( ! empty( $gallery_image_ids ) ) {
+			$classes[] = 'dinofolio-item--has-gallery';
+		}
+
 		$overlay_classes = array( 'dinofolio-item-thumbnail', 'dinofolio-overlay-card' );
 
 		$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 		$output .= '<div class="' . esc_attr( implode( ' ', $overlay_classes ) ) . '">';
 
-		$output .= wp_get_attachment_image(
-			$thumbnail_id,
-			$attributes['imageSize'],
-			false,
-			array(
-				'class' => implode( ' ', $image_classes ),
-				'alt'   => esc_attr( get_the_title() ),
-			)
-		);
+		if ( ! empty( $gallery_image_ids ) ) {
+			$output .= $this->get_portfolio_item_gallery_carousel_inner_html( $attributes, $post_id, $gallery_image_ids, 'overlay' );
+		} else {
+			$output .= wp_get_attachment_image(
+				$thumbnail_id,
+				$attributes['imageSize'],
+				false,
+				array(
+					'class' => implode( ' ', $image_classes ),
+					'alt'   => esc_attr( get_the_title() ),
+				)
+			);
+		}
 
 		$output .= '<div class="dinofolio-overlay-panel">';
 
@@ -1441,11 +1499,23 @@ class WPDINO_Portfolio_Display {
 			$output .= '<span class="screen-reader-text">' . esc_html__( 'Play video in lightbox', 'dinofolio' ) . '</span>';
 			$output .= '</a>';
 		} elseif ( ! empty( $attributes['lightbox'] ) ) {
-			$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
-			$output    .= '<a ' . $this->get_lightbox_link_attributes( $full_image[0], get_the_title(), 'dinofolio-overlay-action dinofolio-overlay-action--zoom' ) . '>';
-			$output    .= $this->get_overlay_zoom_icon_svg();
-			$output    .= '<span class="screen-reader-text">' . esc_html__( 'Open in lightbox', 'dinofolio' ) . '</span>';
-			$output    .= '</a>';
+			if ( ! empty( $gallery_image_ids ) ) {
+				$first_full = wp_get_attachment_image_src( (int) $gallery_image_ids[0], 'full' );
+				$full_url   = $first_full ? $first_full[0] : '';
+			} else {
+				$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+				$full_url   = $full_image ? $full_image[0] : '';
+			}
+
+			if ( $full_url ) {
+				$gallery_group = ! empty( $gallery_image_ids )
+					? 'dinofolio-item-gallery-' . $post_id
+					: '';
+				$output       .= '<a ' . $this->get_lightbox_link_attributes( $full_url, get_the_title(), 'dinofolio-overlay-action dinofolio-overlay-action--zoom', $gallery_group ) . '>';
+				$output       .= $this->get_overlay_zoom_icon_svg();
+				$output       .= '<span class="screen-reader-text">' . esc_html__( 'Open in lightbox', 'dinofolio' ) . '</span>';
+				$output       .= '</a>';
+			}
 		}
 
 		$output .= '<a href="' . esc_url( get_permalink() ) . '" class="dinofolio-overlay-action dinofolio-overlay-action--link" aria-label="' . esc_attr( get_the_title() ) . '">';
@@ -1586,8 +1656,10 @@ class WPDINO_Portfolio_Display {
 		return '<svg class="dinofolio-overlay-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>';
 	}
 
-	private function get_lightbox_link_attributes( $image_url, $title = '', $extra_classes = '' ) {
-		$gallery_id = self::$listing_gallery_id ? self::$listing_gallery_id : 'dinofolio-gallery';
+	private function get_lightbox_link_attributes( $image_url, $title = '', $extra_classes = '', $gallery_id = '' ) {
+		if ( '' === $gallery_id ) {
+			$gallery_id = self::$listing_gallery_id ? self::$listing_gallery_id : 'dinofolio-gallery';
+		}
 
 		$class = 'glightbox dinofolio-lightbox-link';
 
@@ -1627,6 +1699,169 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Ensure gallery carousel JS loads when a listing includes gallery-format items.
+	 *
+	 * @param WP_Query $query Portfolio query.
+	 * @return void
+	 */
+	private function flag_gallery_carousel_assets_for_query( $query ) {
+		if ( ! $query instanceof WP_Query || empty( $query->posts ) || ! class_exists( '\DinoFolio\Util' ) ) {
+			return;
+		}
+
+		foreach ( $query->posts as $post ) {
+			$post_id = isset( $post->ID ) ? (int) $post->ID : 0;
+
+			if ( $post_id < 1 || ! \DinoFolio\Util::is_portfolio_gallery_format( $post_id ) ) {
+				continue;
+			}
+
+			if ( ! empty( \DinoFolio\Util::get_portfolio_gallery_image_ids( $post_id ) ) ) {
+				self::flag_listing_script( 'dinofolio' );
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Gallery image IDs for listing cards when the post uses gallery format.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return int[]
+	 */
+	private function get_listing_gallery_image_ids( $post_id ) {
+		if ( ! class_exists( '\DinoFolio\Util' ) || ! \DinoFolio\Util::is_portfolio_gallery_format( $post_id ) ) {
+			return array();
+		}
+
+		return \DinoFolio\Util::get_portfolio_gallery_image_ids( $post_id );
+	}
+
+	/**
+	 * Resolve listing image size for gallery carousel slides.
+	 *
+	 * @param array $attributes Listing attributes.
+	 * @return string
+	 */
+	private function get_listing_gallery_image_size( $attributes ) {
+		return 'dinofolio-featured-1200x900';
+	}
+
+	/**
+	 * Build listing gallery carousel markup (inner carousel only).
+	 *
+	 * @param array  $attributes Listing attributes.
+	 * @param int    $post_id    Post ID.
+	 * @param int[]  $image_ids  Gallery attachment IDs.
+	 * @param string $context    Either "standard" or "overlay".
+	 * @return string
+	 */
+	private function get_portfolio_item_gallery_carousel_inner_html( $attributes, $post_id, $image_ids, $context = 'standard' ) {
+		$image_size      = $this->get_listing_gallery_image_size( $attributes );
+		$use_lightbox    = ! empty( $attributes['lightbox'] );
+		$gallery_group   = 'dinofolio-item-gallery-' . (int) $post_id;
+		$image_classes   = array( 'dinofolio-item-image' );
+		$title           = get_the_title( $post_id );
+		$is_overlay      = ( 'overlay' === $context );
+
+		if ( ! empty( $attributes['enableParallax'] ) ) {
+			$image_classes[] = 'dinofolio-parallax-target';
+		}
+
+		if ( $use_lightbox ) {
+			self::flag_lightbox_assets();
+		}
+
+		$output  = '<div class="dinofolio-item-gallery-carousel" data-dinofolio-item-gallery-carousel>';
+		$output .= '<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-prev" aria-label="' . esc_attr__( 'Previous image', 'dinofolio' ) . '">';
+		$output .= $this->get_carousel_nav_icon_svg( 'prev' );
+		$output .= '</button>';
+		$output .= '<div class="dinofolio-item-gallery-carousel-viewport">';
+		$output .= '<div class="dinofolio-item-gallery-carousel-track">';
+
+		foreach ( $image_ids as $image_id ) {
+			$image_id   = (int) $image_id;
+			$wrap_link  = false;
+			$output    .= '<figure class="dinofolio-item-gallery-slide">';
+
+			if ( $use_lightbox ) {
+				$full_image = wp_get_attachment_image_src( $image_id, 'full' );
+				$full_url   = $full_image ? $full_image[0] : '';
+
+				if ( $full_url ) {
+					$output   .= '<a ' . $this->get_lightbox_link_attributes( $full_url, $title, '', $gallery_group ) . '>';
+					$wrap_link = true;
+				}
+			} elseif ( ! $is_overlay ) {
+				$output   .= '<a href="' . esc_url( get_permalink( $post_id ) ) . '">';
+				$wrap_link = true;
+			}
+
+			$output .= wp_get_attachment_image(
+				$image_id,
+				$image_size,
+				false,
+				array(
+					'class' => implode( ' ', $image_classes ),
+					'alt'   => esc_attr( $title ),
+					'sizes' => '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+				)
+			);
+
+			if ( $wrap_link ) {
+				$output .= '</a>';
+			}
+
+			$output .= '</figure>';
+		}
+
+		$output .= '</div>';
+		$output .= '</div>';
+		$output .= '<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-next" aria-label="' . esc_attr__( 'Next image', 'dinofolio' ) . '">';
+		$output .= $this->get_carousel_nav_icon_svg( 'next' );
+		$output .= '</button>';
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Build listing gallery carousel thumbnail wrapper.
+	 *
+	 * @param array $attributes Listing attributes.
+	 * @param int   $post_id    Post ID.
+	 * @param int[] $image_ids  Gallery attachment IDs.
+	 * @return string
+	 */
+	private function get_portfolio_item_gallery_carousel_html( $attributes, $post_id, $image_ids ) {
+		$classes = array( 'dinofolio-item-thumbnail', 'dinofolio-item-thumbnail--gallery' );
+
+		if ( ! empty( $attributes['lightbox'] ) ) {
+			$classes[] = 'dinofolio-lightbox';
+		}
+
+		$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+		$output .= $this->get_portfolio_item_gallery_carousel_inner_html( $attributes, $post_id, $image_ids, 'standard' );
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Carousel navigation icon SVG.
+	 *
+	 * @param string $direction Either "prev" or "next".
+	 * @return string
+	 */
+	private function get_carousel_nav_icon_svg( $direction = 'prev' ) {
+		if ( 'next' === $direction ) {
+			return '<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+		}
+
+		return '<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+	}
+
+	/**
 	 * Get portfolio item image HTML
 	 *
 	 * @param array $attributes The merged attributes
@@ -1634,6 +1869,11 @@ class WPDINO_Portfolio_Display {
 	 * @return string Image HTML
 	 */
 	private function get_portfolio_item_image( $attributes, $post_id ) {
+		$gallery_image_ids = $this->get_listing_gallery_image_ids( $post_id );
+
+		if ( ! empty( $gallery_image_ids ) ) {
+			return $this->get_portfolio_item_gallery_carousel_html( $attributes, $post_id, $gallery_image_ids );
+		}
 
 		$image_size = $attributes['imageSize'];
 		if ( ! empty( $attributes['layout'] ) && 'masonry' === $attributes['layout'] ) {
@@ -2030,7 +2270,24 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	private function normalize_pagination_mode( $mode ) {
-		$mode = sanitize_key( (string) $mode );
+		$raw_mode = (string) $mode;
+
+		if ( class_exists( '\DinoFolio\Util' ) ) {
+			$resolved = \DinoFolio\Util::resolve_dropdown_value(
+				$raw_mode,
+				array(
+					'none'       => esc_html__( 'None', 'dinofolio' ),
+					'pagination' => esc_html__( 'Pagination', 'dinofolio' ),
+					'load_more'  => esc_html__( 'Load More (AJAX)', 'dinofolio' ),
+				)
+			);
+
+			if ( in_array( $resolved, array( 'none', 'pagination', 'load_more' ), true ) ) {
+				return $resolved;
+			}
+		}
+
+		$mode = sanitize_key( $raw_mode );
 
 		if ( in_array( $mode, array( 'none', 'pagination', 'load_more' ), true ) ) {
 			return $mode;
@@ -2053,6 +2310,22 @@ class WPDINO_Portfolio_Display {
 		}
 
 		return 'click';
+	}
+
+	/**
+	 * Normalize read more button alignment.
+	 *
+	 * @param mixed $align Raw alignment value.
+	 * @return string
+	 */
+	private function normalize_read_more_align( $align ) {
+		$align = sanitize_key( (string) $align );
+
+		if ( in_array( $align, array( 'left', 'center', 'right' ), true ) ) {
+			return $align;
+		}
+
+		return 'right';
 	}
 
 	/**

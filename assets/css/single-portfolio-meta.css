@@ -38,7 +38,7 @@
 .dinofolio-gallery-item {
 	margin: 0;
 	overflow: hidden;
-	border-radius: 5px;
+	border-radius: 10px;
 	background: #f3f4f6;
 }
 
@@ -104,6 +104,7 @@
 .dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-item a {
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
+	border-radius: 10px;
 }
 
 .dinofolio-portfolio-gallery.is-slider .dinofolio-gallery-image {

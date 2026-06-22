@@ -8,6 +8,9 @@
 	var parallaxTicking = false;
 	var parallaxListenersBound = false;
 	var elementorListingsBound = false;
+	var loadMoreUserHasScrolled = false;
+	var loadMoreUserScrollListenerBound = false;
+	var loadMoreScrollCheckTicking = false;
 
 	var ELEMENTOR_PORTFOLIO_WIDGET_TYPES = {
 		'dinofolio-portfolio.default': true,
@@ -511,6 +514,192 @@
 		} );
 	}
 
+	function initHorizontalItemGalleryCarousel( carousel ) {
+		var viewport = carousel.querySelector( '.dinofolio-item-gallery-carousel-viewport' );
+		var track = carousel.querySelector( '.dinofolio-item-gallery-carousel-track' );
+		var prevButton = carousel.querySelector( '.dinofolio-carousel-prev' );
+		var nextButton = carousel.querySelector( '.dinofolio-carousel-next' );
+
+		if ( ! viewport || ! track || ! prevButton || ! nextButton ) {
+			return;
+		}
+
+		var usesContainerSlides = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports( 'width', '1cqw' );
+
+		var resetToFirstSlide = function () {
+			viewport.scrollTo( {
+				left: 0,
+				behavior: 'auto',
+			} );
+		};
+
+		var updateSlideWidths = function () {
+			if ( usesContainerSlides ) {
+				return;
+			}
+
+			var slideWidth = Math.floor( viewport.getBoundingClientRect().width );
+
+			if ( slideWidth < 1 ) {
+				return;
+			}
+
+			track.querySelectorAll( '.dinofolio-item-gallery-slide' ).forEach( function ( slide ) {
+				slide.style.flexBasis = slideWidth + 'px';
+				slide.style.width = slideWidth + 'px';
+				slide.style.maxWidth = slideWidth + 'px';
+				slide.style.minWidth = slideWidth + 'px';
+			} );
+		};
+
+		var getSlideCount = function () {
+			return track.querySelectorAll( '.dinofolio-item-gallery-slide' ).length;
+		};
+
+		var getScrollStep = function () {
+			return Math.max( 1, viewport.clientWidth );
+		};
+
+		var getMaxScroll = function () {
+			return Math.max( 0, viewport.scrollWidth - viewport.clientWidth );
+		};
+
+		var canLoop = function () {
+			return getSlideCount() > 1;
+		};
+
+		var isAtStart = function () {
+			return viewport.scrollLeft <= 1;
+		};
+
+		var isAtEnd = function () {
+			return viewport.scrollLeft >= getMaxScroll() - 1;
+		};
+
+		var updateNavState = function () {
+			if ( canLoop() ) {
+				prevButton.disabled = false;
+				nextButton.disabled = false;
+				return;
+			}
+
+			prevButton.disabled = isAtStart();
+			nextButton.disabled = isAtEnd();
+		};
+
+		var scrollByStep = function ( direction ) {
+			if ( ! canLoop() ) {
+				viewport.scrollBy( {
+					left: direction * getScrollStep(),
+					behavior: 'smooth',
+				} );
+				return;
+			}
+
+			if ( direction > 0 && isAtEnd() ) {
+				viewport.scrollTo( {
+					left: 0,
+					behavior: 'smooth',
+				} );
+				return;
+			}
+
+			if ( direction < 0 && isAtStart() ) {
+				viewport.scrollTo( {
+					left: getMaxScroll(),
+					behavior: 'smooth',
+				} );
+				return;
+			}
+
+			viewport.scrollBy( {
+				left: direction * getScrollStep(),
+				behavior: 'smooth',
+			} );
+		};
+
+		prevButton.addEventListener( 'click', function () {
+			scrollByStep( -1 );
+		} );
+
+		nextButton.addEventListener( 'click', function () {
+			scrollByStep( 1 );
+		} );
+
+		viewport.addEventListener( 'scroll', updateNavState, { passive: true } );
+		window.addEventListener( 'resize', function () {
+			updateSlideWidths();
+			updateNavState();
+		} );
+
+		carousel.querySelectorAll( 'img' ).forEach( function ( image ) {
+			if ( image.complete ) {
+				return;
+			}
+
+			image.addEventListener(
+				'load',
+				function () {
+					updateSlideWidths();
+
+					if ( viewport.scrollLeft <= 1 ) {
+						resetToFirstSlide();
+					}
+
+					updateNavState();
+				},
+				{ once: true }
+			);
+		} );
+
+		if ( typeof ResizeObserver !== 'undefined' ) {
+			var resizeObserver = new ResizeObserver( function () {
+				updateSlideWidths();
+				updateNavState();
+			} );
+
+			resizeObserver.observe( viewport );
+		}
+
+		updateSlideWidths();
+		resetToFirstSlide();
+		updateNavState();
+
+		window.requestAnimationFrame( function () {
+			window.requestAnimationFrame( function () {
+				updateSlideWidths();
+				resetToFirstSlide();
+				updateNavState();
+			} );
+		} );
+	}
+
+	function initItemGalleryCarousels( root ) {
+		var scope = root || document;
+
+		scope.querySelectorAll( '[data-dinofolio-item-gallery-carousel]:not([data-dinofolio-item-gallery-bound])' ).forEach( function ( carousel ) {
+			initHorizontalItemGalleryCarousel( carousel );
+			carousel.setAttribute( 'data-dinofolio-item-gallery-bound', '1' );
+		} );
+	}
+
+	function bindGalleryCarouselObserver() {
+		if ( typeof MutationObserver === 'undefined' || document.body.dataset.dinofolioGalleryObserverBound === '1' ) {
+			return;
+		}
+
+		document.body.dataset.dinofolioGalleryObserverBound = '1';
+
+		var observer = new MutationObserver( function () {
+			initItemGalleryCarousels( document );
+		} );
+
+		observer.observe( document.body, {
+			childList: true,
+			subtree: true,
+		} );
+	}
+
 	function destroyListingBlock( block ) {
 		if ( ! block ) {
 			return;
@@ -586,6 +775,8 @@
 			initLoadMore( block, config );
 		}
 
+		initItemGalleryCarousels( block );
+
 		if ( initComplete ) {
 			block.dataset.dinofolioListingInit = '1';
 		}
@@ -629,6 +820,69 @@
 		return wrap.getAttribute( 'data-load-more-trigger' ) || 'click';
 	}
 
+	function hasLoadMoreUserScrolled() {
+		return loadMoreUserHasScrolled;
+	}
+
+	function scheduleInViewLoadMoreChecksFromUserScroll() {
+		if ( loadMoreScrollCheckTicking ) {
+			return;
+		}
+
+		loadMoreScrollCheckTicking = true;
+
+		window.requestAnimationFrame( function () {
+			loadMoreScrollCheckTicking = false;
+
+			document.querySelectorAll( '.dinofolio-load-more--in-view[data-dinofolio-load-more-bound="1"]' ).forEach( function ( wrap ) {
+				var block = wrap.closest( '.dinofolio[data-dinofolio-config]' );
+
+				if ( ! block ) {
+					return;
+				}
+
+				scheduleLoadMoreInViewCheck( block, parseConfig( block ), wrap );
+			} );
+		} );
+	}
+
+	function bindLoadMoreUserScrollListener() {
+		if ( loadMoreUserScrollListenerBound ) {
+			return;
+		}
+
+		loadMoreUserScrollListenerBound = true;
+
+		function markLoadMoreUserScrolled() {
+			if ( loadMoreUserHasScrolled ) {
+				scheduleInViewLoadMoreChecksFromUserScroll();
+				return;
+			}
+
+			loadMoreUserHasScrolled = true;
+			scheduleInViewLoadMoreChecksFromUserScroll();
+		}
+
+		window.addEventListener( 'scroll', markLoadMoreUserScrolled, { passive: true } );
+		window.addEventListener( 'wheel', markLoadMoreUserScrolled, { passive: true } );
+		window.addEventListener( 'touchmove', markLoadMoreUserScrolled, { passive: true } );
+		window.addEventListener( 'keydown', function ( event ) {
+			var scrollKeys = {
+				32: true,
+				33: true,
+				34: true,
+				35: true,
+				36: true,
+				38: true,
+				40: true,
+			};
+
+			if ( scrollKeys[ event.keyCode ] ) {
+				markLoadMoreUserScrolled();
+			}
+		} );
+	}
+
 	function isLoadMoreSentinelInView( wrap ) {
 		if ( ! wrap || ! wrap.isConnected ) {
 			return false;
@@ -647,6 +901,10 @@
 		}
 
 		if ( 'in_view' !== getLoadMoreTrigger( wrap, config ) ) {
+			return;
+		}
+
+		if ( ! hasLoadMoreUserScrolled() ) {
 			return;
 		}
 
@@ -777,7 +1035,7 @@
 		);
 
 		wrap.dinofolioLoadMoreObserver.observe( wrap );
-		scheduleLoadMoreInViewCheck( block, config, wrap );
+		bindLoadMoreUserScrollListener();
 	}
 
 	function initLoadMore( block, config ) {
@@ -841,6 +1099,8 @@
 			if ( typeof window.dinofolioRefreshLightbox === 'function' ) {
 				window.dinofolioRefreshLightbox( block );
 			}
+
+			initItemGalleryCarousels( block );
 
 			var loadMoreWrap = block.querySelector( '.dinofolio-load-more' );
 			if ( loadMoreWrap ) {
@@ -1004,6 +1264,8 @@
 
 	function initListings() {
 		bootListings( document );
+		initItemGalleryCarousels( document );
+		bindGalleryCarouselObserver();
 	}
 
 	scheduleElementorBind();
