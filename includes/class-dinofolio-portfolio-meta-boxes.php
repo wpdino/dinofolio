@@ -940,11 +940,15 @@ class Portfolio_Meta_Boxes {
 		$posts = array();
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			$related_id = get_the_ID();
-			$posts[] = array(
+			$related_id   = get_the_ID();
+			$thumbnail_id = class_exists( '\DinoFolio\Util' )
+				? \DinoFolio\Util::get_portfolio_preview_image_id( $related_id )
+				: (int) get_post_thumbnail_id( $related_id );
+			$posts[]      = array(
 				'title'         => get_the_title(),
 				'url'           => get_permalink(),
-				'thumbnail_url' => get_the_post_thumbnail_url( $related_id, 'medium' ),
+				'thumbnail_id'  => $thumbnail_id,
+				'thumbnail_url' => $thumbnail_id ? (string) wp_get_attachment_image_url( $thumbnail_id, 'dinofolio-related-card' ) : '',
 			);
 		}
 		wp_reset_postdata();

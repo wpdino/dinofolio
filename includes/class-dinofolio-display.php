@@ -591,6 +591,47 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Build listing attributes for the portfolio post type archive.
+	 *
+	 * @return array
+	 */
+	public function get_archive_listing_attributes() {
+		$attributes = array(
+			'layout'          => $this->settings->get_setting( 'taxonomy_layout', 'grid' ),
+			'columns'         => (int) $this->settings->get_setting( 'taxonomy_columns', 3 ),
+			'postsToShow'     => (int) $this->settings->get_setting( 'taxonomy_posts_per_page', 12 ),
+			'imageSize'       => $this->settings->get_setting( 'taxonomy_image_size', 'large' ),
+			'showTitle'       => (bool) $this->settings->get_setting( 'taxonomy_show_title', true ),
+			'showCategories'  => (bool) $this->settings->get_setting( 'taxonomy_show_categories', true ),
+			'showExcerpt'     => (bool) $this->settings->get_setting( 'taxonomy_show_excerpt', true ),
+			'excerptLength'   => 120,
+			'showReadMore'    => (bool) $this->settings->get_setting( 'taxonomy_show_read_more', true ),
+			'readMoreLabel'   => $this->settings->get_setting( 'taxonomy_read_more_label', esc_html__( 'View Project', 'dinofolio' ) ),
+			'lightbox'        => (bool) $this->settings->get_setting( 'taxonomy_lightbox', true ),
+			'paginationMode'  => (bool) $this->settings->get_setting( 'taxonomy_show_pagination', true ) ? 'pagination' : 'none',
+			'loadMoreLabel'   => esc_html__( 'Load More', 'dinofolio' ),
+			'loadMoreTrigger' => 'click',
+			'showViewAll'     => false,
+			'viewAllText'     => '',
+			'viewAllLink'     => '',
+			'showFilter'      => false,
+			'showFilterCount' => false,
+			'orderBy'         => $this->settings->get_setting( 'taxonomy_order_by', 'date' ),
+			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
+			'style'           => $this->settings->get_setting( 'taxonomy_style', 'standard' ),
+			'hoverEffect'     => $this->settings->get_setting( 'taxonomy_hover_effect', 'zoom' ),
+			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '#1a8960' ),
+			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
+			'buttonTextColor' => $this->settings->get_setting( 'taxonomy_button_text_color', '' ),
+			'mutedColor'      => $this->settings->get_setting( 'taxonomy_muted_color', '' ),
+			'gap'             => $this->settings->get_setting( 'taxonomy_gap', 24 ),
+			'radius'          => $this->settings->get_setting( 'taxonomy_radius', 10 ),
+		);
+
+		return apply_filters( 'dinofolio_archive_listing_attributes', $attributes );
+	}
+
+	/**
 	 * Build the query arguments
 	 *
 	 * @param array $attributes The merged attributes
@@ -1472,6 +1513,10 @@ class WPDINO_Portfolio_Display {
 
 		$overlay_classes = array( 'dinofolio-item-thumbnail', 'dinofolio-overlay-card' );
 
+		if ( ! empty( $gallery_image_ids ) ) {
+			$overlay_classes[] = 'dinofolio-item-thumbnail--gallery';
+		}
+
 		$output  = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 		$output .= '<div class="' . esc_attr( implode( ' ', $overlay_classes ) ) . '">';
 
@@ -2060,7 +2105,8 @@ class WPDINO_Portfolio_Display {
 			$filter_classes[] = 'dinofolio-show-filter-count';
 		}
 
-		$output  = '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
+		$output  = '<div class="dinofolio-filter-categories">';
+		$output .= '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
 		$output .= '<ul role="list">';
 
 		$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
@@ -2084,6 +2130,7 @@ class WPDINO_Portfolio_Display {
 
 		$output .= '</ul>';
 		$output .= '</nav>';
+		$output .= '</div>';
 
 		return $output;
 	}
@@ -2095,16 +2142,25 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	private function normalize_pagination_html( $html ) {
-		$replacements = array(
-			'page-numbers current' => 'dinofolio-page-numbers dinofolio-current',
-			'page-numbers dots'    => 'dinofolio-page-numbers dinofolio-dots',
-			'page-numbers'         => 'dinofolio-page-numbers',
-			'page-number'          => 'dinofolio-page-number',
-			'pagination-prev'      => 'dinofolio-pagination-prev',
-			'pagination-next'      => 'dinofolio-pagination-next',
-		);
+		if ( '' === $html ) {
+			return '';
+		}
 
-		return str_replace( array_keys( $replacements ), array_values( $replacements ), $html );
+		return (string) preg_replace_callback(
+			'/class="([^"]*)"/',
+			static function ( $matches ) {
+				$classes = $matches[1];
+
+				$classes = preg_replace( '/\bpage-numbers\s+current\b/', 'dinofolio-page-numbers dinofolio-current', $classes );
+				$classes = preg_replace( '/\bpage-numbers\s+dots\b/', 'dinofolio-page-numbers dinofolio-dots', $classes );
+				$classes = preg_replace( '/\bpage-numbers\b/', 'dinofolio-page-numbers', $classes );
+				$classes = preg_replace( '/\bprev\b/', 'dinofolio-prev', $classes );
+				$classes = preg_replace( '/\bnext\b/', 'dinofolio-next', $classes );
+
+				return 'class="' . trim( preg_replace( '/\s+/', ' ', $classes ) ) . '"';
+			},
+			$html
+		);
 	}
 
 	/**

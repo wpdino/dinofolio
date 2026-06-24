@@ -23,11 +23,18 @@ class Template {
 	private static $instance = null;
 
 	/**
-	 * Template filename (theme may override via locate_template).
+	 * Taxonomy template filename (theme may override via locate_template).
 	 *
 	 * @var string
 	 */
 	const TEMPLATE_FILENAME = 'taxonomy-portfolio-category.php';
+
+	/**
+	 * Post type archive template filename (theme may override via locate_template).
+	 *
+	 * @var string
+	 */
+	const ARCHIVE_TEMPLATE_FILENAME = 'archive-wpdino_portfolio.php';
 
 	/**
 	 * Get singleton instance.
@@ -47,6 +54,7 @@ class Template {
 	 */
 	private function __construct() {
 		add_filter( 'taxonomy_template', array( $this, 'include_taxonomy_template' ), 99 );
+		add_filter( 'archive_template', array( $this, 'include_archive_template' ), 99 );
 	}
 
 	/**
@@ -112,5 +120,52 @@ class Template {
 		}
 
 		return $plugin_template;
+	}
+
+	/**
+	 * Resolve the portfolio archive template path (child theme, parent theme, then plugin).
+	 *
+	 * @return string|false
+	 */
+	public function locate_archive_template() {
+		$theme_template = locate_template( self::ARCHIVE_TEMPLATE_FILENAME );
+
+		if ( $theme_template ) {
+			return $theme_template;
+		}
+
+		$plugin_template = DINOFOLIO_PATH . 'templates/' . self::ARCHIVE_TEMPLATE_FILENAME;
+
+		if ( file_exists( $plugin_template ) ) {
+			return $plugin_template;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Swap in the portfolio archive template when enabled.
+	 *
+	 * @param string $template Current template path.
+	 * @return string
+	 */
+	public function include_archive_template( $template ) {
+		if ( ! is_post_type_archive( 'wpdino_portfolio' ) ) {
+			return $template;
+		}
+
+		$settings = DinoFolio_Settings::instance();
+
+		if ( ! $settings->get_setting( 'taxonomy_use_template', true ) ) {
+			return $template;
+		}
+
+		$archive_template = $this->locate_archive_template();
+
+		if ( ! $archive_template ) {
+			return $template;
+		}
+
+		return $archive_template;
 	}
 }

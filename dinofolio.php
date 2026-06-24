@@ -164,6 +164,7 @@ final class Plugin {
 	public function register_image_sizes() {
 		add_image_size( 'dinofolio-featured-1200x900', 1200, 900, true );
 		add_image_size( 'dinofolio-gallery-slider', 1600, 900, true );
+		add_image_size( 'dinofolio-related-card', 1200, 750, true );
 	}
 
 	/**

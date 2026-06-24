@@ -1178,4 +1178,32 @@ class Util {
 
 		return $sanitized;
 	}
+
+	/**
+	 * Get the attachment ID used as a portfolio item preview image.
+	 *
+	 * Gallery-format items use the first gallery image; others use the featured image.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return int Attachment ID or 0 when none is available.
+	 */
+	public static function get_portfolio_preview_image_id( $post_id ) {
+		$post_id = absint( $post_id );
+
+		if ( $post_id < 1 ) {
+			return 0;
+		}
+
+		if ( self::is_portfolio_gallery_format( $post_id ) ) {
+			$gallery_ids = self::get_portfolio_gallery_image_ids( $post_id );
+
+			if ( ! empty( $gallery_ids ) ) {
+				return (int) $gallery_ids[0];
+			}
+		}
+
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+		return $thumbnail_id ? (int) $thumbnail_id : 0;
+	}
 }

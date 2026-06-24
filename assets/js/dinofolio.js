@@ -514,6 +514,18 @@
 		} );
 	}
 
+	function refreshListingIsotopeLayout( carousel ) {
+		if ( ! carousel ) {
+			return;
+		}
+
+		var block = carousel.closest( '.dinofolio[data-dinofolio-config]' );
+
+		if ( block && block.dinofolioIsotope && typeof block.dinofolioIsotope.layout === 'function' ) {
+			block.dinofolioIsotope.layout();
+		}
+	}
+
 	function initHorizontalItemGalleryCarousel( carousel ) {
 		var viewport = carousel.querySelector( '.dinofolio-item-gallery-carousel-viewport' );
 		var track = carousel.querySelector( '.dinofolio-item-gallery-carousel-track' );
@@ -647,6 +659,7 @@
 					}
 
 					updateNavState();
+					refreshListingIsotopeLayout( carousel );
 				},
 				{ once: true }
 			);
@@ -670,6 +683,7 @@
 				updateSlideWidths();
 				resetToFirstSlide();
 				updateNavState();
+				refreshListingIsotopeLayout( carousel );
 			} );
 		} );
 	}
