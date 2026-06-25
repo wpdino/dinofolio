@@ -143,3 +143,12 @@ This plugin does not collect, store, or transmit personal data to external serve
 * Elementor and WPBakery are optional. When used, their respective editors load only on pages where you build content with those tools.
 
 No analytics, tracking, or account registration is included in this plugin.
+
+== Third-Party Libraries ==
+
+This plugin bundles the following third-party libraries:
+
+* GLightbox - https://github.com/biati-digital/glightbox - MIT License
+* Plyr - https://github.com/sampotts/plyr - MIT License
+* Isotope - https://isotope.metafizzy.co/ - Commercial / GPLv3 dual license
+* imagesLoaded - https://imagesloaded.desandro.com/ - MIT License

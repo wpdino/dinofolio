@@ -16,7 +16,7 @@ class Portfolio_Category_Icon {
 
 	const TAXONOMY       = 'wpdino_portfolio_category';
 	const META_KEY       = 'dinofolio_category_icon';
-	const DEFAULT_PRESET = 'grid';
+	const DEFAULT_PRESET = 'none';
 
 	/**
 	 * Bootstrap hooks.
@@ -116,6 +116,35 @@ class Portfolio_Category_Icon {
 	}
 
 	/**
+	 * Preset choices shown in the admin selector (includes "None").
+	 *
+	 * @return array<string, array{label:string,svg:string,empty?:bool}>
+	 */
+	public static function get_selector_presets() {
+		$none = array(
+			'label' => esc_html__( 'None', 'dinofolio' ),
+			'svg'   => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8 8 8 8"/></svg>',
+			'empty' => true,
+		);
+
+		return array_merge( array( 'none' => $none ), self::get_presets() );
+	}
+
+	/**
+	 * Empty icon payload used when no icon should render.
+	 *
+	 * @return array{type:string,preset:string,attachment_id:int,url:string}
+	 */
+	private static function get_empty_icon_data() {
+		return array(
+			'type'          => 'none',
+			'preset'        => 'none',
+			'attachment_id' => 0,
+			'url'           => '',
+		);
+	}
+
+	/**
 	 * Sanitize stored icon value.
 	 *
 	 * @param mixed $value Raw value.
@@ -176,12 +205,7 @@ class Portfolio_Category_Icon {
 		$value = self::get_term_icon_value( $term );
 
 		if ( '' === $value ) {
-			return array(
-				'type'          => 'preset',
-				'preset'        => self::DEFAULT_PRESET,
-				'attachment_id' => 0,
-				'url'           => '',
-			);
+			return self::get_empty_icon_data();
 		}
 
 		if ( 0 === strpos( $value, 'preset:' ) ) {
@@ -189,7 +213,7 @@ class Portfolio_Category_Icon {
 			$presets = self::get_presets();
 
 			if ( ! isset( $presets[ $preset ] ) ) {
-				$preset = self::DEFAULT_PRESET;
+				return self::get_empty_icon_data();
 			}
 
 			return array(
@@ -204,12 +228,7 @@ class Portfolio_Category_Icon {
 		$url           = wp_get_attachment_image_url( $attachment_id, 'thumbnail' );
 
 		if ( ! $url ) {
-			return array(
-				'type'          => 'preset',
-				'preset'        => self::DEFAULT_PRESET,
-				'attachment_id' => 0,
-				'url'           => '',
-			);
+			return self::get_empty_icon_data();
 		}
 
 		return array(
@@ -228,7 +247,12 @@ class Portfolio_Category_Icon {
 	 * @return string
 	 */
 	public static function render_icon_html( $term, $class = 'dinofolio-category-pill-icon' ) {
-		$data    = self::get_icon_data( $term );
+		$data = self::get_icon_data( $term );
+
+		if ( 'none' === $data['type'] ) {
+			return '';
+		}
+
 		$classes = trim( 'dinofolio-category-icon ' . $class );
 
 		if ( 'media' === $data['type'] && ! empty( $data['url'] ) ) {
@@ -236,9 +260,12 @@ class Portfolio_Category_Icon {
 		}
 
 		$presets = self::get_presets();
-		$preset  = isset( $presets[ $data['preset'] ] ) ? $presets[ $data['preset'] ] : $presets[ self::DEFAULT_PRESET ];
 
-		return '<span class="' . esc_attr( $classes ) . '">' . $preset['svg'] . '</span>';
+		if ( ! isset( $presets[ $data['preset'] ] ) ) {
+			return '';
+		}
+
+		return '<span class="' . esc_attr( $classes ) . '">' . $presets[ $data['preset'] ]['svg'] . '</span>';
 	}
 
 	/**
@@ -287,15 +314,26 @@ class Portfolio_Category_Icon {
 		echo '<input type="hidden" id="dinofolio-category-icon-value" name="dinofolio_category_icon" value="' . esc_attr( $value ) . '" />';
 
 		echo '<div class="dinofolio-category-icon-preview" aria-live="polite">';
-		echo self::render_icon_html( $term_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		if ( '' === $value && 'media' !== $data['type'] ) {
+			$selector_presets = self::get_selector_presets();
+			echo '<span class="dinofolio-category-icon dinofolio-category-pill-icon">' . $selector_presets['none']['svg'] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		} else {
+			echo self::render_icon_html( $term_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
 		echo '</div>';
 
-		echo '<p class="description">' . esc_html__( 'Choose a preset icon or upload a custom image/SVG. If none is selected, the default grid icon is used on the portfolio listing.', 'dinofolio' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Choose a preset icon or upload a custom image. Select None to hide the category icon on portfolio listings.', 'dinofolio' ) . '</p>';
 
 		echo '<div class="dinofolio-category-icon-presets" role="listbox" aria-label="' . esc_attr__( 'Preset category icons', 'dinofolio' ) . '">';
-		foreach ( self::get_presets() as $slug => $preset ) {
-			$selected = ( 'preset:' . $slug === $value ) || ( '' === $value && self::DEFAULT_PRESET === $slug && 'media' !== $data['type'] );
-			echo '<button type="button" class="dinofolio-category-icon-preset' . ( $selected ? ' is-selected' : '' ) . '" data-value="preset:' . esc_attr( $slug ) . '" role="option" aria-selected="' . ( $selected ? 'true' : 'false' ) . '" title="' . esc_attr( $preset['label'] ) . '">';
+		foreach ( self::get_selector_presets() as $slug => $preset ) {
+			$is_none       = ! empty( $preset['empty'] );
+			$preset_value  = $is_none ? '' : 'preset:' . $slug;
+			$selected      = $is_none
+				? ( '' === $value && 'media' !== $data['type'] )
+				: ( 'preset:' . $slug === $value );
+			$extra_class   = $is_none ? ' is-none-preset' : '';
+
+			echo '<button type="button" class="dinofolio-category-icon-preset' . ( $selected ? ' is-selected' : '' ) . $extra_class . '" data-value="' . esc_attr( $preset_value ) . '" role="option" aria-selected="' . ( $selected ? 'true' : 'false' ) . '" title="' . esc_attr( $preset['label'] ) . '">';
 			echo '<span class="dinofolio-category-icon-preset-svg">' . $preset['svg'] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<span class="screen-reader-text">' . esc_html( $preset['label'] ) . '</span>';
 			echo '</button>';
@@ -304,8 +342,23 @@ class Portfolio_Category_Icon {
 
 		echo '<div class="dinofolio-category-icon-actions">';
 		echo '<button type="button" class="button dinofolio-category-icon-upload">' . esc_html__( 'Upload Custom Icon', 'dinofolio' ) . '</button>';
-		echo '<button type="button" class="button-link-delete dinofolio-category-icon-clear">' . esc_html__( 'Use Default Icon', 'dinofolio' ) . '</button>';
 		echo '</div>';
+		echo '<p class="description dinofolio-category-icon-upload-note">';
+		echo wp_kses(
+			sprintf(
+				/* translators: %s: SVG Support plugin URL on WordPress.org. */
+				__( 'SVG files require upload support in WordPress. Install a plugin such as <a href="%s" target="_blank" rel="noopener noreferrer">SVG Support</a> before uploading SVG icons.', 'dinofolio' ),
+				'https://wordpress.org/plugins/svg-support/'
+			),
+			array(
+				'a' => array(
+					'href'   => array(),
+					'target' => array(),
+					'rel'    => array(),
+				),
+			)
+		);
+		echo '</p>';
 
 		echo '</div>';
 
@@ -323,7 +376,19 @@ class Portfolio_Category_Icon {
 	 * @return void
 	 */
 	public static function save_term_meta( $term_id ) {
-		if ( ! current_user_can( 'manage_categories' ) ) {
+		$term_id = absint( $term_id );
+
+		if ( $term_id < 1 ) {
+			return;
+		}
+
+		$taxonomy = get_taxonomy( self::TAXONOMY );
+
+		if ( ! $taxonomy || ! current_user_can( $taxonomy->cap->manage_terms ) ) {
+			return;
+		}
+
+		if ( ! self::verify_term_save_nonce( $term_id ) ) {
 			return;
 		}
 
@@ -331,8 +396,9 @@ class Portfolio_Category_Icon {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Taxonomy screens verify their own nonce before this hook runs.
-		$value = self::sanitize_icon_value( wp_unslash( $_POST['dinofolio_category_icon'] ) );
+		$value = self::sanitize_icon_value(
+			sanitize_text_field( wp_unslash( $_POST['dinofolio_category_icon'] ) )
+		);
 
 		if ( '' === $value ) {
 			delete_term_meta( $term_id, self::META_KEY );
@@ -340,6 +406,32 @@ class Portfolio_Category_Icon {
 		}
 
 		update_term_meta( $term_id, self::META_KEY, $value );
+	}
+
+	/**
+	 * Verify taxonomy term save nonces used by core edit-tags screens.
+	 *
+	 * @param int $term_id Term ID being saved.
+	 * @return bool
+	 */
+	private static function verify_term_save_nonce( $term_id ) {
+		if ( isset( $_POST['_wpnonce'] ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) );
+
+			if ( wp_verify_nonce( $nonce, 'update-tag_' . absint( $term_id ) ) ) {
+				return true;
+			}
+		}
+
+		if ( isset( $_POST['_wpnonce_add-tag'] ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_POST['_wpnonce_add-tag'] ) );
+
+			if ( wp_verify_nonce( $nonce, 'add-tag' ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -378,7 +470,7 @@ class Portfolio_Category_Icon {
 		);
 
 		$presets = array();
-		foreach ( self::get_presets() as $slug => $preset ) {
+		foreach ( self::get_selector_presets() as $slug => $preset ) {
 			$presets[ $slug ] = array(
 				'label' => $preset['label'],
 				'svg'   => $preset['svg'],

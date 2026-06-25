@@ -3,7 +3,7 @@
 
 	var config = window.dinofolioCategoryIconAdmin || {};
 	var presets = config.presets || {};
-	var defaultPreset = config.defaultPreset || 'grid';
+	var defaultPreset = config.defaultPreset || 'none';
 
 	function getField( $context ) {
 		return $context.find( '.dinofolio-category-icon-field' ).first();
@@ -15,6 +15,12 @@
 
 	function getPreview( $field ) {
 		return $field.find( '.dinofolio-category-icon-preview' );
+	}
+
+	function getButtonValue( $button ) {
+		var value = $button.attr( 'data-value' );
+
+		return typeof value === 'undefined' ? '' : value;
 	}
 
 	function renderPresetPreview( slug ) {
@@ -44,7 +50,7 @@
 	function setSelectedPreset( $field, value ) {
 		$field.find( '.dinofolio-category-icon-preset' ).each( function () {
 			var $button = $( this );
-			var isSelected = $button.data( 'value' ) === value;
+			var isSelected = getButtonValue( $button ) === value;
 
 			$button.toggleClass( 'is-selected', isSelected );
 			$button.attr( 'aria-selected', isSelected ? 'true' : 'false' );
@@ -68,7 +74,7 @@
 
 	function setValue( $field, value, mediaUrl ) {
 		getInput( $field ).val( value || '' );
-		setSelectedPreset( $field, value );
+		setSelectedPreset( $field, value || '' );
 		updatePreview( $field, value, mediaUrl );
 	}
 
@@ -102,17 +108,11 @@
 		var $button = $( this );
 		var $field = getField( $button.closest( 'form' ) );
 
-		setValue( $field, String( $button.data( 'value' ) || '' ) );
+		setValue( $field, getButtonValue( $button ) );
 	} );
 
 	$( document ).on( 'click', '.dinofolio-category-icon-upload', function ( event ) {
 		event.preventDefault();
 		openMediaFrame( getField( $( this ).closest( 'form' ) ) );
-	} );
-
-	$( document ).on( 'click', '.dinofolio-category-icon-clear', function ( event ) {
-		event.preventDefault();
-		var $field = getField( $( this ).closest( 'form' ) );
-		setValue( $field, '', '' );
 	} );
 } )( jQuery );

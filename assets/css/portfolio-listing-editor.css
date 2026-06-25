@@ -53,7 +53,7 @@
 
 .dinofolio-listing--editor-preview a,
 .dinofolio-listing--editor-preview button,
-.dinofolio-listing--editor-preview .dinofolio-filter a,
+.dinofolio-listing--editor-preview .dinofolio-filter a.dinofolio-filter-link,
 .dinofolio-listing--editor-preview .dinofolio-pagination a {
 	pointer-events: none !important;
 	cursor: default !important;

@@ -10,7 +10,7 @@
  * Tested up to:        7.0
  * Requires PHP: 7.0
  * License:     GPL-2.0+ or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt	
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: dinofolio
  * Domain Path: /languages/
  */
@@ -137,13 +137,6 @@ final class Plugin {
 	 * @return void
 	 */
 	public function register_assets() {
-		wp_register_style(
-			'dinofolio-elementor',
-			DINOFOLIO_URL . 'assets/css/dinofolio-elementor.css',
-			array(),
-			DINOFOLIO_VERSION
-		);
-
 		if ( class_exists( 'WPDINO_Portfolio_Display' ) ) {
 			\WPDINO_Portfolio_Display::get_instance()->register_listing_assets();
 		}
@@ -153,7 +146,11 @@ final class Plugin {
 	 * Enqueue plugin styles.
 	 */
 	public function plugin_css() {
-		wp_enqueue_style( 'dinofolio-elementor' );
+		wp_enqueue_style( 'dinofolio-elementor',
+			DINOFOLIO_URL . 'assets/css/dinofolio-elementor.css',
+			array(),
+			DINOFOLIO_VERSION
+		);
 	}
 
 	/**

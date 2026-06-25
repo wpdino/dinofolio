@@ -98,6 +98,8 @@ class WPDINO_Portfolio_Display {
 		add_action( 'wp_ajax_nopriv_dinofolio_load_more', array( $this, 'ajax_load_more' ) );
 
 		add_action( 'init', array( $this, 'register_listing_assets' ) );
+		add_action( 'pre_get_posts', array( $this, 'adjust_archive_main_query' ) );
+		add_filter( 'pre_handle_404', array( $this, 'prevent_archive_pagination_404' ), 10, 2 );
 
 		// Enqueue frontend assets only when needed
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
@@ -430,6 +432,111 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Posts-per-page used on portfolio taxonomy and archive templates.
+	 *
+	 * @return int
+	 */
+	private function get_archive_posts_per_page() {
+		$posts_per_page = (int) $this->settings->get_setting( 'taxonomy_posts_per_page', 12 );
+
+		return max( 1, min( 100, $posts_per_page ) );
+	}
+
+	/**
+	 * Apply taxonomy/archive listing settings to the main query so /page/N/ URLs resolve.
+	 *
+	 * The listing renderer runs a secondary WP_Query; if the main query keeps the site
+	 * default posts_per_page, WordPress can 404 on valid pagination URLs.
+	 *
+	 * @param \WP_Query $query Main query.
+	 * @return void
+	 */
+	public function adjust_archive_main_query( $query ) {
+		if ( is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		$is_portfolio_tax     = $query->is_tax( $this->taxonomies );
+		$is_portfolio_archive = $query->is_post_type_archive( $this->post_type );
+
+		if ( ! $is_portfolio_tax && ! $is_portfolio_archive ) {
+			return;
+		}
+
+		$query->set( 'posts_per_page', $this->get_archive_posts_per_page() );
+
+		$order_by = sanitize_key( (string) $this->settings->get_setting( 'taxonomy_order_by', 'date' ) );
+		$order    = strtoupper( sanitize_key( (string) $this->settings->get_setting( 'taxonomy_order', 'desc' ) ) );
+		$order    = ( 'ASC' === $order ) ? 'ASC' : 'DESC';
+
+		if ( 'menu_order' === $order_by ) {
+			$query->set( 'orderby', 'menu_order date' );
+			$query->set( 'order', 'ASC' );
+			return;
+		}
+
+		$allowed_orderby = array( 'date', 'title', 'modified', 'rand', 'menu_order' );
+
+		if ( in_array( $order_by, $allowed_orderby, true ) ) {
+			$query->set( 'orderby', $order_by );
+			$query->set( 'order', $order );
+		}
+	}
+
+	/**
+	 * Prevent false 404s on portfolio taxonomy/archive pagination pages.
+	 *
+	 * @param bool      $preempt  Whether to short-circuit 404 handling.
+	 * @param \WP_Query $wp_query Main query.
+	 * @return bool
+	 */
+	public function prevent_archive_pagination_404( $preempt, $wp_query ) {
+		if ( $preempt || ! $wp_query->is_main_query() ) {
+			return $preempt;
+		}
+
+		$paged = max( 1, (int) $wp_query->get( 'paged' ) );
+
+		if ( $paged < 2 ) {
+			return $preempt;
+		}
+
+		$is_portfolio_tax     = $wp_query->is_tax( $this->taxonomies );
+		$is_portfolio_archive = $wp_query->is_post_type_archive( $this->post_type );
+
+		if ( ! $is_portfolio_tax && ! $is_portfolio_archive ) {
+			return $preempt;
+		}
+
+		$attributes = $is_portfolio_tax
+			? $this->get_taxonomy_listing_attributes( $wp_query->get_queried_object() )
+			: $this->get_archive_listing_attributes();
+
+		if ( empty( $attributes ) ) {
+			return $preempt;
+		}
+
+		$attributes['paged'] = $paged;
+		$count_query           = new WP_Query(
+			array_merge(
+				$this->build_query( $attributes ),
+				array(
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+				)
+			)
+		);
+
+		if ( (int) $count_query->max_num_pages >= $paged ) {
+			$wp_query->is_404 = false;
+			status_header( 200 );
+			return true;
+		}
+
+		return $preempt;
+	}
+
+	/**
 	 * Enqueue portfolio listing styles when the listing is rendered.
 	 *
 	 * @return void
@@ -557,13 +664,13 @@ class WPDINO_Portfolio_Display {
 			'showTitle'       => (bool) $this->settings->get_setting( 'taxonomy_show_title', true ),
 			'showCategories'  => (bool) $this->settings->get_setting( 'taxonomy_show_categories', true ),
 			'showExcerpt'     => (bool) $this->settings->get_setting( 'taxonomy_show_excerpt', true ),
-			'excerptLength'   => 120,
+			'excerptLength'   => (int) $this->settings->get_setting( 'taxonomy_excerpt_length', 120 ),
 			'showReadMore'    => (bool) $this->settings->get_setting( 'taxonomy_show_read_more', true ),
 			'readMoreLabel'   => $this->settings->get_setting( 'taxonomy_read_more_label', esc_html__( 'View Project', 'dinofolio' ) ),
+			'readMoreAlign'   => $this->settings->get_setting( 'taxonomy_read_more_align', 'right' ),
 			'lightbox'        => (bool) $this->settings->get_setting( 'taxonomy_lightbox', true ),
+			'enableParallax'  => (bool) $this->settings->get_setting( 'taxonomy_enable_parallax', false ),
 			'paginationMode'  => (bool) $this->settings->get_setting( 'taxonomy_show_pagination', true ) ? 'pagination' : 'none',
-			'loadMoreLabel'   => esc_html__( 'Load More', 'dinofolio' ),
-			'loadMoreTrigger' => 'click',
 			'showViewAll'     => false,
 			'viewAllText'     => '',
 			'viewAllLink'     => '',
@@ -572,13 +679,13 @@ class WPDINO_Portfolio_Display {
 			'orderBy'         => $this->settings->get_setting( 'taxonomy_order_by', 'date' ),
 			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
 			'style'           => $this->settings->get_setting( 'taxonomy_style', 'standard' ),
-			'hoverEffect'     => $this->settings->get_setting( 'taxonomy_hover_effect', 'zoom' ),
+			'hoverEffect'     => 'zoom',
 			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '#1a8960' ),
 			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
 			'buttonTextColor' => $this->settings->get_setting( 'taxonomy_button_text_color', '' ),
 			'mutedColor'      => $this->settings->get_setting( 'taxonomy_muted_color', '' ),
-			'gap'             => $this->settings->get_setting( 'taxonomy_gap', 24 ),
-			'radius'          => $this->settings->get_setting( 'taxonomy_radius', 10 ),
+			'gap'             => (int) $this->settings->get_setting( 'taxonomy_gap', 24 ),
+			'radius'          => (int) $this->settings->get_setting( 'taxonomy_radius', 10 ),
 		);
 
 		if ( $term->taxonomy === $this->taxonomies[0] ) {
@@ -604,13 +711,13 @@ class WPDINO_Portfolio_Display {
 			'showTitle'       => (bool) $this->settings->get_setting( 'taxonomy_show_title', true ),
 			'showCategories'  => (bool) $this->settings->get_setting( 'taxonomy_show_categories', true ),
 			'showExcerpt'     => (bool) $this->settings->get_setting( 'taxonomy_show_excerpt', true ),
-			'excerptLength'   => 120,
+			'excerptLength'   => (int) $this->settings->get_setting( 'taxonomy_excerpt_length', 120 ),
 			'showReadMore'    => (bool) $this->settings->get_setting( 'taxonomy_show_read_more', true ),
 			'readMoreLabel'   => $this->settings->get_setting( 'taxonomy_read_more_label', esc_html__( 'View Project', 'dinofolio' ) ),
+			'readMoreAlign'   => $this->settings->get_setting( 'taxonomy_read_more_align', 'right' ),
 			'lightbox'        => (bool) $this->settings->get_setting( 'taxonomy_lightbox', true ),
+			'enableParallax'  => (bool) $this->settings->get_setting( 'taxonomy_enable_parallax', false ),
 			'paginationMode'  => (bool) $this->settings->get_setting( 'taxonomy_show_pagination', true ) ? 'pagination' : 'none',
-			'loadMoreLabel'   => esc_html__( 'Load More', 'dinofolio' ),
-			'loadMoreTrigger' => 'click',
 			'showViewAll'     => false,
 			'viewAllText'     => '',
 			'viewAllLink'     => '',
@@ -619,13 +726,13 @@ class WPDINO_Portfolio_Display {
 			'orderBy'         => $this->settings->get_setting( 'taxonomy_order_by', 'date' ),
 			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
 			'style'           => $this->settings->get_setting( 'taxonomy_style', 'standard' ),
-			'hoverEffect'     => $this->settings->get_setting( 'taxonomy_hover_effect', 'zoom' ),
+			'hoverEffect'     => 'zoom',
 			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '#1a8960' ),
 			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
 			'buttonTextColor' => $this->settings->get_setting( 'taxonomy_button_text_color', '' ),
 			'mutedColor'      => $this->settings->get_setting( 'taxonomy_muted_color', '' ),
-			'gap'             => $this->settings->get_setting( 'taxonomy_gap', 24 ),
-			'radius'          => $this->settings->get_setting( 'taxonomy_radius', 10 ),
+			'gap'             => (int) $this->settings->get_setting( 'taxonomy_gap', 24 ),
+			'radius'          => (int) $this->settings->get_setting( 'taxonomy_radius', 10 ),
 		);
 
 		return apply_filters( 'dinofolio_archive_listing_attributes', $attributes );
@@ -1038,7 +1145,8 @@ class WPDINO_Portfolio_Display {
 	 */
 	private function get_listing_js_config( $attributes ) {
 		$pagination_mode = isset( $attributes['paginationMode'] ) ? $attributes['paginationMode'] : 'none';
-		$uses_isotope    = ! empty( $attributes['showFilter'] ) || 'masonry' === $attributes['layout'];
+		// Isotope is only required when the category filter reflows items (grid or masonry).
+		$uses_isotope    = ! empty( $attributes['showFilter'] );
 		$needs_script    = $uses_isotope
 			|| ! empty( $attributes['enableParallax'] )
 			|| ! empty( $attributes['showFilter'] )
@@ -1112,6 +1220,7 @@ class WPDINO_Portfolio_Display {
 		// Container classes
 		$container_classes = array(
 			'dinofolio',
+			'dinofolio-portfolio-listing',
 			'dinofolio-layout-' . $attributes['layout'],
 			'dinofolio-columns-' . $attributes['columns'],
 			'dinofolio-style-' . $attributes['style'],
@@ -2059,7 +2168,7 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	private function get_filter_link_html( $label, $filter, $count, $show_count ) {
-		$output  = '<a href="#" data-filter="' . esc_attr( $filter ) . '">';
+		$output  = '<a href="#" class="dinofolio-filter-link" data-filter="' . esc_attr( $filter ) . '">';
 		$output .= '<span class="dinofolio-filter-label">' . esc_html( $label ) . '</span>';
 
 		if ( $show_count && null !== $count ) {
@@ -2181,11 +2290,15 @@ class WPDINO_Portfolio_Display {
 		$current_page = $this->get_listing_current_page();
 
 		$output = '<div class="dinofolio-pagination">';
-		
+
 		// Build pagination for different contexts
 		if ( is_home() || is_archive() || is_post_type_archive( $this->post_type ) ) {
+			$big = 999999999;
+
 			// For archive pages, use standard WordPress pagination
 			$pagination_args = array(
+				'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+				'format'    => '',
 				'total'     => $total_pages,
 				'current'   => $current_page,
 				'prev_text' => '<span class="dinofolio-pagination-prev">&laquo; ' . esc_html__( 'Previous', 'dinofolio' ) . '</span>',
@@ -2514,8 +2627,9 @@ class WPDINO_Portfolio_Display {
 		$page = isset( $_POST['page'] ) ? max( 1, absint( wp_unslash( $_POST['page'] ) ) ) : 1;
 
 		$attributes = array();
-		if ( isset( $_POST['attributes'] ) ) {
-			$decoded = json_decode( wp_unslash( (string) $_POST['attributes'] ), true );
+		if ( isset( $_POST['attributes'] ) && is_string( $_POST['attributes'] ) ) {
+			$attributes_json = sanitize_textarea_field( wp_unslash( $_POST['attributes'] ) );
+			$decoded         = json_decode( $attributes_json, true );
 			if ( is_array( $decoded ) ) {
 				$attributes = $decoded;
 			}

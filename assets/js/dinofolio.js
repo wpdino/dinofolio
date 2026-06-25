@@ -255,6 +255,7 @@
 
 		li.setAttribute( 'role', 'listitem' );
 		link.href = '#';
+		link.className = 'dinofolio-filter-link';
 		link.setAttribute( 'data-filter', term.filter || '.dinofolio-cat-' + term.slug );
 		label.className = 'dinofolio-filter-label';
 		label.textContent = term.name;
@@ -438,6 +439,13 @@
 		} );
 
 		block.dinofolioIsotope = isotope;
+
+		if ( list.getBoundingClientRect().width <= 0 ) {
+			window.requestAnimationFrame( function () {
+				setIsotopeItemWidths( block, config );
+				isotope.layout();
+			} );
+		}
 
 		return isotope;
 	}

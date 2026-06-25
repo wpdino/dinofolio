@@ -1096,27 +1096,6 @@ class DinoFolio_Settings {
 	private function get_listing_style_setting_fields( $prefix = '' ) {
 		return array(
 			array(
-				'type'    => 'select',
-				'id'      => $prefix . 'style',
-				'name'    => $prefix . 'style',
-				'label'   => esc_html__( 'Card Style', 'dinofolio' ),
-				'options' => array(
-					'standard' => esc_html__( 'Standard', 'dinofolio' ),
-					'overlay'  => esc_html__( 'Overlay', 'dinofolio' ),
-				),
-				'default' => 'standard',
-			),
-			array(
-				'type'    => 'select',
-				'id'      => $prefix . 'hover_effect',
-				'name'    => $prefix . 'hover_effect',
-				'label'   => esc_html__( 'Hover Effect', 'dinofolio' ),
-				'options' => array(
-					'zoom' => esc_html__( 'Zoom', 'dinofolio' ),
-				),
-				'default' => 'zoom',
-			),
-			array(
 				'type'    => 'number',
 				'id'      => $prefix . 'gap',
 				'name'    => $prefix . 'gap',
@@ -1132,7 +1111,7 @@ class DinoFolio_Settings {
 				'label'   => esc_html__( 'Border Radius', 'dinofolio' ),
 				'min'     => 0,
 				'max'     => 40,
-				'default' => 8,
+				'default' => 10,
 			),
 			array(
 				'type'    => 'colorpicker',
@@ -1146,21 +1125,21 @@ class DinoFolio_Settings {
 				'id'      => $prefix . 'hover_color',
 				'name'    => $prefix . 'hover_color',
 				'label'   => esc_html__( 'Button Hover Color', 'dinofolio' ),
-				'default' => '#1a8970',
+				'default' => '',
 			),
 			array(
 				'type'    => 'colorpicker',
 				'id'      => $prefix . 'button_text_color',
 				'name'    => $prefix . 'button_text_color',
 				'label'   => esc_html__( 'Button Text Color', 'dinofolio' ),
-				'default' => '#ffffff',
+				'default' => '',
 			),
 			array(
 				'type'    => 'colorpicker',
 				'id'      => $prefix . 'muted_color',
 				'name'    => $prefix . 'muted_color',
 				'label'   => esc_html__( 'Muted Text Color', 'dinofolio' ),
-				'default' => '#666666',
+				'default' => '',
 			),
 		);
 	}
@@ -1197,6 +1176,17 @@ class DinoFolio_Settings {
 					'masonry' => esc_html__( 'Masonry', 'dinofolio' ),
 				),
 				'default' => 'grid',
+			),
+			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_style',
+				'name'    => 'taxonomy_style',
+				'label'   => esc_html__( 'Card Style', 'dinofolio' ),
+				'options' => array(
+					'standard' => esc_html__( 'Standard', 'dinofolio' ),
+					'overlay'  => esc_html__( 'Overlay', 'dinofolio' ),
+				),
+				'default' => 'standard',
 			),
 			array(
 				'type'    => 'select',
@@ -1240,6 +1230,15 @@ class DinoFolio_Settings {
 				'default' => true,
 			),
 			array(
+				'type'    => 'number',
+				'id'      => 'taxonomy_excerpt_length',
+				'name'    => 'taxonomy_excerpt_length',
+				'label'   => esc_html__( 'Excerpt Character Limit', 'dinofolio' ),
+				'min'     => 20,
+				'max'     => 1000,
+				'default' => 120,
+			),
+			array(
 				'type'    => 'checkbox',
 				'id'      => 'taxonomy_show_read_more',
 				'name'    => 'taxonomy_show_read_more',
@@ -1254,11 +1253,31 @@ class DinoFolio_Settings {
 				'default' => esc_html__( 'View Project', 'dinofolio' ),
 			),
 			array(
+				'type'    => 'select',
+				'id'      => 'taxonomy_read_more_align',
+				'name'    => 'taxonomy_read_more_align',
+				'label'   => esc_html__( 'Read More Alignment', 'dinofolio' ),
+				'options' => array(
+					'left'   => esc_html__( 'Left', 'dinofolio' ),
+					'center' => esc_html__( 'Center', 'dinofolio' ),
+					'right'  => esc_html__( 'Right', 'dinofolio' ),
+				),
+				'default' => 'right',
+			),
+			array(
 				'type'    => 'checkbox',
 				'id'      => 'taxonomy_lightbox',
 				'name'    => 'taxonomy_lightbox',
 				'label'   => esc_html__( 'Enable Lightbox', 'dinofolio' ),
 				'default' => true,
+			),
+			array(
+				'type'    => 'checkbox',
+				'id'      => 'taxonomy_enable_parallax',
+				'name'    => 'taxonomy_enable_parallax',
+				'label'   => esc_html__( 'Image Parallax', 'dinofolio' ),
+				'description' => esc_html__( 'Subtle parallax movement on portfolio thumbnails.', 'dinofolio' ),
+				'default' => false,
 			),
 			array(
 				'type'    => 'checkbox',

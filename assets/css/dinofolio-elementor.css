@@ -1,3 +1,12 @@
-/**
- * Shared DinoFolio builder styles (Elementor editor, block editor preview).
- */
+
+#elementor-panel-categories {
+    display: flex;
+    flex-direction: column;
+}
+#elementor-panel-category-dinofolio {
+	order: -3;
+}
+
+#elementor-panel-category-dinofolio .icon {
+	color: #1A8960;
+}
