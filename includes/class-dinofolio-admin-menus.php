@@ -19,13 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Admin_Menus {
 
 	/**
-	 * Go Pro link.
-	 *
-	 * @var string
-	 */
-	private static $goProLink = 'https://wpdino.com/plugins/dinofolio/?utm_source=wpadmin&utm_medium=dinofolio-free&utm_campaign=go-pro-links';
-
-	/**
 	 * The Constructor.
 	 */
 	public function __construct() {
@@ -33,11 +26,6 @@ class Admin_Menus {
 		// Let's add menu item with subitems
 		add_action( 'admin_menu', array( $this, 'register_menus' ), 15 );
 		add_action( 'plugin_action_links_' . DINOFOLIO_PLUGIN_BASE, array( $this, 'plugin_action_links' ), 10, 4 );
-		
-		add_action( 'admin_menu', array( $this, 'plugin_add_go_pro_link_to_menu' ), 15 );
-
-		add_action( 'admin_head', array( $this, 'add_css_go_pro_menu' ) );
-		add_action( 'admin_footer', array( $this, 'add_target_blank_go_pro_menu' ) );
 
 	}
 
@@ -48,16 +36,7 @@ class Admin_Menus {
 	 * @return array
 	 */
 	public function plugin_action_links( $links, $plugin_file, $plugin_data, $context ) {
-
-		// Add Go Pro link if the plugin is not active
-		if( ! defined( 'DINOFOLIO_PRO_VERSION' ) ) {
-			$custom['dinofolio-pro'] = sprintf( 
-				'<a href="%1$s" aria-label="%2$s" target="_blank" rel="noopener noreferrer" class="wpdino-dinofolio-gopro" style="color:#1A8960;font-weight:bold;">%3$s</a>',
-				esc_url( self::$goProLink ),
-				esc_attr__( 'Upgrade to PRO', 'dinofolio' ),
-				esc_html__( 'Get DinoFolio PRO', 'dinofolio' )
-			);
-		}
+		$custom = array();
 
 		// Add settings link to the array
 		$custom['dinofolio-settings'] = sprintf(
@@ -77,22 +56,6 @@ class Admin_Menus {
 		return array_merge( $custom, (array) $links );
 		
 
-	}
-
-	/**
-	 * Add Go Pro link to the Portfolio menu
-	 */
-	public function plugin_add_go_pro_link_to_menu() {
-		global $submenu;
-
-		// Add Go Pro link to the Portfolio menu
-		if( ! defined( 'DINOFOLIO_PRO_VERSION' ) ) {
-			$submenu['edit.php?post_type=wpdino_portfolio'][] = array( 
-				'' . esc_html__( 'Upgrade to Pro', 'dinofolio' ) . '',
-				'manage_options', 
-				self::$goProLink 
-			);
-		}
 	}
 
 	/**
@@ -122,40 +85,6 @@ class Admin_Menus {
 	 */
 	public function admin_page() {
 		do_action( 'wpdino_dinofolio_admin_page' );
-	}
-
-	/**
-	 * Add CSS to Go Pro link.
-	 */
-	public function add_css_go_pro_menu() {
-		$escaped_url = esc_url( self::$goProLink );
-		?>
-		<style>
-			#adminmenu #menu-posts-wpdino_portfolio a[href="<?php echo esc_attr( $escaped_url ); ?>"], 
-			#adminmenu #menu-posts-wpdino_portfolio a[href*="plugins/dinofolio"],
-			#adminmenu #menu-posts-wpdino_portfolio a.dinofolio-go-pro-menu-link {
-				background-color: #1A8960;
-				color: #fff;
-				font-weight: bold;
-			}
-		</style>
-		<?php
-	}
-
-	/**
-	 * Add target="_blank" to Go Pro link.
-	 */
-	public function add_target_blank_go_pro_menu() {
-		?>
-		<script>
-			jQuery( document ).ready( function( $ ) {
-				var $proLink = $('.wp-submenu a[href*="plugins/dinofolio"]');
-				if ( $proLink.length ) {
-					$proLink.attr('target', '_blank').addClass('dinofolio-go-pro-menu-link');
-				}
-			});
-		</script>
-		<?php
 	}
 
 }

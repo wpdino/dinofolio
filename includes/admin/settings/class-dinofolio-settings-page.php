@@ -325,74 +325,6 @@ class DinoFolio_Settings {
 	}
 
 	/**
-	 * Render PRO upsell banner
-	 */
-	private function render_pro_upsell() {
-		// Check if PRO version is already installed
-		if ( class_exists( 'DinoFolioPro\Plugin' ) ) {
-			return; // Don't show upsell if PRO is installed
-		}
-		?>
-		<div class="wpdino-card wpdino-pro-card">
-			<div class="wpdino-pro-header">
-				<div class="wpdino-pro-badge">
-					<?php esc_html_e( 'PRO', 'dinofolio' ); ?>
-				</div>
-				<h2><?php esc_html_e( 'Upgrade to DinoFolio PRO', 'dinofolio' ); ?></h2>
-				<p><?php esc_html_e( 'Unlock advanced AI-powered widgets and premium features to take your Elementor designs to the next level.', 'dinofolio' ); ?></p>
-				
-				<div class="wpdino-pro-features">
-					<ul>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'AI Content Generator', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'AI Content Summarizer', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'AI FAQ Generator', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'AI SEO Optimizer', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'AI Social Media Post Generator', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'AI Image Generator', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'Premium Widgets Collection', 'dinofolio' ); ?>
-						</li>
-						<li>
-							<span class="dashicons dashicons-yes"></span>
-							<?php esc_html_e( 'Priority Support', 'dinofolio' ); ?>
-						</li>
-					</ul>
-				</div>
-				
-				<div class="wpdino-pro-cta">
-					<a href="<?php echo esc_url( $this->add_utm_params( 'https://wpdino.com/plugins/dinofolio-pro-for-elementor/', 'pro_upgrade_button' ) ); ?>" target="_blank" class="wpdino-btn wpdino-btn-primary">
-						<?php esc_html_e( 'Get DinoFolio PRO', 'dinofolio' ); ?>
-						<span class="dashicons dashicons-arrow-right-alt"></span>
-					</a>
-					<p>
-						<?php esc_html_e( '30-day money-back guarantee', 'dinofolio' ); ?>
-					</p>
-				</div>
-			</div>
-		</div>
-		<?php
-	}
-
-	/**
 	 * Render admin notices
 	 */
 	private function render_admin_notices() {
@@ -1041,11 +973,7 @@ class DinoFolio_Settings {
 					'id'   => 'pro_widgets_subsection',
 					'name' => 'pro_widgets_subsection',
 					'label' => esc_html__( 'PRO Widgets', 'dinofolio' ),
-					'description' => sprintf(
-						/* translators: %s: DinoFolio PRO plugin URL. */
-						wp_kses_post( __( 'These widgets are available in <a href="%s" target="_blank">DinoFolio PRO</a>. Upgrade to unlock these powerful features.', 'dinofolio' ) ),
-						esc_url( $this->add_utm_params( 'https://wpdino.com/plugins/dinofolio/', 'pro_widgets_section' ) )
-					),
+					'description' => esc_html__( 'These widgets are available in DinoFolio PRO.', 'dinofolio' ),
 				);
 				$general_fields = array_merge( $general_fields, $pro_widget_fields );
 			}
@@ -1616,7 +1544,7 @@ class DinoFolio_Settings {
 			<!-- Admin Notices -->
 			<?php $this->render_admin_notices(); ?>
 
-			<div class="wpdino-main<?php echo class_exists( 'DinoFolioPro\Plugin' ) ? ' wpdino-main-no-sidebar' : ''; ?>">
+			<div class="wpdino-main wpdino-main-no-sidebar">
 				
 				<!-- Settings Content -->
 				<div class="wpdino-content">
@@ -1743,10 +1671,6 @@ class DinoFolio_Settings {
 					</div>
 				</div>
 				
-				<!-- Sidebar -->
-				<div class="wpdino-sidebar">
-					<?php $this->render_pro_upsell(); ?>
-				</div>
 			</div>
 
 			<!-- Footer -->
