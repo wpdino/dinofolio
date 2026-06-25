@@ -44,6 +44,15 @@
 	--dinofolio-muted: #666;
 }
 
+.dinofolio.dinofolio-color-scheme-dark {
+	--dinofolio-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+	--dinofolio-accent: #10b981;
+	--dinofolio-hover: #34d399;
+	--dinofolio-button-text: #ffffff;
+	--dinofolio-text: #f3f4f6;
+	--dinofolio-muted: #b7bec8;
+}
+
 .dinofolio-items-list {
 	gap: var(--dinofolio-gap);
 }
@@ -650,6 +659,14 @@
 	background: #fff;
 }
 
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-item {
+	background: #0b1014;
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-item-details {
+	background: #0b1014;
+}
+
 .dinofolio .dinofolio-item-title {
 	margin: 0 0 0.75rem;
 	font-size: 1.2rem;
@@ -692,9 +709,18 @@
 	transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-category-pill {
+	background: #12181d;
+	color: var(--dinofolio-accent);
+}
+
 .dinofolio .dinofolio-category-pill:hover {
 	background: #e9f6f0;
 	color: var(--dinofolio-accent);
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-category-pill:hover {
+	background: #182128;
 }
 
 .dinofolio .dinofolio-category-pill-label {
@@ -754,6 +780,10 @@
 	display: flex;
 }
 
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-item-button {
+	border-top-color: #1c252d;
+}
+
 .dinofolio-read-more-align-left .dinofolio-item-button {
 	justify-content: flex-start;
 }
@@ -788,6 +818,11 @@
 }
 
 .dinofolio .dinofolio-button-link:visited {
+	color: var(--dinofolio-accent);
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-button-link,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-button-link:visited {
 	color: var(--dinofolio-accent);
 }
 
@@ -1113,6 +1148,14 @@
 		transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:visited {
+	background: #12181d;
+	border-color: #1f2a33;
+	color: var(--dinofolio-text, #f3f4f6);
+}
+
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:hover,
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:focus,
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:focus-visible,
@@ -1223,6 +1266,19 @@
 	line-height: 1.2;
 	box-sizing: border-box;
 	transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination .dinofolio-pagination-items > a.dinofolio-page-numbers,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination .dinofolio-pagination-wrapper > a.dinofolio-page-numbers,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination .dinofolio-pagination-wrapper > span.dinofolio-page-numbers,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination .dinofolio-pagination-wrapper > a,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination .dinofolio-pagination-wrapper > span[aria-current="page"],
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination ul.dinofolio-page-numbers a.dinofolio-page-numbers,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-pagination ul.dinofolio-page-numbers span.dinofolio-page-numbers {
+	background: #0f151a;
+	border-color: #23303a;
+	color: var(--dinofolio-text, #f3f4f6);
 }
 
 .dinofolio .dinofolio-pagination .dinofolio-pagination-items > span.dinofolio-page-numbers.dinofolio-current,
@@ -1353,6 +1409,20 @@
 	box-shadow: none;
 	box-sizing: border-box;
 	transition: border-color 0.2s ease;
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-load-more-btn {
+	background: #f8fafc;
+	border-color: #e2e8f0;
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-load-more-btn-text {
+	color: #0f172a;
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-load-more-btn:hover .dinofolio-load-more-btn-text,
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-load-more-btn:focus-visible .dinofolio-load-more-btn-text {
+	color: var(--dinofolio-accent);
 }
 
 .dinofolio .dinofolio-load-more-btn-text {

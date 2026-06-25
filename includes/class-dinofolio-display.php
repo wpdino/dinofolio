@@ -679,6 +679,7 @@ class WPDINO_Portfolio_Display {
 			'orderBy'         => $this->settings->get_setting( 'taxonomy_order_by', 'date' ),
 			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
 			'style'           => $this->settings->get_setting( 'taxonomy_style', 'standard' ),
+			'colorScheme'     => 'light',
 			'hoverEffect'     => 'zoom',
 			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '#1a8960' ),
 			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
@@ -726,6 +727,7 @@ class WPDINO_Portfolio_Display {
 			'orderBy'         => $this->settings->get_setting( 'taxonomy_order_by', 'date' ),
 			'order'           => $this->settings->get_setting( 'taxonomy_order', 'desc' ),
 			'style'           => $this->settings->get_setting( 'taxonomy_style', 'standard' ),
+			'colorScheme'     => 'light',
 			'hoverEffect'     => 'zoom',
 			'accentColor'     => $this->settings->get_setting( 'taxonomy_accent_color', '#1a8960' ),
 			'hoverColor'      => $this->settings->get_setting( 'taxonomy_hover_color', '' ),
@@ -979,6 +981,7 @@ class WPDINO_Portfolio_Display {
 			'lightbox'        => $this->settings->get_setting( 'enable_lightbox', true ),
 			'hoverEffect'     => $this->settings->get_setting( 'hover_effect', 'zoom' ),
 			'style'           => $this->settings->get_setting( 'portfolio_style', 'standard' ),
+			'colorScheme'     => 'light',
 			'accentColor'     => '#1a8960',
 			'hoverColor'      => '',
 			'buttonTextColor' => '',
@@ -1040,6 +1043,11 @@ class WPDINO_Portfolio_Display {
 		$valid_styles = array( 'standard', 'overlay' );
 		if ( ! in_array( $merged['style'], $valid_styles, true ) ) {
 			$merged['style'] = 'standard';
+		}
+
+		$valid_color_schemes = array( 'light', 'dark' );
+		if ( ! isset( $merged['colorScheme'] ) || ! in_array( $merged['colorScheme'], $valid_color_schemes, true ) ) {
+			$merged['colorScheme'] = 'light';
 		}
 
 		$valid_hover_effects = array( 'zoom' );
@@ -1224,6 +1232,7 @@ class WPDINO_Portfolio_Display {
 			'dinofolio-layout-' . $attributes['layout'],
 			'dinofolio-columns-' . $attributes['columns'],
 			'dinofolio-style-' . $attributes['style'],
+			'dinofolio-color-scheme-' . $attributes['colorScheme'],
 		);
 
 		$listing_config = $this->get_listing_js_config( $attributes );
@@ -2539,6 +2548,7 @@ class WPDINO_Portfolio_Display {
 			'categories',
 			'tags',
 			'style',
+			'colorScheme',
 			'hoverEffect',
 			'enableParallax',
 			'gap',

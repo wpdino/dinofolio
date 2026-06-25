@@ -1,4 +1,4 @@
-=== DinoFolio Lite ===
+=== DinoFolio ===
 Contributors: wpdino
 Donate link: https://paypal.me/dinostd/10usd
 Tags: portfolio, gutenberg, elementor, gallery, showcase
@@ -13,7 +13,7 @@ A modern WordPress portfolio plugin with custom post types, Gutenberg block, Ele
 
 == Description ==
 
-DinoFolio Lite helps creatives, designers, photographers, and businesses showcase their work in a clean, customizable, and professional way. Build portfolio grids on any page using the block editor, Elementor, WPBakery, or shortcodes.
+DinoFolio helps creatives, designers, photographers, and businesses showcase their work in a clean, customizable, and professional way. Build portfolio grids on any page using the block editor, Elementor, WPBakery, or shortcodes.
 
 = Key Features =
 
@@ -121,7 +121,7 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of DinoFolio Lite. Install to create portfolio items and display them with the block editor, Elementor, WPBakery, or shortcodes.
+Initial release of DinoFolio. Install to create portfolio items and display them with the block editor, Elementor, WPBakery, or shortcodes.
 
 == Support ==
 

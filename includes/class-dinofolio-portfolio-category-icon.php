@@ -332,8 +332,9 @@ class Portfolio_Category_Icon {
 				? ( '' === $value && 'media' !== $data['type'] )
 				: ( 'preset:' . $slug === $value );
 			$extra_class   = $is_none ? ' is-none-preset' : '';
+			$button_class  = 'dinofolio-category-icon-preset' . ( $selected ? ' is-selected' : '' ) . $extra_class;
 
-			echo '<button type="button" class="dinofolio-category-icon-preset' . ( $selected ? ' is-selected' : '' ) . $extra_class . '" data-value="' . esc_attr( $preset_value ) . '" role="option" aria-selected="' . ( $selected ? 'true' : 'false' ) . '" title="' . esc_attr( $preset['label'] ) . '">';
+			echo '<button type="button" class="' . esc_attr( $button_class ) . '" data-value="' . esc_attr( $preset_value ) . '" role="option" aria-selected="' . ( $selected ? 'true' : 'false' ) . '" title="' . esc_attr( $preset['label'] ) . '">';
 			echo '<span class="dinofolio-category-icon-preset-svg">' . $preset['svg'] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<span class="screen-reader-text">' . esc_html( $preset['label'] ) . '</span>';
 			echo '</button>';
@@ -392,12 +393,12 @@ class Portfolio_Category_Icon {
 			return;
 		}
 
-		if ( ! isset( $_POST['dinofolio_category_icon'] ) ) {
+		if ( ! isset( $_POST['dinofolio_category_icon'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce already verified in verify_term_save_nonce().
 			return;
 		}
 
 		$value = self::sanitize_icon_value(
-			sanitize_text_field( wp_unslash( $_POST['dinofolio_category_icon'] ) )
+			sanitize_text_field( wp_unslash( $_POST['dinofolio_category_icon'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce already verified in verify_term_save_nonce().
 		);
 
 		if ( '' === $value ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: DinoFolio Lite
+ * Plugin Name: DinoFolio
  * Plugin URI:  https://www.wpdino.com/plugins/dinofolio/
  * Description: The ultimate solution for creatives, designers, photographers, and businesses to showcase their work in a clean, customizable, and professional way. Powered by custom post types, Gutenberg blocks, and flexible templates.
  * Version:     1.0.0

@@ -73,6 +73,7 @@ class Portfolio_Component extends Component_Base {
 			'orderBy'         => 'date',
 			'order'           => 'desc',
 			'style'           => 'standard',
+			'colorScheme'     => 'light',
 			'hoverEffect'     => 'zoom',
 			'accentColor'     => '#1a8960',
 			'hoverColor'      => '',
@@ -152,6 +153,17 @@ class Portfolio_Component extends Component_Base {
 					'overlay'  => esc_html__( 'Overlay', 'dinofolio' ),
 				),
 				'std'        => 'standard',
+			),
+			array(
+				'type'       => 'dropdown',
+				'heading'    => esc_html__( 'Color Scheme', 'dinofolio' ),
+				'param_name' => 'colorScheme',
+				'section'    => 'content',
+				'value'      => array(
+					'light' => esc_html__( 'Light', 'dinofolio' ),
+					'dark'  => esc_html__( 'Dark', 'dinofolio' ),
+				),
+				'std'        => 'light',
 			),
 			array(
 				'type'        => 'dropdown',
