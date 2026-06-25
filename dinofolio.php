@@ -2,7 +2,7 @@
 /**
  * Plugin Name: DinoFolio
  * Plugin URI:  https://www.wpdino.com/plugins/dinofolio/
- * Description: The ultimate solution for creatives, designers, photographers, and businesses to showcase their work in a clean, customizable, and professional way. Powered by custom post types, Gutenberg blocks, and flexible templates.
+ * Description: Create and display portfolio projects with a custom post type, Gutenberg block, Elementor widget, shortcodes, and category archive templates.
  * Version:     1.0.0
  * Author:      WPDINO
  * Author URI:  https://www.wpdino.com
@@ -177,9 +177,7 @@ final class Plugin {
 	 */
 	public function on_plugins_loaded() {
 		/**
-		 * Fires after DinoFolio Lite is loaded.
-		 *
-		 * Pro should bootstrap on this hook.
+		 * Fires after DinoFolio is loaded.
 		 */
 		do_action( 'dinofolio_loaded' );
 	}

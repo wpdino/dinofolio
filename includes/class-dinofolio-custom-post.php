@@ -275,7 +275,7 @@ class Custom_Post {
 				);
 				
                 echo '<div class="wpdino-featured-image-wrapper" data-post-id="' . esc_attr( $post_id ) . '">';
-				echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe HTML from wp_get_attachment_image().
+				echo wp_kses_post( $image );
 				echo '<div class="wpdino-featured-image-actions">';
 				echo '<a href="#" class="wpdino-change-featured-image" data-post-id="' . esc_attr( $post_id ) . '" title="' . esc_attr__( 'Change featured image', 'dinofolio' ) . '">📝</a>';
 				echo '<a href="#" class="wpdino-remove-featured-image" data-post-id="' . esc_attr( $post_id ) . '" title="' . esc_attr__( 'Remove featured image', 'dinofolio' ) . '">🗑️</a>';
@@ -316,7 +316,7 @@ class Custom_Post {
 			);
 			?>
 			<div class="wpdino-featured-image-wrapper" data-post-id="<?php echo esc_attr( $post_id ); ?>">
-				<?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo wp_kses_post( $image ); ?>
 				<div class="wpdino-featured-image-actions">
 					<a href="#" class="wpdino-change-featured-image" data-post-id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_attr__( 'Change featured image', 'dinofolio' ); ?>">📝</a>
 					<a href="#" class="wpdino-remove-featured-image" data-post-id="<?php echo esc_attr( $post_id ); ?>" title="<?php echo esc_attr__( 'Remove featured image', 'dinofolio' ); ?>">🗑️</a>
@@ -425,99 +425,36 @@ class Custom_Post {
 		// Enqueue media scripts
 		wp_enqueue_media();
 
-		// Add inline CSS
-		wp_add_inline_style( 'wp-admin', '
-			.wpdino-featured-image-wrapper {
-				position: relative;
-				display: inline-block;
-			}
-			tr:hover .wpdino-featured-image-wrapper .wpdino-featured-image-actions {
-				opacity: 1;
-			}
-			.wpdino-featured-image-actions {
-				position: absolute;
-				top: -5px;
-				right: -5px;
-				background: rgba(0,0,0,0.8);
-				border-radius: 3px;
-				padding: 2px;
-				opacity: 0;
-				transition: opacity 0.2s;
-			}
-			.wpdino-featured-image-actions a {
-				display: inline-block;
-				margin: 0 2px;
-				text-decoration: none;
-				font-size: 12px;
-				line-height: 1;
-			}
-			.wpdino-no-image .wpdino-featured-image-actions {
-				top: 5px;
-				right: 5px;
-				background: white;
-			}
-			.wpdino-quick-edit-featured-image img {
-				border: 1px solid #ddd;
-				border-radius: 3px;
-			}
-			.column-featured_image {
-				width: 80px;
-			}
-		' );
+		wp_enqueue_style(
+			'dinofolio-portfolio-list-admin',
+			DINOFOLIO_URL . 'includes/admin/assets/css/portfolio-list-admin.css',
+			array(),
+			DINOFOLIO_VERSION
+		);
 
-        // Add inline JavaScript only for column actions (Quick Edit integration removed)
-        wp_add_inline_script( 'jquery', '
-            jQuery(document).ready(function($) {
-                // Add/Change featured image from the column
-                $(document).on("click", ".wpdino-add-featured-image, .wpdino-change-featured-image", function(e) {
-                    e.preventDefault();
-                    var postId = $(this).data("post-id");
-                    var mediaFrame = wp.media({
-                        title: "' . esc_js( __( 'Select Featured Image', 'dinofolio' ) ) . '",
-                        button: { text: "' . esc_js( __( 'Set Featured Image', 'dinofolio' ) ) . '" },
-                        multiple: false
-                    });
-                    mediaFrame.on("select", function() {
-                        var attachment = mediaFrame.state().get("selection").first().toJSON();
-                        $.post(ajaxurl, {
-                            action: "wpdino_portfolio_save_featured_image",
-                            post_id: postId,
-                            image_id: attachment.id,
-                            action_type: "set",
-                            nonce: "' . wp_create_nonce( 'wpdino_portfolio_featured_image' ) . '"
-                        }, function(response) {
-                            if (response.success && response.data && response.data.cell_html) {
-                                var $cell = $(e.target).closest("td");
-                                $cell.html(response.data.cell_html);
-                            } else {
-                                alert("' . esc_js( __( 'Error updating featured image', 'dinofolio' ) ) . '");
-                            }
-                        });
-                    });
-                    mediaFrame.open();
-                });
+		wp_enqueue_script(
+			'dinofolio-portfolio-list-admin',
+			DINOFOLIO_URL . 'includes/admin/assets/js/portfolio-list-admin.js',
+			array( 'jquery', 'media-editor' ),
+			DINOFOLIO_VERSION,
+			true
+		);
 
-                // Remove featured image from the column
-                $(document).on("click", ".wpdino-remove-featured-image", function(e) {
-                    e.preventDefault();
-                    var postId = $(this).data("post-id");
-                    if (!confirm("' . esc_js( __( 'Are you sure you want to remove the featured image?', 'dinofolio' ) ) . '")) { return; }
-                    $.post(ajaxurl, {
-                        action: "wpdino_portfolio_save_featured_image",
-                        post_id: postId,
-                        action_type: "remove",
-                        nonce: "' . wp_create_nonce( 'wpdino_portfolio_featured_image' ) . '"
-                    }, function(response) {
-                        if (response.success && response.data && response.data.cell_html) {
-                            var $cell = $(e.target).closest("td");
-                            $cell.html(response.data.cell_html);
-                        } else {
-                            alert("' . esc_js( __( 'Error removing featured image', 'dinofolio' ) ) . '");
-                        }
-                    });
-                });
-            });
-        ' );
+		wp_localize_script(
+			'dinofolio-portfolio-list-admin',
+			'wpdinoPortfolioListAdmin',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'wpdino_portfolio_featured_image' ),
+				'i18n'    => array(
+					'selectFeaturedImage' => esc_html__( 'Select Featured Image', 'dinofolio' ),
+					'setFeaturedImage'    => esc_html__( 'Set Featured Image', 'dinofolio' ),
+					'errorUpdating'       => esc_html__( 'Error updating featured image', 'dinofolio' ),
+					'confirmRemove'       => esc_html__( 'Are you sure you want to remove the featured image?', 'dinofolio' ),
+					'errorRemoving'       => esc_html__( 'Error removing featured image', 'dinofolio' ),
+				),
+			)
+		);
 	}
 
     /**

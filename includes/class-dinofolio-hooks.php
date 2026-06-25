@@ -1,6 +1,6 @@
 <?php
 /**
- * Public extension API for DinoFolio Lite / Pro.
+ * Extension hooks for DinoFolio integrations.
  *
  * @package DinoFolio
  */
@@ -8,33 +8,6 @@
 namespace DinoFolio;
 
 defined( 'ABSPATH' ) || exit;
-
-/**
- * Whether the DinoFolio Pro plugin is active.
- *
- * Pro should hook: add_filter( 'dinofolio_is_pro', '__return_true' );
- *
- * @return bool
- */
-function dinofolio_is_pro() {
-	return (bool) apply_filters( 'dinofolio_is_pro', false );
-}
-
-/**
- * Whether a Pro feature is available.
- *
- * Pro can map feature slugs to availability, e.g. `load_more_in_view`, `overlay_styles`.
- *
- * @param string $feature Feature slug.
- * @param array  $context Optional context (component, attributes, etc.).
- * @return bool
- */
-function dinofolio_has_feature( $feature, $context = array() ) {
-	$feature = sanitize_key( (string) $feature );
-	$context = is_array( $context ) ? $context : array();
-
-	return (bool) apply_filters( 'dinofolio_has_feature', false, $feature, $context );
-}
 
 /**
  * Fire a namespaced DinoFolio action.

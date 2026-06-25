@@ -1,0 +1,42 @@
+.wpdino-featured-image-wrapper {
+	position: relative;
+	display: inline-block;
+}
+
+tr:hover .wpdino-featured-image-wrapper .wpdino-featured-image-actions {
+	opacity: 1;
+}
+
+.wpdino-featured-image-actions {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background: rgba(0, 0, 0, 0.8);
+	border-radius: 3px;
+	padding: 2px;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.wpdino-featured-image-actions a {
+	display: inline-block;
+	margin: 0 2px;
+	text-decoration: none;
+	font-size: 12px;
+	line-height: 1;
+}
+
+.wpdino-no-image .wpdino-featured-image-actions {
+	top: 5px;
+	right: 5px;
+	background: #fff;
+}
+
+.wpdino-quick-edit-featured-image img {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+}
+
+.column-featured_image {
+	width: 80px;
+}

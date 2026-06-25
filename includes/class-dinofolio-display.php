@@ -1747,13 +1747,35 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
-	 * Build attributes for a GLightbox-enabled anchor.
+	 * Build a sanitized HTML attribute string.
 	 *
-	 * @param string $image_url Full-size image URL.
-	 * @param string $title          Accessible label / lightbox title.
-	 * @param string $extra_classes  Optional extra CSS classes for the anchor.
-	 * @return string HTML attributes.
+	 * @param array $attributes Attribute names and values.
+	 * @return string
 	 */
+	private function build_html_attributes( array $attributes ) {
+		$html = '';
+
+		foreach ( $attributes as $name => $value ) {
+			if ( '' === $value && 'data-glightbox' !== $name ) {
+				continue;
+			}
+
+			if ( 'data-glightbox' === $name && '' === $value ) {
+				$html .= ' data-glightbox';
+				continue;
+			}
+
+			if ( 'href' === $name ) {
+				$html .= sprintf( ' href="%s"', esc_url( $value ) );
+				continue;
+			}
+
+			$html .= sprintf( ' %s="%s"', esc_attr( $name ), esc_attr( $value ) );
+		}
+
+		return trim( $html );
+	}
+
 	/**
 	 * Build attributes for a GLightbox video link.
 	 *
@@ -1771,28 +1793,18 @@ class WPDINO_Portfolio_Display {
 		}
 
 		$atts = array(
-			'href'         => esc_url( $video['url'] ),
+			'href'         => $video['url'],
 			'class'        => $class,
-			'data-gallery' => esc_attr( $gallery_id ),
+			'data-gallery' => $gallery_id,
 			'data-type'    => 'video',
-			'aria-label'   => esc_attr( $title ? $title : __( 'Play video in lightbox', 'dinofolio' ) ),
+			'aria-label'   => $title ? $title : __( 'Play video in lightbox', 'dinofolio' ),
 		);
 
 		if ( $title ) {
-			$atts['data-title'] = esc_attr( $title );
+			$atts['data-title'] = $title;
 		}
 
-		$html = '';
-
-		foreach ( $atts as $name => $value ) {
-			if ( '' === $value ) {
-				continue;
-			}
-
-			$html .= sprintf( ' %s="%s"', $name, $value );
-		}
-
-		return trim( $html );
+		return $this->build_html_attributes( $atts );
 	}
 
 	/**
@@ -1831,34 +1843,19 @@ class WPDINO_Portfolio_Display {
 		}
 
 		$atts = array(
-			'href'          => esc_url( $image_url ),
-			'class'         => $class,
+			'href'           => $image_url,
+			'class'          => $class,
 			'data-glightbox' => '',
-			'data-gallery'  => esc_attr( $gallery_id ),
-			'data-type'     => 'image',
-			'aria-label'    => esc_attr( $title ? $title : __( 'View image in lightbox', 'dinofolio' ) ),
+			'data-gallery'   => $gallery_id,
+			'data-type'      => 'image',
+			'aria-label'     => $title ? $title : __( 'View image in lightbox', 'dinofolio' ),
 		);
 
 		if ( $title ) {
-			$atts['data-title'] = esc_attr( $title );
+			$atts['data-title'] = $title;
 		}
 
-		$html = '';
-
-		foreach ( $atts as $name => $value ) {
-			if ( '' === $value && 'data-glightbox' !== $name ) {
-				continue;
-			}
-
-			if ( 'data-glightbox' === $name ) {
-				$html .= ' data-glightbox';
-				continue;
-			}
-
-			$html .= sprintf( ' %s="%s"', $name, $value );
-		}
-
-		return trim( $html );
+		return $this->build_html_attributes( $atts );
 	}
 
 	/**
@@ -2350,12 +2347,12 @@ class WPDINO_Portfolio_Display {
 			for ( $i = $start_page; $i <= $end_page; $i++ ) {
 				if ( $i == $current_page ) {
 					$output .= '<span class="dinofolio-page-numbers dinofolio-current">';
-					$output .= '<span class="dinofolio-page-number">' . $i . '</span>';
+					$output .= '<span class="dinofolio-page-number">' . esc_html( (string) $i ) . '</span>';
 					$output .= '</span>';
 				} else {
 					$page_url = ( $i == 1 ) ? remove_query_arg( 'pg' ) : add_query_arg( 'pg', $i );
 					$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $page_url ) . '">';
-					$output .= '<span class="dinofolio-page-number">' . $i . '</span>';
+					$output .= '<span class="dinofolio-page-number">' . esc_html( (string) $i ) . '</span>';
 					$output .= '</a>';
 				}
 			}
@@ -2368,7 +2365,7 @@ class WPDINO_Portfolio_Display {
 				
 				$last_url = add_query_arg( 'pg', $total_pages );
 				$output .= '<a class="dinofolio-page-numbers" href="' . esc_url( $last_url ) . '">';
-				$output .= '<span class="dinofolio-page-number">' . $total_pages . '</span>';
+				$output .= '<span class="dinofolio-page-number">' . esc_html( (string) $total_pages ) . '</span>';
 				$output .= '</a>';
 			}
 			

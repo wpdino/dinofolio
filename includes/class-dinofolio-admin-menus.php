@@ -30,7 +30,7 @@ class Admin_Menus {
 	}
 
 	/**
-	 * Add settings and go PRO link to plugin page.
+	 * Add settings link to plugin page.
 	 *
 	 * @param array $links Array of links.
 	 * @return array

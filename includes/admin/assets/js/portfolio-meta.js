@@ -234,6 +234,38 @@ jQuery(function($) {
 		});
 	}
 
+	var $attributesWrapper = $('#wpdino-attributes-wrapper');
+
+	var buildAttributeRow = function() {
+		var labelPlaceholder = i18n.attributeLabel || 'Label';
+		var valuePlaceholder = i18n.attributeValue || 'Value';
+		var removeLabel = i18n.removeAttribute || 'Remove';
+
+		return $('<div class="wpdino-attr-row"></div>')
+			.append($('<input type="text" name="wpdino_attributes_label[]" />').attr('placeholder', labelPlaceholder))
+			.append($('<input type="text" name="wpdino_attributes_value[]" />').attr('placeholder', valuePlaceholder))
+			.append(
+				$('<a href="#" class="button-link-delete wpdino-remove-attr"></a>').text(removeLabel)
+			);
+	};
+
+	$(document).on('click', '#wpdino-add-attribute', function(event) {
+		event.preventDefault();
+
+		if (!$attributesWrapper.length) {
+			return;
+		}
+
+		$attributesWrapper.append(buildAttributeRow());
+		markDirty();
+	});
+
+	$(document).on('click', '.wpdino-remove-attr', function(event) {
+		event.preventDefault();
+		$(this).closest('.wpdino-attr-row').remove();
+		markDirty();
+	});
+
 	var activateMetaTab = function(tabName) {
 		var $tabsRoot = $('[data-wpdino-meta-tabs]');
 		if (!$tabsRoot.length) {
@@ -341,7 +373,7 @@ jQuery(function($) {
 	});
 
 	// Mark dynamic row add/remove as unsaved changes too.
-	$(document).on('click', '#wpdino_add_attribute, #wpdino-add-attribute, .wpdino-remove-attr', function() {
+	$(document).on('click', '#wpdino_add_attribute', function() {
 		markDirty();
 	});
 

@@ -64,7 +64,6 @@ class Gutenberg_Block_Base {
 							$this->component->get_params(),
 							$this->component->get_defaults()
 						),
-						'isPro'    => dinofolio_is_pro(),
 					),
 					$slug,
 					$this->component

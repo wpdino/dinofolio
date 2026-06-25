@@ -272,11 +272,6 @@ class DinoFolio_Settings {
 				continue;
 			}
 			
-			// Skip PRO widgets (they're promo/info only)
-			if ( isset( $field['is_pro'] ) && $field['is_pro'] ) {
-				continue;
-			}
-			
 			$field_name = isset( $field['name'] ) ? $field['name'] : $field_id;
 			$default_value = isset( $field['default'] ) ? $field['default'] : '';
 			
@@ -727,35 +722,6 @@ class DinoFolio_Settings {
 	}
 
 	/**
-	 * Get PRO widgets list with names and descriptions
-	 *
-	 * @since 1.0.2
-	 * @return array Array of widget slugs => array( 'name' => string, 'description' => string )
-	 */
-	private function get_pro_widgets() {
-		// If PRO version is already installed, don't show the promo list at all
-		if ( class_exists( 'DinoFolioPro\Plugin' ) ) {
-			return array();
-		}
-		
-		// PRO widget name and description mapping
-		$pro_widgets_info = array(
-		);
-		
-		// We always return the full PRO widget list in the free version,
-		// regardless of whether the PRO plugin files are present.
-		// This is purely for promo/info purposes.
-		$widgets = $pro_widgets_info;
-
-		// Sort widgets alphabetically by name
-		uasort( $widgets, function( $a, $b ) {
-			return strcmp( $a['name'], $b['name'] );
-		} );
-
-		return $widgets;
-	}
-
-	/**
 	 * Settings sections configuration
 	 */
 	public function get_settings_sections() {
@@ -774,26 +740,6 @@ class DinoFolio_Settings {
 			);
 		}
 		
-		// Get PRO widgets (only if PRO is not activated)
-		$pro_widgets = $this->get_pro_widgets();
-		$pro_widget_fields = array();
-		
-		// Add PRO widget checkboxes (promo/info only, disabled but checked)
-		if ( ! empty( $pro_widgets ) ) {
-			foreach ( $pro_widgets as $widget_slug => $widget_info ) {
-				$pro_widget_fields[] = array(
-					'type' => 'checkbox',
-					'id'   => 'widget_pro_' . $widget_slug,
-					'name' => 'widget_pro_' . $widget_slug,
-					'label' => $widget_info['name'],
-					'description' => ! empty( $widget_info['description'] ) ? $widget_info['description'] : '',
-					'default' => true, // Show as checked by default (available in PRO)
-					'disabled' => true, // Disabled (non-interactive)
-					'is_pro' => true, // Mark as PRO widget (excluded from form processing)
-				);
-			}
-		}
-
 		$wp_admin_permalink_url = admin_url('options-permalink.php');
 		
 		// Build fields array
@@ -965,18 +911,6 @@ class DinoFolio_Settings {
 				'description' => esc_html__( 'Enable or disable widgets to show in the Elementor panel. All widgets are enabled by default.', 'dinofolio' ),
 			);
 			$general_fields = array_merge( $general_fields, $widget_fields );
-			
-			// Add PRO widgets subsection if PRO widgets exist
-			if ( ! empty( $pro_widget_fields ) ) {
-				$general_fields[] = array(
-					'type' => 'subsection',
-					'id'   => 'pro_widgets_subsection',
-					'name' => 'pro_widgets_subsection',
-					'label' => esc_html__( 'PRO Widgets', 'dinofolio' ),
-					'description' => esc_html__( 'These widgets are available in DinoFolio PRO.', 'dinofolio' ),
-				);
-				$general_fields = array_merge( $general_fields, $pro_widget_fields );
-			}
 		}
 		
 		$sections = array(
@@ -1446,9 +1380,8 @@ class DinoFolio_Settings {
 		
 		// Plugin Info
 		$info .= '--- Plugin Info ---' . "\n";
-		$info .= 'DinoFolio Version: ' . DINOFOLIO_VERSION . "\n"; 
+		$info .= 'DinoFolio Version: ' . DINOFOLIO_VERSION . "\n";
 		$info .= 'DinoFolio URL: ' . DINOFOLIO_URL . "\n";
-		$info .= 'DinoFolio PRO: ' . ( defined( 'DINOFOLIO_PRO_VERSION' ) ? DINOFOLIO_PRO_VERSION : 'Not Installed' ) . "\n"; 
 		$info .= "\n";
 		
 		// Theme Info
@@ -1475,15 +1408,7 @@ class DinoFolio_Settings {
 		$info .= '--- DinoFolio Settings ---' . "\n";
 		$settings = self::get_all_settings();
 		
-		// Define password field IDs
-		$password_fields = ['dinofolio_mailchimp_api_key', 'openai_api_key'];
-		
 		foreach ( $settings as $key => $value ) {
-			// Mask password values
-			if ( in_array( $key, $password_fields ) && ! empty( $value ) ) {
-				$value = str_repeat( '*', strlen( $value ) );
-			}
-			
 			if ( is_array( $value ) ) {
 				$info .= $key . ': ' . implode( ', ', $value ) . "\n";
 			} else {
@@ -1598,41 +1523,24 @@ class DinoFolio_Settings {
 								<?php
 								if ( ! empty( $section['fields'] ) ) {
 									$in_widgets_section = false;
-									$in_pro_widgets_section = false;
 									$widget_fields_started = false;
 									
 									foreach ( $section['fields'] as $field ) {
-										// Check if we're entering the widgets subsection
-										if ( isset( $field['type'] ) && $field['type'] === 'subsection' ) {
-											if ( isset( $field['id'] ) && $field['id'] === 'widgets_subsection' ) {
-												$in_widgets_section = true;
-												$in_pro_widgets_section = false;
-											} elseif ( isset( $field['id'] ) && $field['id'] === 'pro_widgets_subsection' ) {
-												$in_pro_widgets_section = true;
-												$in_widgets_section = false;
-												// Close previous widget grid if open
-												if ( $widget_fields_started ) {
-													echo '</div>';
-													$widget_fields_started = false;
-												}
-											}
+										if ( isset( $field['type'] ) && $field['type'] === 'subsection' && isset( $field['id'] ) && $field['id'] === 'widgets_subsection' ) {
+											$in_widgets_section = true;
 										}
 										
-										// Check if this is a widget field (free or pro)
-										$is_widget_field = ( isset( $field['id'] ) && ( strpos( $field['id'], 'widget_enable_' ) === 0 || strpos( $field['id'], 'widget_pro_' ) === 0 ) );
+										$is_widget_field = ( isset( $field['id'] ) && strpos( $field['id'], 'widget_enable_' ) === 0 );
 										
-										// Open wrapper when first widget field is encountered
-										if ( ( $in_widgets_section || $in_pro_widgets_section ) && $is_widget_field && ! $widget_fields_started ) {
+										if ( $in_widgets_section && $is_widget_field && ! $widget_fields_started ) {
 											echo '<div class="wpdino-widgets-grid-wrapper">';
 											$widget_fields_started = true;
 										}
 										
-										// Close wrapper if we've left widget fields (next non-widget field after widgets)
 										if ( $widget_fields_started && ! $is_widget_field && isset( $field['type'] ) && $field['type'] !== 'subsection' ) {
 											echo '</div>';
 											$widget_fields_started = false;
 											$in_widgets_section = false;
-											$in_pro_widgets_section = false;
 										}
 										
 										$this->render_field( $field );

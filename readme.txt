@@ -9,11 +9,13 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A modern WordPress portfolio plugin with custom post types, Gutenberg block, Elementor widget, and flexible layouts.
+A WordPress portfolio plugin with a custom post type, Gutenberg block, Elementor widget, shortcodes, and archive templates.
 
 == Description ==
 
-DinoFolio helps creatives, designers, photographers, and businesses showcase their work in a clean, customizable, and professional way. Build portfolio grids on any page using the block editor, Elementor, WPBakery, or shortcodes.
+DinoFolio adds a portfolio custom post type to WordPress and gives you several ways to display projects on your site: the block editor, Elementor, WPBakery, shortcodes, and built-in category or tag archive templates.
+
+After activation, you can add portfolio items, organize them with categories and tags, configure global defaults in the settings screen, and embed a portfolio listing on any page or post.
 
 = Key Features =
 
@@ -36,13 +38,6 @@ DinoFolio helps creatives, designers, photographers, and businesses showcase the
 * **Display** - Layout, columns, image size, title, categories, excerpt, read more label, lightbox, category filter, pagination, view-all button
 * **Query** - Include categories, include tags, posts to show, order by (date, title, menu order, modified, random), sort direction
 
-= Easy to Use =
-
-* Add portfolio items from the WordPress admin menu
-* Insert the Portfolio Listing block in Gutenberg or the Elementor widget on any page
-* Customize display and query settings in the sidebar panel
-* No coding required for standard use
-
 = Requirements =
 
 * WordPress 6.6 or higher
@@ -54,9 +49,20 @@ DinoFolio helps creatives, designers, photographers, and businesses showcase the
 
 1. Upload the plugin files to the `/wp-content/plugins/dinofolio` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the **Plugins** screen in WordPress.
-3. Go to **DinoFolio** in the admin menu to configure global settings (layout, permalinks, defaults).
-4. Add portfolio items under **DinoFolio** > **Portfolio Items**.
-5. Add the **Portfolio Listing** block in the block editor, or use the **Portfolio Listing** Elementor widget, shortcode, or WPBakery module.
+
+== Getting Started ==
+
+Follow these steps after a fresh install:
+
+1. **Open settings** — In the admin menu, go to **DinoFolio** > **Settings**. Review the **General** tab for permalink slugs and default portfolio item options. Save your changes.
+2. **Refresh permalinks** — If you change the portfolio or taxonomy slug, visit **Settings** > **Permalinks** in WordPress and click **Save Changes** once so archive URLs work correctly.
+3. **Add categories (optional)** — Go to **DinoFolio** > **Categories** and create the groups you want to use for filtering and archives.
+4. **Create portfolio items** — Go to **DinoFolio** > **Portfolio Items** > **Add New**. Add a title, featured image, excerpt, categories, and any project details in the portfolio meta boxes.
+5. **Display a listing on a page** — Edit a page or post and add the **Portfolio Listing** block (block editor), the **Portfolio Listing** Elementor widget, the WPBakery module, or a shortcode such as `[dinofolio layout="grid" columns="3"]`.
+6. **Adjust listing options** — In the block or widget sidebar, use the **Display** and **Query** panels to choose layout, columns, filters, sorting, and what information appears on each card.
+7. **Configure archive templates (optional)** — In **DinoFolio** > **Settings** > **Taxonomy Archive**, enable the plugin taxonomy template and set listing options for category and tag archive pages.
+
+Single portfolio pages use your theme template plus the plugin’s portfolio meta output. To customize that markup, copy `templates/single-portfolio-meta.php` to `your-theme/dinofolio/single-portfolio-meta.php`.
 
 == Frequently Asked Questions ==
 
@@ -70,7 +76,11 @@ No. WPBakery support is optional and loads only when WPBakery Page Builder is ac
 
 = How do I add a portfolio listing to a page? =
 
-In the block editor, add the **Portfolio Listing** block from the DinoFolio category. In Elementor, search for **Portfolio Listing** in the widget panel. You can also use the shortcode `[dinofolio]` or `[dinofolio_portfolio]` with optional attributes.
+In the block editor, add the **Portfolio Listing** block from the DinoFolio category. In Elementor, search for **Portfolio Listing** in the widget panel. You can also use the shortcode `[dinofolio]` or `[dinofolio_portfolio]` with optional attributes, for example: `[dinofolio layout="grid" columns="3" posts_to_show="9" categories="design"]`.
+
+= Where do I change global defaults? =
+
+Go to **DinoFolio** > **Settings**. The **General** tab controls permalink slugs, default values for new portfolio items, and which Elementor widgets are enabled. The **Taxonomy Archive** tab controls category and tag archive listings. Use the **Tools** tab to export or import settings.
 
 = Can I filter projects by category or tag? =
 

@@ -164,7 +164,7 @@ class DinoFolio_Field_Renderer {
 	private function render_subsection_field( $field ) {
 		$is_widgets_subsection = ( isset( $field['id'] ) && $field['id'] === 'widgets_subsection' );
 		?>
-		<div class="wpdino-subsection<?php echo $is_widgets_subsection ? ' wpdino-widgets-subsection' : ''; ?>">
+		<div class="wpdino-subsection<?php echo esc_attr( $is_widgets_subsection ? ' wpdino-widgets-subsection' : '' ); ?>">
 			<?php if ( ! empty( $field['label'] ) ) : ?>
 			<h3 class="wpdino-subsection-title">
 				<?php echo esc_html( $field['label'] ); ?>
@@ -218,7 +218,7 @@ class DinoFolio_Field_Renderer {
 					   autocomplete="off"
 					   data-lpignore="true"
 					   data-form-type="other"
-					   data-masked="<?php echo $is_masked ? 'true' : 'false'; ?>"
+					   data-masked="<?php echo esc_attr( $is_masked ? 'true' : 'false' ); ?>"
 					   data-actual-value="<?php echo esc_attr( $value ); ?>"
 					   <?php if ( isset( $field['placeholder'] ) ) echo 'placeholder="' . esc_attr( $field['placeholder'] ) . '"'; ?> />
 				<span class="wpdino-password-toggle" data-target="#<?php echo esc_attr( $field_id ); ?>">
@@ -299,30 +299,16 @@ class DinoFolio_Field_Renderer {
 	 * Render checkbox field
 	 */
 	private function render_checkbox_field( $field, $field_id, $field_name, $value, $field_class ) {
-		// Check if this is a widget field
-		$is_widget_field = ( strpos( $field_id, 'widget_enable_' ) === 0 || strpos( $field_id, 'widget_pro_' ) === 0 );
-		$is_pro_widget = isset( $field['is_pro'] ) && $field['is_pro'];
-		$is_disabled = isset( $field['disabled'] ) && $field['disabled'];
-		
+		$is_widget_field = ( strpos( $field_id, 'widget_enable_' ) === 0 );
 		$field_group_class = $is_widget_field ? ' wpdino-widget-field' : '';
-		if ( $is_pro_widget ) {
-			$field_group_class .= ' wpdino-pro-widget-field';
-		}
 		?>
 		<div class="wpdino-field-group<?php echo esc_attr( $field_group_class ); ?>">
-			<label class="wpdino-checkbox<?php echo $is_disabled ? ' wpdino-checkbox-disabled' : ''; ?>">
+			<label class="wpdino-checkbox">
 				<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>"
-					   <?php checked( $value ); ?>
-					   <?php echo $is_disabled ? 'disabled="disabled"' : ''; ?>
-					   <?php if ( $is_pro_widget ) : ?>
-					   data-pro-widget="true"
-					   <?php endif; ?> />
+					   <?php checked( $value ); ?> />
 				<span class="wpdino-checkbox-mark"></span>
 				<span class="wpdino-checkbox-label">
 					<?php echo esc_html( $field['label'] ); ?>
-					<?php if ( $is_pro_widget ) : ?>
-						<span class="wpdino-pro-badge-small"><?php esc_html_e( 'PRO', 'dinofolio' ); ?></span>
-					<?php endif; ?>
 				</span>
 			</label>
 			<?php if ( ! empty( $field['description'] ) ) : ?>
@@ -390,7 +376,7 @@ class DinoFolio_Field_Renderer {
 			<div class="wpdino-field-control">
 				<div class="wpdino-toggle-group <?php echo esc_attr( $field_class ); ?>">
 					<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
-						<label class="<?php echo ( (string) $value === (string) $option_value ) ? 'is-checked' : ''; ?>">
+						<label class="<?php echo esc_attr( ( (string) $value === (string) $option_value ) ? 'is-checked' : '' ); ?>">
 							<input type="radio"
 								   name="<?php echo esc_attr( $field_name ); ?>"
 								   value="<?php echo esc_attr( $option_value ); ?>"
@@ -490,7 +476,7 @@ class DinoFolio_Field_Renderer {
 						min="<?php echo esc_attr( $min ); ?>"
 						max="<?php echo esc_attr( $max ); ?>"
 						step="<?php echo esc_attr( $step ); ?>"
-						oninput="document.getElementById('<?php echo esc_attr( $value_id ); ?>').textContent = this.value"
+						data-range-value="<?php echo esc_attr( $value_id ); ?>"
 					/>
 					<span class="wpdino-range-value" id="<?php echo esc_attr( $value_id ); ?>"><?php echo esc_html( $value ); ?></span>
 				</div>
@@ -517,7 +503,7 @@ class DinoFolio_Field_Renderer {
 					   value="<?php echo esc_attr( $value ); ?>" class="<?php echo esc_attr( $field_class ); ?>" />
 				
 				<!-- Image preview -->
-				<div class="wpdino-image-preview" <?php echo empty( $value ) ? 'style="display: none;"' : ''; ?>>
+				<div class="wpdino-image-preview"<?php if ( empty( $value ) ) : ?> style="display: none;"<?php endif; ?>>
 					<img src="<?php echo esc_url( $value ); ?>" alt="<?php esc_attr_e( 'Selected image', 'dinofolio' ); ?>" />
 					<div class="wpdino-image-overlay">
 						<button type="button" class="wpdino-btn wpdino-btn-small wpdino-btn-secondary wpdino-image-change" 
@@ -536,7 +522,7 @@ class DinoFolio_Field_Renderer {
 				</div>
 				
 				<!-- Upload prompt (shown when no image) -->
-				<div class="wpdino-image-upload-prompt" <?php echo ! empty( $value ) ? 'style="display: none;"' : ''; ?>>
+				<div class="wpdino-image-upload-prompt"<?php if ( ! empty( $value ) ) : ?> style="display: none;"<?php endif; ?>>
 					<div class="wpdino-upload-icon">
 						<span class="dashicons dashicons-format-image"></span>
 					</div>

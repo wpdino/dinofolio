@@ -20,14 +20,16 @@ if ( empty( $dinofolio_related_item ) || ! is_array( $dinofolio_related_item ) )
 		<?php if ( ! empty( $dinofolio_related_item['thumbnail_id'] ) ) : ?>
 			<span class="dinofolio-related-thumb-wrap">
 				<?php
-				echo wp_get_attachment_image(
-					(int) $dinofolio_related_item['thumbnail_id'],
-					'dinofolio-related-card',
-					false,
-					array(
-						'class' => 'dinofolio-related-thumb',
-						'alt'   => ! empty( $dinofolio_related_item['title'] ) ? $dinofolio_related_item['title'] : '',
-						'sizes' => '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px',
+				echo wp_kses_post(
+					wp_get_attachment_image(
+						(int) $dinofolio_related_item['thumbnail_id'],
+						'dinofolio-related-card',
+						false,
+						array(
+							'class' => 'dinofolio-related-thumb',
+							'alt'   => ! empty( $dinofolio_related_item['title'] ) ? $dinofolio_related_item['title'] : '',
+							'sizes' => '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px',
+						)
 					)
 				);
 				?>

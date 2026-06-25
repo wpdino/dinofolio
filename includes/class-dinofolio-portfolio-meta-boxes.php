@@ -144,7 +144,7 @@ class Portfolio_Meta_Boxes {
 					<th scope="row"><?php esc_html_e( 'Featured Image', 'dinofolio' ); ?></th>
 					<td><?php $this->render_toggle_field( 'featured_image_display', $values['featured_image_display'] ); ?></td>
 				</tr>
-				<tr class="wpdino-featured-image-size-row" <?php echo $show_featured_size_row ? '' : 'style="display:none;"'; ?>>
+				<tr class="wpdino-featured-image-size-row"<?php if ( ! $show_featured_size_row ) : ?> style="display:none;"<?php endif; ?>>
 					<th scope="row"><label for="wpdino_featured_image_size"><?php esc_html_e( 'Featured Image Size', 'dinofolio' ); ?></label></th>
 					<td>
 						<select id="wpdino_featured_image_size" name="wpdino_featured_image_size">
@@ -213,32 +213,6 @@ class Portfolio_Meta_Boxes {
 				</tr>
 			</tbody>
 		</table>
-
-		<script>
-			(function() {
-				var addBtn = document.getElementById('wpdino-add-attribute');
-				var wrapper = document.getElementById('wpdino-attributes-wrapper');
-				if (!addBtn || !wrapper) { return; }
-
-				addBtn.addEventListener('click', function() {
-					var row = document.createElement('div');
-					row.className = 'wpdino-attr-row';
-					row.innerHTML = '<input type="text" name="wpdino_attributes_label[]" placeholder="<?php echo esc_attr( 'Label' ); ?>">'
-						+ '<input type="text" name="wpdino_attributes_value[]" placeholder="<?php echo esc_attr( 'Value' ); ?>">'
-						+ '<a href="#" class="button-link-delete wpdino-remove-attr"><?php echo esc_html( 'Remove' ); ?></a>';
-					wrapper.appendChild(row);
-				});
-
-				wrapper.addEventListener('click', function(event) {
-					if (!event.target.classList.contains('wpdino-remove-attr')) { return; }
-					event.preventDefault();
-					var row = event.target.closest('.wpdino-attr-row');
-					if (row) {
-						row.remove();
-					}
-				});
-			})();
-		</script>
 			</div>
 
 			<div class="wpdino-portfolio-meta-tabs__panel" role="tabpanel" id="wpdino-portfolio-meta-panel-video" aria-labelledby="wpdino-portfolio-meta-tab-video" data-wpdino-meta-panel="video" hidden>
@@ -268,7 +242,7 @@ class Portfolio_Meta_Boxes {
 						</tr>
 					</tbody>
 				</table>
-				<div class="wpdino-video-fields" data-wpdino-video-fields="lightbox" <?php echo 'on' === $values['video_lightbox'] ? '' : 'hidden'; ?>>
+				<div class="wpdino-video-fields" data-wpdino-video-fields="lightbox"<?php if ( 'on' !== $values['video_lightbox'] ) : ?> hidden<?php endif; ?>>
 					<?php $this->render_video_source_fields( 'video_lightbox', $values['video_lightbox_type'], $values['video_lightbox_url'], $values['video_lightbox_mp4_id'] ); ?>
 				</div>
 			</section>
@@ -355,7 +329,7 @@ class Portfolio_Meta_Boxes {
 						</select>
 					</td>
 				</tr>
-				<tr class="wpdino-video-url-row" data-wpdino-video-url-row="<?php echo esc_attr( $section_key ); ?>" <?php echo 'mp4' === $type ? 'style="display:none;"' : ''; ?>>
+				<tr class="wpdino-video-url-row" data-wpdino-video-url-row="<?php echo esc_attr( $section_key ); ?>"<?php if ( 'mp4' === $type ) : ?> style="display:none;"<?php endif; ?>>
 					<th scope="row"><label for="<?php echo esc_attr( $prefix ); ?>_url"><?php esc_html_e( 'Video URL', 'dinofolio' ); ?></label></th>
 					<td>
 						<input type="url" class="regular-text code" id="<?php echo esc_attr( $prefix ); ?>_url" name="<?php echo esc_attr( $prefix ); ?>_url" value="<?php echo esc_attr( $url ); ?>" placeholder="<?php echo esc_attr( 'youtube' === $type ? 'https://www.youtube.com/watch?v=' : ( 'vimeo' === $type ? 'https://vimeo.com/' : 'https://' ) ); ?>">
@@ -369,14 +343,14 @@ class Portfolio_Meta_Boxes {
 						<?php endif; ?>
 					</td>
 				</tr>
-				<tr class="wpdino-video-mp4-row" data-wpdino-video-mp4-row="<?php echo esc_attr( $section_key ); ?>" <?php echo 'mp4' !== $type ? 'style="display:none;"' : ''; ?>>
+				<tr class="wpdino-video-mp4-row" data-wpdino-video-mp4-row="<?php echo esc_attr( $section_key ); ?>"<?php if ( 'mp4' !== $type ) : ?> style="display:none;"<?php endif; ?>>
 					<th scope="row"><?php esc_html_e( 'MP4 File', 'dinofolio' ); ?></th>
 					<td>
 						<div class="wpdino-video-mp4-control" data-wpdino-video-mp4="<?php echo esc_attr( $section_key ); ?>">
 							<input type="hidden" id="<?php echo esc_attr( $prefix ); ?>_mp4_id" name="<?php echo esc_attr( $prefix ); ?>_mp4_id" value="<?php echo esc_attr( $mp4_id ); ?>">
-							<span class="wpdino-video-mp4-label" data-wpdino-video-mp4-label="<?php echo esc_attr( $section_key ); ?>" <?php echo $label ? '' : 'hidden'; ?>><?php echo esc_html( $label ); ?></span>
+							<span class="wpdino-video-mp4-label" data-wpdino-video-mp4-label="<?php echo esc_attr( $section_key ); ?>"<?php if ( ! $label ) : ?> hidden<?php endif; ?>><?php echo esc_html( $label ); ?></span>
 							<button type="button" class="button button-secondary wpdino-video-mp4-select" data-wpdino-video-mp4-select="<?php echo esc_attr( $section_key ); ?>"><?php esc_html_e( 'Select MP4', 'dinofolio' ); ?></button>
-							<button type="button" class="button-link-delete wpdino-video-mp4-remove" data-wpdino-video-mp4-remove="<?php echo esc_attr( $section_key ); ?>" <?php echo $mp4_id ? '' : 'style="display:none;"'; ?>><?php esc_html_e( 'Remove', 'dinofolio' ); ?></button>
+							<button type="button" class="button-link-delete wpdino-video-mp4-remove" data-wpdino-video-mp4-remove="<?php echo esc_attr( $section_key ); ?>"<?php if ( ! $mp4_id ) : ?> style="display:none;"<?php endif; ?>><?php esc_html_e( 'Remove', 'dinofolio' ); ?></button>
 						</div>
 						<p class="description"><?php esc_html_e( 'Upload or choose an MP4 video from the Media Library.', 'dinofolio' ); ?></p>
 					</td>
@@ -852,6 +826,9 @@ class Portfolio_Meta_Boxes {
 					'dragToReorder'  => esc_html__( 'Drag to reorder', 'dinofolio' ),
 					'selectVideo'    => esc_html__( 'Select MP4 Video', 'dinofolio' ),
 					'useVideo'       => esc_html__( 'Use Video', 'dinofolio' ),
+					'attributeLabel' => esc_attr__( 'Label', 'dinofolio' ),
+					'attributeValue' => esc_attr__( 'Value', 'dinofolio' ),
+					'removeAttribute' => esc_html__( 'Remove', 'dinofolio' ),
 				),
 			)
 		);

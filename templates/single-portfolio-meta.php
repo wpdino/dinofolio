@@ -73,14 +73,16 @@ $dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 		<div class="dinofolio-featured-image-wrap">
 			<?php
 			if ( ! empty( $dinofolio_data['featured_image_id'] ) ) {
-				echo wp_get_attachment_image(
-					(int) $dinofolio_data['featured_image_id'],
-					! empty( $dinofolio_data['featured_image_size'] ) ? $dinofolio_data['featured_image_size'] : 'large',
-					false,
-					array(
-						'class' => 'dinofolio-featured-image',
-						'alt'   => esc_attr( $dinofolio_data['post_title'] ),
-						'sizes' => '(max-width: 768px) 100vw, 1200px',
+				echo wp_kses_post(
+					wp_get_attachment_image(
+						(int) $dinofolio_data['featured_image_id'],
+						! empty( $dinofolio_data['featured_image_size'] ) ? $dinofolio_data['featured_image_size'] : 'large',
+						false,
+						array(
+							'class' => 'dinofolio-featured-image',
+							'alt'   => esc_attr( $dinofolio_data['post_title'] ),
+							'sizes' => '(max-width: 768px) 100vw, 1200px',
+						)
 					)
 				);
 			} else {
