@@ -65,7 +65,7 @@
 			$(document).on('change', '.wpdino-input, .wpdino-select, .wpdino-textarea', this.handleInputChange);
 			
 			// Track form changes for unsaved changes warning
-			$(document).on('input change', '.wpdino-form input, .wpdino-form select, .wpdino-form textarea', this.trackFormChanges);
+			$(document).on('input change', '.wpdino-form:not(.wpdino-license-form) input, .wpdino-form:not(.wpdino-license-form) select, .wpdino-form:not(.wpdino-license-form) textarea', this.trackFormChanges);
 			
 			// Image select changes
 			$(document).on('change', '.wpdino-image-select-group input[type="radio"]', this.handleImageSelectChange);
@@ -463,8 +463,8 @@
 			this.formHasChanges = false;
 			this.initialFormState = {};
 			
-			// Initially disable save button until changes are made.
-			$('.wpdino-form button[type="submit"]').addClass('inactive').prop('disabled', true);
+			// Initially disable save button until changes are made (but not for license forms).
+			$('.wpdino-form:not(.wpdino-license-form) button[type="submit"]').addClass('inactive').prop('disabled', true);
 			
 			// Check if page was just reloaded after successful save (settings-updated parameter)
 			const urlParams = new URLSearchParams(window.location.search);
@@ -496,8 +496,8 @@
 		 * Capture initial form state
 		 */
 		captureInitialFormState: function() {
-			// Capture initial form state.
-			$('.wpdino-form').find('input, select, textarea').each(function() {
+			// Capture initial form state (exclude license forms).
+			$('.wpdino-form:not(.wpdino-license-form)').find('input, select, textarea').each(function() {
 				const $field = $(this);
 				const name = $field.attr('name');
 				if (name) {
@@ -519,6 +519,13 @@
 		 */
 		trackFormChanges: function() {
 			const $field = $(this);
+			const $form = $field.closest('.wpdino-form');
+
+			// Skip license forms.
+			if ($form.hasClass('wpdino-license-form')) {
+				return;
+			}
+
 			const name = $field.attr('name');
 			
 			if (!name) {
@@ -576,7 +583,7 @@
 		 */
 		updateUnsavedChangesNotification: function() {
 			let $notification = $('.wpdino-unsaved-changes-notice');
-			const $saveButton = $('.wpdino-form button[type="submit"]');
+			const $saveButton = $('.wpdino-form:not(.wpdino-license-form) button[type="submit"]');
 			
 			if (this.formHasChanges) {
 				// Show notification if it doesn't exist
@@ -1001,6 +1008,14 @@
 					$input.val(actualValue);
 				}
 			});
+
+			// License forms use server-side validation only.
+			if ($form.hasClass('wpdino-license-form')) {
+				if ($submitBtn && $submitBtn.length) {
+					$submitBtn.addClass('loading');
+				}
+				return true;
+			}
 
 			// Validate all fields
 			let isValid = true;

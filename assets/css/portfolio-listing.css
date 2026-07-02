@@ -1409,6 +1409,7 @@
 	box-shadow: none;
 	box-sizing: border-box;
 	transition: border-color 0.2s ease;
+	margin-bottom: 2rem;
 }
 
 .dinofolio.dinofolio-color-scheme-dark .dinofolio-load-more-btn {

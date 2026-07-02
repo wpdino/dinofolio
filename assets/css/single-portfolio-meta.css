@@ -193,43 +193,62 @@
 }
 
 .dinofolio-project-details-card {
-	padding: 1.25rem 1.5rem;
-	background: #f8fbfa;
+	padding: 0;
+	background: #ffffff;
 	border: 1px solid #e1ebe6;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(17, 24, 39, 0.04);
+	overflow: hidden;
 }
 
 .dinofolio-single-meta-grid {
 	display: grid;
-	gap: 0.85rem;
+	gap: 0;
 	margin-bottom: 0;
 }
 
 .dinofolio-meta-item {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	align-items: baseline;
-	gap: 0.35rem 0.5rem;
+	gap: 0.35rem 0.75rem;
+	padding: 0.8rem 1.5rem;
 	font-size: 0.97rem;
 	line-height: 1.5;
 	color: #2b2b2b;
+	border-bottom: 1px solid #e8efec;
+}
+
+.dinofolio-single-meta-grid .dinofolio-meta-item:last-child {
+	border-bottom: 0;
+}
+
+.dinofolio-single-meta-grid .dinofolio-meta-item:nth-child(odd) {
+	background: #ffffff;
+}
+
+.dinofolio-single-meta-grid .dinofolio-meta-item:nth-child(even) {
+	background: #f4f8f6;
 }
 
 .dinofolio-meta-item--action {
-	margin-top: 0.35rem;
+	margin-top: 0;
 	padding-top: 0.85rem;
-	border-top: 1px solid #e1ebe6;
+	padding-bottom: 0.85rem;
+	border-top: 0;
+	justify-content: flex-start;
 }
 
 .dinofolio-meta-label {
-	flex: 0 0 auto;
-	min-width: 4.5rem;
+	flex: 0 0 9.5rem;
+	min-width: 6.5rem;
 	font-weight: 600;
 	color: #111;
 }
 
 .dinofolio-meta-value {
+	flex: 1 1 auto;
+	min-width: 0;
 	color: #374151;
 }
 
@@ -430,6 +449,15 @@
 @media (max-width: 640px) {
 	.dinofolio-single-meta {
 		padding: 1.25rem;
+	}
+
+	.dinofolio-meta-item {
+		flex-wrap: wrap;
+	}
+
+	.dinofolio-meta-label {
+		flex-basis: 7.5rem;
+		min-width: 7.5rem;
 	}
 
 	.dinofolio-related-projects.is-grid .dinofolio-related-grid {

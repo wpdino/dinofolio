@@ -627,9 +627,21 @@ class WPDINO_Portfolio_Display {
 		
 		// Execute the query
 		$portfolio_query = new WP_Query( $query_args );
-		
-		// Generate and return the HTML output
-		$output = $this->generate_portfolio_html( $portfolio_query, $attributes );
+
+		/**
+		 * Allow extensions to render listing output before the default markup.
+		 *
+		 * @param string|null $output          Pre-rendered HTML or null to use default.
+		 * @param WP_Query    $portfolio_query Portfolio query instance.
+		 * @param array       $attributes      Merged listing attributes.
+		 */
+		$pre_output = apply_filters( 'dinofolio_pre_render_listing', null, $portfolio_query, $attributes );
+		if ( null !== $pre_output ) {
+			$output = $pre_output;
+		} else {
+			// Generate and return the HTML output
+			$output = $this->generate_portfolio_html( $portfolio_query, $attributes );
+		}
 
 		/**
 		 * Filter portfolio listing render output.
@@ -1035,8 +1047,21 @@ class WPDINO_Portfolio_Display {
 		}
 
 		// Validate layout
-		$valid_layouts = array( 'grid', 'masonry' );
-		if ( ! in_array( $merged['layout'], $valid_layouts, true ) ) {
+		$valid_layouts = apply_filters(
+			'dinofolio_layouts',
+			array(
+				'grid'    => array(
+					'label' => __( 'Grid', 'dinofolio' ),
+					'pro'   => false,
+				),
+				'masonry' => array(
+					'label' => __( 'Masonry', 'dinofolio' ),
+					'pro'   => false,
+				),
+			)
+		);
+		$valid_layout_keys = is_array( $valid_layouts ) ? array_keys( $valid_layouts ) : array( 'grid', 'masonry' );
+		if ( ! in_array( $merged['layout'], $valid_layout_keys, true ) ) {
 			$merged['layout'] = 'grid';
 		}
 
@@ -1257,20 +1282,8 @@ class WPDINO_Portfolio_Display {
 			);
 		}
 
-		$gallery_attr = '';
-
 		if ( $attributes['lightbox'] ) {
 			$container_classes[] = 'dinofolio-lightbox-enabled';
-			self::flag_lightbox_assets();
-			self::$listing_gallery_id = 'dinofolio-gallery-' . wp_unique_id();
-
-			if ( ! self::is_block_editor_preview() ) {
-				$this->enqueue_lightbox_assets();
-			}
-
-			$gallery_attr = ' data-dinofolio-gallery="' . esc_attr( self::$listing_gallery_id ) . '"';
-		} else {
-			self::$listing_gallery_id = '';
 		}
 
 		if ( self::is_block_editor_preview() ) {
@@ -1294,7 +1307,8 @@ class WPDINO_Portfolio_Display {
 		 */
 		$container_classes = apply_filters( 'dinofolio_listing_container_classes', $container_classes, $attributes, $query );
 
-		$this->flag_gallery_carousel_assets_for_query( $query );
+		$listing_context = $this->prepare_listing_query_context( $query, $attributes );
+		$gallery_attr    = $listing_context['gallery_attr'];
 
 		if ( ! empty( $listing_config ) && ! self::is_block_editor_preview() ) {
 			$this->flag_listing_scripts_for_config( $listing_config );
@@ -1421,6 +1435,49 @@ class WPDINO_Portfolio_Display {
 		}
 		$output .= '</div>';
 		return apply_filters( 'dinofolio_portfolio_item_html', $output, $attributes, $post_id );
+	}
+
+	/**
+	 * Render a single portfolio item markup for extension layouts.
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @param int   $post_id    Portfolio post ID.
+	 * @return string
+	 */
+	public function render_portfolio_item_markup( $attributes, $post_id = 0 ) {
+		$post_id = (int) $post_id;
+
+		if ( $post_id <= 0 ) {
+			$post_id = get_the_ID();
+		}
+
+		if ( $post_id <= 0 ) {
+			return '';
+		}
+
+		$post = get_post( $post_id );
+
+		if ( ! $post || 'wpdino_portfolio' !== $post->post_type ) {
+			return '';
+		}
+
+		global $wp_query;
+
+		$previous_post = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
+
+		$GLOBALS['post'] = $post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		setup_postdata( $post );
+
+		$html = $this->get_portfolio_item_html( $attributes );
+
+		if ( $previous_post instanceof \WP_Post ) {
+			$GLOBALS['post'] = $previous_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			setup_postdata( $previous_post );
+		} else {
+			wp_reset_postdata();
+		}
+
+		return $html;
 	}
 
 	/**
@@ -1881,6 +1938,36 @@ class WPDINO_Portfolio_Display {
 				return;
 			}
 		}
+	}
+
+	/**
+	 * Prepare listing assets and container attributes for extension layouts.
+	 *
+	 * @param WP_Query $query      Portfolio query.
+	 * @param array    $attributes Merged listing attributes.
+	 * @return array{gallery_attr: string}
+	 */
+	public function prepare_listing_query_context( $query, $attributes ) {
+		$gallery_attr = '';
+
+		if ( ! empty( $attributes['lightbox'] ) ) {
+			self::flag_lightbox_assets();
+			self::$listing_gallery_id = 'dinofolio-gallery-' . wp_unique_id();
+
+			if ( ! self::is_block_editor_preview() ) {
+				$this->enqueue_lightbox_assets();
+			}
+
+			$gallery_attr = ' data-dinofolio-gallery="' . esc_attr( self::$listing_gallery_id ) . '"';
+		} else {
+			self::$listing_gallery_id = '';
+		}
+
+		$this->flag_gallery_carousel_assets_for_query( $query );
+
+		return array(
+			'gallery_attr' => $gallery_attr,
+		);
 	}
 
 	/**

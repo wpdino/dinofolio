@@ -129,6 +129,15 @@ $dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 		</div>
 	</section>
 
+	<?php
+	/**
+	 * Fires after single portfolio project details.
+	 *
+	 * @param array $dinofolio_data Template data.
+	 */
+	do_action( 'dinofolio_single_meta_after_details', $dinofolio_data );
+	?>
+
 	<?php if ( ! empty( $dinofolio_data['related_projects'] ) && is_array( $dinofolio_data['related_projects'] ) ) : ?>
 		<div
 			class="dinofolio-related-projects is-<?php echo esc_attr( $dinofolio_related_style ); ?> dinofolio-related-columns-<?php echo esc_attr( $dinofolio_related_columns ); ?>"

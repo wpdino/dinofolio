@@ -135,6 +135,15 @@ class Portfolio_Meta_Boxes {
 			<div class="wpdino-portfolio-meta-tabs__nav" role="tablist" aria-label="<?php esc_attr_e( 'Portfolio item settings', 'dinofolio' ); ?>">
 				<button type="button" class="wpdino-portfolio-meta-tabs__tab is-active" role="tab" aria-selected="true" aria-controls="wpdino-portfolio-meta-panel-general" id="wpdino-portfolio-meta-tab-general" data-wpdino-meta-tab="general"><?php esc_html_e( 'General', 'dinofolio' ); ?></button>
 				<button type="button" class="wpdino-portfolio-meta-tabs__tab" role="tab" aria-selected="false" aria-controls="wpdino-portfolio-meta-panel-video" id="wpdino-portfolio-meta-tab-video" data-wpdino-meta-tab="video"><?php esc_html_e( 'Video', 'dinofolio' ); ?></button>
+				<?php
+				/**
+				 * Fires before portfolio meta tab buttons are closed.
+				 *
+				 * @param \WP_Post $post   Current post.
+				 * @param array    $values Meta field values.
+				 */
+				do_action( 'dinofolio_portfolio_meta_box_tab_nav', $post, $values );
+				?>
 			</div>
 
 			<div class="wpdino-portfolio-meta-tabs__panel is-active" role="tabpanel" id="wpdino-portfolio-meta-panel-general" aria-labelledby="wpdino-portfolio-meta-tab-general" data-wpdino-meta-panel="general">
@@ -218,6 +227,15 @@ class Portfolio_Meta_Boxes {
 			<div class="wpdino-portfolio-meta-tabs__panel" role="tabpanel" id="wpdino-portfolio-meta-panel-video" aria-labelledby="wpdino-portfolio-meta-tab-video" data-wpdino-meta-panel="video" hidden>
 				<?php $this->render_portfolio_video_tab( $video_values ); ?>
 			</div>
+			<?php
+			/**
+			 * Fires after default portfolio meta tab panels.
+			 *
+			 * @param \WP_Post $post   Current post.
+			 * @param array    $values Meta field values.
+			 */
+			do_action( 'dinofolio_portfolio_meta_box_tab_panels', $post, $values );
+			?>
 		</div>
 		<?php
 	}
@@ -507,6 +525,13 @@ class Portfolio_Meta_Boxes {
 					: 0,
 			)
 		);
+
+		/**
+		 * Fires after portfolio meta box values are saved.
+		 *
+		 * @param int $post_id Portfolio post ID.
+		 */
+		do_action( 'dinofolio_portfolio_meta_box_save', $post_id );
 	}
 
 	/**
@@ -678,6 +703,16 @@ class Portfolio_Meta_Boxes {
 			'related_projects_style'  => $related_projects_style,
 			'related_projects_count'  => $related_projects_count,
 		);
+
+		/**
+		 * Filter single portfolio meta template data before render.
+		 *
+		 * Themes may remove fields already shown in a custom single layout (e.g. hero launch CTA).
+		 *
+		 * @param array $template_data Template variables for single-portfolio-meta.php.
+		 * @param int   $post_id       Portfolio post ID.
+		 */
+		$template_data = apply_filters( 'dinofolio_single_meta_template_data', $template_data, $post_id );
 
 		$rendered = $this->render_single_meta_template( $template_data );
 
