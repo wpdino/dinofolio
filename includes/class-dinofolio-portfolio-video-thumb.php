@@ -132,7 +132,7 @@ class Portfolio_Video_Thumb {
 	 */
 	public static function get_oembed_thumbnail_url( $url ) {
 		if ( ! function_exists( '_wp_oembed_get_object' ) ) {
-			require_once ABSPATH . WPINC . '/class-wp-oembed.php';
+			return '';
 		}
 
 		$oembed   = _wp_oembed_get_object();

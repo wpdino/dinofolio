@@ -1,14 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the DinoFolio Lite package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# Copyright (C) 2026 WPDINO
+# This file is distributed under the same license as the DinoFolio package.
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: DinoFolio Lite 1.0.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-24 11:55+0300\n"
+"Project-Id-Version: DinoFolio 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dinofolio\n"
+"POT-Creation-Date: 2026-07-02 19:12+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,399 +14,108 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Domain: dinofolio\n"
 
-#. translators: %d: number of portfolio items in this category
-#: includes/class-dinofolio-display.php:2067
-#, php-format
-msgid "%d item"
-msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-dinofolio-custom-post.php:164
-msgid "&larr; Back to Categories"
+#: includes/admin/settings/class-dinofolio-field-renderer.php:493
+#: includes/admin/settings/class-dinofolio-field-renderer.php:535
+msgid "Select Image"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:220
-msgid "&larr; Back to Tags"
+#: includes/admin/settings/class-dinofolio-field-renderer.php:494
+msgid "Use This Image"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:387
-msgid "30-day money-back guarantee"
+#: includes/admin/settings/class-dinofolio-field-renderer.php:507
+msgid "Selected image"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-category-icon.php:80
-msgid "3D & Motion"
+#: includes/admin/settings/class-dinofolio-field-renderer.php:514
+msgid "Change"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:100
-msgid "A portfolio type for featuring items in your portfolio."
+#: includes/admin/settings/class-dinofolio-field-renderer.php:519
+#: includes/class-dinofolio-portfolio-meta-boxes.php:216
+#: includes/class-dinofolio-portfolio-meta-boxes.php:371
+#: includes/class-dinofolio-portfolio-meta-boxes.php:866
+msgid "Remove"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:348
-msgid "AI Content Generator"
+#: includes/admin/settings/class-dinofolio-field-renderer.php:529
+msgid "No image selected"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:352
-msgid "AI Content Summarizer"
+#: includes/admin/settings/class-dinofolio-settings-page.php:332
+msgid "Settings saved successfully!"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:356
-msgid "AI FAQ Generator"
+#: includes/admin/settings/class-dinofolio-settings-page.php:346
+#: includes/admin/settings/class-dinofolio-settings-page.php:418
+#: includes/admin/settings/class-dinofolio-settings-page.php:443
+msgid "Settings have been reset to defaults."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:368
-msgid "AI Image Generator"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:360
-msgid "AI SEO Optimizer"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:364
-msgid "AI Social Media Post Generator"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1141
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:412
-msgid "Accent Color"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:436
-#: includes/class-dinofolio-portfolio-meta-boxes.php:848
-msgid "Add Images"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:211
-msgid "Add More"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:105
-msgid "Add New"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:161
-msgid "Add New Category"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:211
-msgid "Add New Tag"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:288
-#: includes/class-dinofolio-custom-post.php:331
-msgid "Add featured image"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:162
-msgid "Add or remove categories"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:214
-msgid "Add or remove tags"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:850
-msgid "Add to Gallery"
-msgstr ""
-
-#: includes/integrations/gutenberg/blocks/portfolio/block.js:25
-msgid "Align center"
-msgstr ""
-
-#: includes/integrations/gutenberg/blocks/portfolio/block.js:24
-msgid "Align left"
-msgstr ""
-
-#: includes/integrations/gutenberg/blocks/portfolio/block.js:26
-msgid "Align right"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2115
-msgid "All"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:163
-msgid "All Categories"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:208
-msgid "All Tags"
-msgstr ""
-
-#. translators: 1: minimum allowed value, 2: maximum allowed value
-#: includes/class-dinofolio-util.php:313
-#, php-format
-msgid "Allowed range: %1$d–%2$d."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:496
-msgid "An error occurred. Please try again."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:490
-msgid ""
-"Are you sure you want to import these settings? This will overwrite your "
-"current settings."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:504
-msgid "Are you sure you want to remove the featured image?"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:489
+#: includes/admin/settings/class-dinofolio-settings-page.php:416
 msgid ""
 "Are you sure you want to reset all settings to defaults? This action cannot "
 "be undone."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1307
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:192
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:388
-msgid "Ascending"
-msgstr ""
-
-#. translators: %d: media attachment ID.
-#: includes/class-dinofolio-portfolio-meta-boxes.php:313
-#, php-format
-msgid "Attachment #%d"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:196
-msgid "Attributes"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1132
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:403
-msgid "Border Radius"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:68
-msgid "Branding"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:96
-msgid "Brush"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1148
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:419
-msgid "Button Hover Color"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1009
-msgid "Button Label"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1155
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:426
-msgid "Button Text Color"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:88
-msgid "Camera"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1102
-msgid "Card Style"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1255
-#: includes/admin/settings/class-dinofolio-settings-page.php:1337
-msgid "Carousel"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:339
-msgid "Categories"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:157
-msgid "Categories for portfolio items."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:167
-msgid "Categories list"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:168
-msgid "Categories list navigation"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:280
-#: includes/class-dinofolio-portfolio-category-icon.php:283
-msgid "Category Icon"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:237
-msgid "Center"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-field-renderer.php:528
-msgid "Change"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:280
-#: includes/class-dinofolio-custom-post.php:321
-msgid "Change featured image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:104
-msgid "Chart"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1438
-msgid "Choose File"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:293
+#: includes/admin/settings/class-dinofolio-settings-page.php:417
 msgid ""
-"Choose a preset icon or upload a custom image/SVG. If none is selected, the "
-"default grid icon is used on the portfolio listing."
+"Are you sure you want to import these settings? This will overwrite your "
+"current settings."
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:165
-msgid "Choose from the most used categories"
+#: includes/admin/settings/class-dinofolio-settings-page.php:419
+msgid "Settings exported successfully!"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:215
-msgid "Choose from the most used tags"
+#: includes/admin/settings/class-dinofolio-settings-page.php:420
+#: includes/admin/settings/class-dinofolio-settings-page.php:488
+msgid "Settings imported successfully!"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:286
-#: includes/class-dinofolio-custom-post.php:329
-msgid "Click to add featured image"
+#: includes/admin/settings/class-dinofolio-settings-page.php:421
+msgid "System info copied to clipboard!"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:271
-#: includes/class-dinofolio-custom-post.php:312
-msgid "Click to edit featured image"
+#: includes/admin/settings/class-dinofolio-settings-page.php:422
+msgid "Failed to copy. Please select and copy manually."
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-category-icon.php:100
-msgid "Code"
+#: includes/admin/settings/class-dinofolio-settings-page.php:423
+msgid "An error occurred. Please try again."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1205
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:124
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:158
-msgid "Columns"
+#: includes/admin/settings/class-dinofolio-settings-page.php:424
+msgid "Please select a valid JSON file."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1123
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:394
-msgid "Columns Gap"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1058
-msgid "Configure basic DinoFolio settings."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:902
-msgid "Configure default settings for portfolio item in metaboxes."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1066
+#: includes/admin/settings/class-dinofolio-settings-page.php:425
 msgid ""
-"Configure the portfolio category and tag archive template using the same "
-"listing options as the block and Elementor widget."
+"You have unsaved changes. Please save your changes before leaving this page."
 msgstr ""
 
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:91
-msgid "Content"
+#: includes/admin/settings/class-dinofolio-settings-page.php:437
+#: includes/admin/settings/class-dinofolio-settings-page.php:455
+#: includes/admin/settings/class-dinofolio-settings-page.php:471
+msgid "You do not have sufficient permissions."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1457
-msgid "Copy System Info"
+#: includes/admin/settings/class-dinofolio-settings-page.php:481
+msgid "Invalid JSON format."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1451
-msgid ""
-"Copy this information when contacting support for faster troubleshooting."
+#: includes/admin/settings/class-dinofolio-settings-page.php:689
+msgid "DinoFolio Portfolio"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:106
-#: includes/class-dinofolio-portfolio-meta-boxes.php:176
-#: includes/class-dinofolio-portfolio-meta-boxes.php:581
-#: includes/admin/settings/class-dinofolio-settings-page.php:986
-#: includes/admin/settings/class-dinofolio-settings-page.php:1293
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:177
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:374
-#: templates/single-portfolio-meta.php:101
-msgid "Date"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:972
-msgid "Date Display"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:984
-msgid "Date Label"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:184
-#: includes/admin/settings/class-dinofolio-settings-page.php:992
-msgid "Date of Work"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1213
-msgid "Default"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1292
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:373
-msgid "Default (Menu Order)"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1017
-msgid "Default Attributes"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1010
-msgid "Default CTA button label."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:901
-msgid "Default Portfolio Settings"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:993
-msgid "Default date value when not set per portfolio item."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:973
-msgid "Default date visibility for portfolio items."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1002
-msgid "Default external URL for portfolio items."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:923
-msgid "Default featured image size when enabled."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:911
-msgid "Default featured image visibility for new portfolio items."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:985
-msgid "Default label used before the date value."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:954
-msgid "Default related projects heading on single portfolio pages."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:945
-msgid "Default related projects style for portfolio items."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:933
-msgid "Default related projects visibility for new portfolio items."
+#: includes/admin/settings/class-dinofolio-settings-page.php:751
+msgid "Portfolio Slug"
 msgstr ""
 
 #. translators: %s: Permalinks settings URL in the WordPress admin.
-#: includes/admin/settings/class-dinofolio-settings-page.php:876
+#: includes/admin/settings/class-dinofolio-settings-page.php:754
 #, php-format
 msgid ""
 "Define a custom portfolio slug. After saving, refresh permalinks in <a "
@@ -417,8 +123,16 @@ msgid ""
 "changes"
 msgstr ""
 
+#: includes/admin/settings/class-dinofolio-settings-page.php:757
+msgid "Enter your portfolio slug"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:764
+msgid "Portfolio Taxonomy Slug"
+msgstr ""
+
 #. translators: %s: Permalinks settings URL in the WordPress admin.
-#: includes/admin/settings/class-dinofolio-settings-page.php:889
+#: includes/admin/settings/class-dinofolio-settings-page.php:767
 #, php-format
 msgid ""
 "Define a custom portfolio taxonomy slug. After saving, refresh permalinks in "
@@ -426,638 +140,651 @@ msgid ""
 "apply changes"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1306
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:191
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:387
-msgid "Descending"
-msgstr ""
-
-#: includes/integrations/class-dinofolio-gutenberg-integration.php:74
-#: includes/integrations/wpbakery/class-dinofolio-wpbakery-module-base.php:59
-msgid "DinoFolio"
-msgstr ""
-
-#. translators: %1$s: Plugin version number. %2$s: Author name linked to the WPDINO website.
-#: includes/admin/settings/class-dinofolio-settings-page.php:1742
-#, php-format
-msgid "DinoFolio Lite v%1$s by %2$s"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:762
-msgid "DinoFolio Portfolio"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:103
-msgid "DinoFolio Settings Page"
-msgstr ""
-
-#: includes/integrations/elementor/class-dinofolio-elementor-widget-base.php:258
-msgid "DinoFolio component is not available."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1187
-#: includes/components/class-dinofolio-component-base.php:91
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:94
-msgid "Display"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:258
-msgid "Display a filter bar above the listing."
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:41
-msgid ""
-"Display a filterable portfolio grid or masonry gallery with standard or "
-"overlay cards."
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:74
-msgid "Docs"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1764
-msgid "Documentation"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1419
-msgid "Download your current settings as a JSON file."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:428
-#: includes/class-dinofolio-portfolio-meta-boxes.php:852
-msgid "Drag to reorder"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:166
-msgid "Edit Category"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:109
-msgid "Edit Portfolio Post"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:209
-msgid "Edit Tag"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1260
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:248
-msgid "Enable Lightbox"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:266
-msgid "Enable Video in Lightbox"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1033
-msgid ""
-"Enable or disable widgets to show in the Elementor panel. All widgets are "
-"enabled by default."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:879
-msgid "Enter your portfolio slug"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:892
+#: includes/admin/settings/class-dinofolio-settings-page.php:770
 msgid "Enter your portfolio taxonomy slug"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:515
-msgid "Error removing featured image"
+#: includes/admin/settings/class-dinofolio-settings-page.php:779
+msgid "Default Portfolio Settings"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:493
-msgid "Error updating featured image"
+#: includes/admin/settings/class-dinofolio-settings-page.php:780
+msgid "Configure default settings for portfolio item in metaboxes."
 msgstr ""
 
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:200
-msgid "Excerpt Character Limit"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1418
-#: includes/admin/settings/class-dinofolio-settings-page.php:1422
-msgid "Export Settings"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:188
-#: includes/admin/settings/class-dinofolio-settings-page.php:1001
-msgid "External URL"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:495
-msgid "Failed to copy. Please select and copy manually."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:404
-msgid "Failed to set featured image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1451
-#: includes/admin/settings/class-dinofolio-settings-page.php:1368
-msgid "Featured 1200 x 900"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:144
-#: includes/admin/settings/class-dinofolio-settings-page.php:910
+#: includes/admin/settings/class-dinofolio-settings-page.php:788
+#: includes/class-dinofolio-portfolio-meta-boxes.php:153
 msgid "Featured Image"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:148
-#: includes/admin/settings/class-dinofolio-settings-page.php:922
+#: includes/admin/settings/class-dinofolio-settings-page.php:789
+msgid "Default featured image visibility for new portfolio items."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:791
+#: includes/admin/settings/class-dinofolio-settings-page.php:813
+#: includes/admin/settings/class-dinofolio-settings-page.php:853
+#: includes/class-dinofolio-portfolio-meta-boxes.php:318
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1224
+msgid "On"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:792
+#: includes/admin/settings/class-dinofolio-settings-page.php:814
+#: includes/admin/settings/class-dinofolio-settings-page.php:854
+#: includes/class-dinofolio-portfolio-meta-boxes.php:319
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1226
+msgid "Off"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:800
+#: includes/class-dinofolio-portfolio-meta-boxes.php:157
 msgid "Featured Image Size"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:394
-msgid "Featured image removed"
+#: includes/admin/settings/class-dinofolio-settings-page.php:801
+msgid "Default featured image size when enabled."
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:400
-msgid "Featured image updated"
+#: includes/admin/settings/class-dinofolio-settings-page.php:810
+#: includes/admin/settings/class-dinofolio-settings-page.php:833
+#: includes/class-dinofolio-portfolio-meta-boxes.php:103
+#: includes/class-dinofolio-portfolio-meta-boxes.php:167
+#: includes/class-dinofolio-portfolio-meta-boxes.php:645
+#: includes/class-dinofolio-portfolio-meta-boxes.php:702
+msgid "Related Projects"
 msgstr ""
 
-#: includes/class-dinofolio-display.php:2109
-msgid "Filter portfolio by category"
+#: includes/admin/settings/class-dinofolio-settings-page.php:811
+msgid "Default related projects visibility for new portfolio items."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1779
-msgid "Follow WPDINO on Facebook"
+#: includes/admin/settings/class-dinofolio-settings-page.php:822
+#: includes/class-dinofolio-portfolio-meta-boxes.php:171
+msgid "Related Projects Style"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1781
-msgid "Follow WPDINO on Instagram"
+#: includes/admin/settings/class-dinofolio-settings-page.php:823
+msgid "Default related projects style for portfolio items."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1780
-msgid "Follow WPDINO on X (Twitter)"
+#: includes/admin/settings/class-dinofolio-settings-page.php:831
+#: includes/class-dinofolio-portfolio-meta-boxes.php:177
+msgid "Related Projects Title"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1446
-#: includes/admin/settings/class-dinofolio-settings-page.php:1363
-msgid "Full"
+#: includes/admin/settings/class-dinofolio-settings-page.php:832
+msgid "Default related projects heading on single portfolio pages."
 msgstr ""
 
-#: includes/class-dinofolio-rest-api.php:114
-#: includes/class-dinofolio-util.php:1125
-msgid "Full Size"
+#: includes/admin/settings/class-dinofolio-settings-page.php:839
+#: includes/class-dinofolio-portfolio-meta-boxes.php:181
+msgid "Number of Related Projects"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:403
-msgid "Gallery Display"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:136
-#: includes/admin/settings/class-dinofolio-settings-page.php:1057
-msgid "General"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:58
-#: includes/admin/settings/class-dinofolio-settings-page.php:383
-msgid "Get DinoFolio PRO"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:108
-msgid "Globe"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:66
-msgid "Go to DinoFolio Settings page"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:84
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1030
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1251
-#: includes/admin/settings/class-dinofolio-settings-page.php:1196
-#: includes/admin/settings/class-dinofolio-settings-page.php:1333
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:102
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:140
-msgid "Grid"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:962
+#: includes/admin/settings/class-dinofolio-settings-page.php:840
 msgid ""
 "Grid: number of related projects to show. Carousel: how many projects are "
 "visible at once (all related projects are loaded and scrollable)."
 msgstr ""
 
-#: includes/integrations/gutenberg/blocks/portfolio/block.js:365
-msgid "Hex color, e.g. #1a8960"
+#: includes/admin/settings/class-dinofolio-settings-page.php:850
+msgid "Date Display"
 msgstr ""
 
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:152
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:164
-msgid "Hide"
+#: includes/admin/settings/class-dinofolio-settings-page.php:851
+msgid "Default date visibility for portfolio items."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1113
-msgid "Hover Effect"
+#: includes/admin/settings/class-dinofolio-settings-page.php:862
+msgid "Date Label"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-category-icon.php:112
-msgid "Idea"
+#: includes/admin/settings/class-dinofolio-settings-page.php:863
+msgid "Default label used before the date value."
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-category-icon.php:76
-msgid "Illustration"
+#: includes/admin/settings/class-dinofolio-settings-page.php:864
+#: includes/admin/settings/class-dinofolio-settings-page.php:1174
+#: includes/class-dinofolio-portfolio-meta-boxes.php:106
+#: includes/class-dinofolio-portfolio-meta-boxes.php:185
+#: includes/class-dinofolio-portfolio-meta-boxes.php:580
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:386
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:177
+#: templates/single-portfolio-meta.php:103
+msgid "Date"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:246
-#: includes/class-dinofolio-custom-post.php:354
-msgid "Image"
+#: includes/admin/settings/class-dinofolio-settings-page.php:870
+#: includes/class-dinofolio-portfolio-meta-boxes.php:193
+msgid "Date of Work"
 msgstr ""
 
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:271
-msgid "Image Parallax"
+#: includes/admin/settings/class-dinofolio-settings-page.php:871
+msgid "Default date value when not set per portfolio item."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1217
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:171
-msgid "Image Size"
+#: includes/admin/settings/class-dinofolio-settings-page.php:879
+#: includes/class-dinofolio-portfolio-meta-boxes.php:197
+msgid "External URL"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1432
-msgid "Import Settings"
+#: includes/admin/settings/class-dinofolio-settings-page.php:880
+msgid "Default external URL for portfolio items."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1074
+#: includes/admin/settings/class-dinofolio-settings-page.php:887
+msgid "Button Label"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:888
+msgid "Default CTA button label."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:889
+#: includes/class-dinofolio-portfolio-meta-boxes.php:109
+#: includes/class-dinofolio-portfolio-meta-boxes.php:602
+#: includes/class-dinofolio-portfolio-meta-boxes.php:694
+msgid "Launch"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:895
+msgid "Default Attributes"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:896
+msgid "One attribute per line in this format: Label|Value"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:910
+msgid "Widgets"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:911
+msgid ""
+"Enable or disable widgets to show in the Elementor panel. All widgets are "
+"enabled by default."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:919
+#: includes/class-dinofolio-portfolio-meta-boxes.php:136
+msgid "General"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:920
+msgid "Configure basic DinoFolio settings."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:927
+msgid "Taxonomy Archive"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:928
+msgid ""
+"Configure the portfolio category and tag archive template using the same "
+"listing options as the block and Elementor widget."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:935
+msgid "Tools"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:936
 msgid ""
 "Import, export, and manage your DinoFolio settings with powerful backup and "
 "restore tools."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:554
-msgid "Invalid JSON format."
+#: includes/admin/settings/class-dinofolio-settings-page.php:964
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:406
+msgid "Columns Gap"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:388
-msgid "Invalid post"
+#: includes/admin/settings/class-dinofolio-settings-page.php:973
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:415
+msgid "Border Radius"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:382
-#: includes/class-dinofolio-custom-post.php:587
-msgid "Invalid post ID"
+#: includes/admin/settings/class-dinofolio-settings-page.php:982
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:424
+msgid "Accent Color"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-video-admin.php:41
-msgid "Invalid security token."
+#: includes/admin/settings/class-dinofolio-settings-page.php:989
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:431
+msgid "Button Hover Color"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:205
-msgid "Label"
+#: includes/admin/settings/class-dinofolio-settings-page.php:996
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:438
+msgid "Button Text Color"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:192
-msgid "Label of Button"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:180
-msgid "Label of Date"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1295
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:376
-msgid "Last Modified"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:109
-#: includes/class-dinofolio-portfolio-meta-boxes.php:603
-#: includes/class-dinofolio-portfolio-meta-boxes.php:695
-#: includes/admin/settings/class-dinofolio-settings-page.php:1011
-msgid "Launch"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:92
-msgid "Layers"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1194
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:98
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:136
-msgid "Layout"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:236
-msgid "Left"
-msgstr ""
-
-#: includes/class-dinofolio-rest-api.php:218
-msgid "Limit result set to posts assigned to specific categories."
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:344
-msgid "Limit results to selected categories. Leave empty to show all."
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:354
-msgid "Limit results to selected tags. Leave empty to show all."
-msgstr ""
-
-#: includes/class-dinofolio-display.php:565
-#: includes/class-dinofolio-display.php:612
-#: includes/class-dinofolio-display.php:867
-#: includes/class-dinofolio-display.php:906
-#: includes/class-dinofolio-display.php:2476
-#: includes/class-dinofolio-display.php:2643
-#: includes/class-dinofolio-display.php:2676
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:66
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:294
-msgid "Load More"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2337
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:285
-msgid "Load More (AJAX)"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:291
-msgid "Load More Label"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:302
-msgid "Load More Trigger"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:305
-msgid ""
-"Load items when the button is clicked or automatically when the loader "
-"enters the viewport."
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2499
-msgid "Loading"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:329
-msgid "Loading..."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:373
-msgid "MP4 File"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:352
-msgid "MP4 file"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1197
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:103
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:141
-msgid "Masonry"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:203
-msgid "Maximum number of characters shown in the excerpt."
-msgstr ""
-
-#. translators: %d: maximum allowed value
-#: includes/class-dinofolio-util.php:326
-#, php-format
-msgid "Maximum: %d."
-msgstr ""
-
-#. translators: %d: minimum allowed value
-#: includes/class-dinofolio-util.php:320
-#, php-format
-msgid "Minimum: %d."
-msgstr ""
-
-#: includes/integrations/gutenberg/blocks/portfolio/block.js:187
-msgid "Multiple selections allowed. Choose All to show every item."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1162
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:433
+#: includes/admin/settings/class-dinofolio-settings-page.php:1003
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:445
 msgid "Muted Text Color"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:171
-msgid "New Category Name"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1020
+msgid "Use Plugin Taxonomy Template"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:122
-msgid "New Portfolio Post"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:212
-msgid "New Tag Name"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2192
-#: includes/class-dinofolio-display.php:2257
-msgid "Next"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:1865
-#: templates/single-portfolio-meta.php:55
-msgid "Next image"
-msgstr ""
-
-#: templates/single-portfolio-meta.php:154
-msgid "Next projects"
-msgstr ""
-
-#: includes/class-dinofolio-util.php:121
-msgid "No"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:172
-msgid "No categories"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:173
-msgid "No categories found."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-field-renderer.php:543
-msgid "No image selected"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2536
-msgid "No more portfolio items found."
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2317
-msgid "No portfolio items found."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:124
-msgid "No portfolio posts found in Trash."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:123
-msgid "No portfolio posts found."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:217
-msgid "No tags"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:216
-msgid "No tags found."
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2335
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:283
-msgid "None"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:172
-#: includes/admin/settings/class-dinofolio-settings-page.php:961
-msgid "Number of Related Projects"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:362
-msgid "Number of portfolio items displayed per page."
-msgstr ""
-
-#: includes/class-dinofolio-rest-api.php:199
-msgid "Number of posts to retrieve."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:327
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1214
-#: includes/admin/settings/class-dinofolio-settings-page.php:914
-#: includes/admin/settings/class-dinofolio-settings-page.php:936
-#: includes/admin/settings/class-dinofolio-settings-page.php:976
-msgid "Off"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:326
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1212
-#: includes/admin/settings/class-dinofolio-settings-page.php:913
-#: includes/admin/settings/class-dinofolio-settings-page.php:935
-#: includes/admin/settings/class-dinofolio-settings-page.php:975
-msgid "On"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:307
-msgid "On Button Click"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1018
-msgid "One attribute per line in this format: Label|Value"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:161
-msgid "Only 2, 3, or 4 columns are supported in this listing."
-msgstr ""
-
-#: includes/class-dinofolio-display.php:1561
-msgid "Open in lightbox"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:262
+#: includes/admin/settings/class-dinofolio-settings-page.php:1021
 msgid ""
-"Opens the selected video in the listing lightbox instead of the featured "
-"image. Requires the listing lightbox option to be enabled. You can also use "
-"the video thumbnail as the portfolio featured image."
+"Replace the theme taxonomy archive with the DinoFolio listing template for "
+"portfolio categories and tags."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1304
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:187
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:383
-msgid "Order"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1028
+#: includes/components/class-dinofolio-component-base.php:91
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:95
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:30
+msgid "Display"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1290
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:173
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:369
-msgid "Order By"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1029
+msgid "Same options as the portfolio listing block and Elementor widget."
 msgstr ""
 
-#: includes/class-dinofolio-rest-api.php:212
-msgid "Order sort attribute ascending or descending."
+#: includes/admin/settings/class-dinofolio-settings-page.php:1035
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:137
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:98
+msgid "Layout"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1105
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:116
+#: includes/admin/settings/class-dinofolio-settings-page.php:1037
+#: includes/admin/settings/class-dinofolio-settings-page.php:1214
+#: includes/class-dinofolio-display.php:1054
+#: includes/class-dinofolio-portfolio-category-icon.php:84
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1042
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1263
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:141
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:102
+msgid "Grid"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1038
+#: includes/class-dinofolio-display.php:1058
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:142
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:103
+msgid "Masonry"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1046
+msgid "Card Style"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1048
 #: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:152
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:115
+msgid "Standard"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1049
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:153
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:116
 msgid "Overlay"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-field-renderer.php:324
-#: includes/admin/settings/class-dinofolio-settings-page.php:339
-msgid "PRO"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1057
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:170
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:124
+msgid "Columns"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1043
-msgid "PRO Widgets"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1069
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:183
+msgid "Image Size"
 msgstr ""
 
-#: includes/class-dinofolio-display.php:2336
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:284
-msgid "Pagination"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1077
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:191
+msgid "Show Title"
 msgstr ""
 
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:279
-msgid "Pagination Type"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1084
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:198
+msgid "Show Categories"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:174
-msgid "Parent Category"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1091
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:205
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:149
+msgid "Show Excerpt"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:175
-msgid "Parent Category:"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1098
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:212
+msgid "Excerpt Character Limit"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:125
-msgid "Parent Portfolio Items:"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1107
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:226
+msgid "Show Read More Button"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:362
-msgid "Paste a public YouTube or Vimeo URL."
+#: includes/admin/settings/class-dinofolio-settings-page.php:1114
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:233
+msgid "Read More Label"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-category-icon.php:72
-msgid "Photography"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1115
+#: includes/class-dinofolio-display.php:681
+#: includes/class-dinofolio-display.php:729
+#: includes/class-dinofolio-display.php:973
+#: includes/class-dinofolio-display.php:1425
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:59
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:236
+msgid "View Project"
 msgstr ""
 
-#: includes/class-dinofolio-display.php:1544
-#: includes/class-dinofolio-display.php:1660
-msgid "Play video in lightbox"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1121
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:244
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:218
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:225
+msgid "Read More Alignment"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:497
-msgid "Please select a valid JSON file."
+#: includes/admin/settings/class-dinofolio-settings-page.php:1123
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:248
+msgid "Left"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:176
-msgid "Popular Categories"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1124
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:249
+msgid "Center"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:207
-msgid "Popular Tags"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1125
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:250
+msgid "Right"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:81
-msgid "Portfolio Gallery"
+#: includes/admin/settings/class-dinofolio-settings-page.php:1133
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:260
+msgid "Enable Lightbox"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1140
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:283
+msgid "Image Parallax"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1141
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:286
+msgid "Subtle parallax movement on portfolio thumbnails."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1148
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:161
+msgid "Show Pagination"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1155
+#: includes/components/class-dinofolio-component-base.php:92
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:97
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:30
+msgid "Query"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1156
+msgid "Posts are automatically limited to the current category or tag archive."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1162
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:371
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:138
+msgid "Posts To Show"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1171
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:381
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:173
+msgid "Order By"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1173
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:385
+msgid "Default (Menu Order)"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1175
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:387
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:178
+msgid "Title"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1176
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:388
+msgid "Last Modified"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1177
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:389
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:179
+msgid "Random"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1185
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:395
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:187
+msgid "Order"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1187
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:399
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:191
+msgid "Descending"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1188
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:400
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:192
+msgid "Ascending"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1196
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:96
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:148
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:111
+msgid "Style"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1197
+msgid ""
+"Same styling options as the portfolio listing block and Elementor widget."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1218
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1267
+msgid "Carousel"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1244
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1458
+msgid "Full"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1249
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1463
+msgid "Featured 1200 x 900"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1299
+#: includes/admin/settings/class-dinofolio-settings-page.php:1303
+msgid "Export Settings"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1300
+msgid "Download your current settings as a JSON file."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1313
+msgid "Import Settings"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1314
+msgid "Upload a settings file to restore your configuration."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1319
+msgid "Choose File"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1330
+msgid "System Information"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1332
+msgid ""
+"Copy this information when contacting support for faster troubleshooting."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1338
+msgid "Copy System Info"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1444
+msgid "Welcome to DinoFolio!"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1449
+msgid "Turn your projects into a powerful visual story."
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1453
+msgid "v"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1479
+msgid "Settings tabs"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1568
+msgid "Save Changes"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1574
+msgid "Reset to Defaults"
+msgstr ""
+
+#. translators: %1$s: Plugin version number. %2$s: Author name linked to the WPDINO website.
+#: includes/admin/settings/class-dinofolio-settings-page.php:1593
+#, php-format
+msgid "DinoFolio Lite v%1$s by %2$s"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1613
+msgid "WPDINO"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1615
+msgid "Documentation"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1617
+msgid "Support"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1630
+msgid "Follow WPDINO on Facebook"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1631
+msgid "Follow WPDINO on X (Twitter)"
+msgstr ""
+
+#: includes/admin/settings/class-dinofolio-settings-page.php:1632
+msgid "Follow WPDINO on Instagram"
+msgstr ""
+
+#: includes/class-dinofolio-admin-menus.php:45
+msgid "Go to DinoFolio Settings page"
+msgstr ""
+
+#: includes/class-dinofolio-admin-menus.php:46
+#: includes/class-dinofolio-admin-menus.php:72
+msgid "Settings"
+msgstr ""
+
+#: includes/class-dinofolio-admin-menus.php:52
+msgid "Read the documentation"
+msgstr ""
+
+#: includes/class-dinofolio-admin-menus.php:53
+msgid "Docs"
+msgstr ""
+
+#: includes/class-dinofolio-admin-menus.php:66
+msgid "DinoFolio Settings Page"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:100
+msgid "A portfolio type for featuring items in your portfolio."
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:104
+msgctxt "portfolio_item"
+msgid "Add New"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:105
+msgid "Add New"
 msgstr ""
 
 #: includes/class-dinofolio-custom-post.php:106
 msgid "Portfolio Items"
 msgstr ""
 
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:43
-#: includes/integrations/elementor/class-dinofolio-elementor-widget-base.php:90
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:32
-msgid "Portfolio Listing"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:72
-msgid "Portfolio Meta"
+#: includes/class-dinofolio-custom-post.php:107
+msgctxt ""
+"The post type archive label used in nav menus. Default \"Post Archives\". "
+"Added in 4.4"
+msgid "Portfolio Archives"
 msgstr ""
 
 #: includes/class-dinofolio-custom-post.php:108
 msgid "Portfolio Post Attributes"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:115
-msgid "Portfolio Post published privately."
+#: includes/class-dinofolio-custom-post.php:109
+msgid "Edit Portfolio Post"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:110
+msgctxt ""
+"Screen reader text for the filter links heading on the post type listing "
+"screen. Default \"Filter posts list\". Added in 4.4"
+msgid "Filter portfolio items list"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:111
+msgctxt ""
+"Overrides the \"Insert into post\" phrase (used when inserting media into a "
+"post). Added in 4.4"
+msgid "Insert into portfolio item"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:112
+msgctxt ""
+"Screen reader text for the items list heading on the post type listing "
+"screen. Default \"Posts list\". Added in 4.4"
+msgid "Portfolio Items list"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:113
+msgctxt ""
+"Screen reader text for the pagination heading on the post type listing "
+"screen. Default \"Posts list navigation\". Added in 4.4"
+msgid "Portfolio Items list navigation"
 msgstr ""
 
 #: includes/class-dinofolio-custom-post.php:114
 msgid "Portfolio Post published."
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:115
+msgid "Portfolio Post published privately."
 msgstr ""
 
 #: includes/class-dinofolio-custom-post.php:116
@@ -1072,504 +799,51 @@ msgstr ""
 msgid "Portfolio Post updated."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:873
-msgid "Portfolio Slug"
+#: includes/class-dinofolio-custom-post.php:119
+msgctxt "Admin Menu text"
+msgid "DinoFolio"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:886
-msgid "Portfolio Taxonomy Slug"
+#: includes/class-dinofolio-custom-post.php:120
+msgctxt "Post type general name"
+msgid "Portfolio"
 msgstr ""
 
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:217
-#: templates/taxonomy-portfolio-category.php:43
-#: templates/archive-wpdino_portfolio.php:50
-msgid "Portfolio display module is not available."
+#: includes/class-dinofolio-custom-post.php:121
+msgctxt "Add New on Toolbar"
+msgid "Portfolio Post"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:135
-msgid "Portfolio item settings"
+#: includes/class-dinofolio-custom-post.php:122
+msgid "New Portfolio Post"
 msgstr ""
 
-#: includes/class-dinofolio-display.php:2200
-#: includes/class-dinofolio-display.php:2271
-msgid "Portfolio pagination"
+#: includes/class-dinofolio-custom-post.php:123
+msgid "No portfolio posts found."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1281
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:138
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:359
-msgid "Posts To Show"
+#: includes/class-dinofolio-custom-post.php:124
+msgid "No portfolio posts found in Trash."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1275
-msgid "Posts are automatically limited to the current category or tag archive."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:372
-msgid "Premium Widgets Collection"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:295
-msgid "Preset category icons"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:2191
-#: includes/class-dinofolio-display.php:2207
-msgid "Previous"
-msgstr ""
-
-#: includes/class-dinofolio-display.php:1821
-#: templates/single-portfolio-meta.php:39
-msgid "Previous image"
-msgstr ""
-
-#: templates/single-portfolio-meta.php:142
-msgid "Previous projects"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:376
-msgid "Priority Support"
-msgstr ""
-
-#: templates/single-portfolio-meta.php:96
-msgid "Project Details"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1274
-#: includes/components/class-dinofolio-component-base.php:92
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:96
-msgid "Query"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1296
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:179
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:377
-msgid "Random"
-msgstr ""
-
-#: includes/class-dinofolio-block.php:241
-msgid "Read More"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:232
-msgid "Read More Alignment"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1253
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:221
-msgid "Read More Label"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:73
-msgid "Read the documentation"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:103
-#: includes/class-dinofolio-portfolio-meta-boxes.php:158
-#: includes/class-dinofolio-portfolio-meta-boxes.php:646
-#: includes/class-dinofolio-portfolio-meta-boxes.php:703
-#: includes/admin/settings/class-dinofolio-settings-page.php:932
-#: includes/admin/settings/class-dinofolio-settings-page.php:955
-msgid "Related Projects"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:162
-#: includes/admin/settings/class-dinofolio-settings-page.php:944
-msgid "Related Projects Style"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:168
-#: includes/admin/settings/class-dinofolio-settings-page.php:953
-msgid "Related Projects Title"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:207
-#: includes/class-dinofolio-portfolio-meta-boxes.php:379
-#: includes/admin/settings/class-dinofolio-field-renderer.php:533
-msgid "Remove"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:357
-msgid "Remove Image"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:281
-#: includes/class-dinofolio-custom-post.php:322
-msgid "Remove featured image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:430
-#: includes/class-dinofolio-portfolio-meta-boxes.php:851
-msgid "Remove image"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1180
-msgid ""
-"Replace the theme taxonomy archive with the DinoFolio listing template for "
-"portfolio categories and tags."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1719
-msgid "Reset to Defaults"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:238
-msgid "Right"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1188
-msgid "Same options as the portfolio listing block and Elementor widget."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1316
-msgid ""
-"Same styling options as the portfolio listing block and Elementor widget."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1713
-msgid "Save Changes"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:177
-msgid "Search Categories"
+#: includes/class-dinofolio-custom-post.php:125
+msgid "Parent Portfolio Items:"
 msgstr ""
 
 #: includes/class-dinofolio-custom-post.php:126
 msgid "Search Portfolio Posts"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:206
-msgid "Search Tags"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:395
-msgid "Select Category Icon"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:476
-msgid "Select Featured Image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:849
-msgid "Select Gallery Images"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-field-renderer.php:507
-#: includes/admin/settings/class-dinofolio-field-renderer.php:549
-msgid "Select Image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:378
-msgid "Select MP4"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:853
-msgid "Select MP4 Video"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-field-renderer.php:521
-msgid "Selected image"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:178
-msgid "Separate categories with commas"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:213
-msgid "Separate tags with commas"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:477
-msgid "Set Featured Image"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:67
-#: includes/class-dinofolio-admin-menus.php:109
-msgid "Settings"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:492
-msgid "Settings exported successfully!"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:419
-#: includes/admin/settings/class-dinofolio-settings-page.php:491
-#: includes/admin/settings/class-dinofolio-settings-page.php:516
-msgid "Settings have been reset to defaults."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:493
-#: includes/admin/settings/class-dinofolio-settings-page.php:561
-msgid "Settings imported successfully!"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:405
-msgid "Settings saved successfully!"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1607
-msgid "Settings tabs"
-msgstr ""
-
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:151
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:163
-msgid "Show"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1232
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:186
-msgid "Show Categories"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:263
-msgid "Show Category Counts"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:255
-msgid "Show Category Filter"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1239
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:149
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:193
-msgid "Show Excerpt"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1267
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:161
-msgid "Show Pagination"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1246
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:214
-msgid "Show Read More Button"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1225
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:179
-msgid "Show Title"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:318
-msgid "Show View All Button"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:266
-msgid "Show the number of projects in each filter tab."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:1031
-msgid "Slider"
-msgstr ""
-
-#: includes/class-dinofolio-rest-api.php:206
-msgid "Sort posts by field."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1104
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:115
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:151
-msgid "Standard"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1315
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:111
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:95
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:147
-msgid "Style"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:274
-msgid "Subtle parallax movement on portfolio thumbnails."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1766
-msgid "Support"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1449
-msgid "System Information"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:494
-msgid "System info copied to clipboard!"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:349
-msgid "Tags"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:200
-msgid "Tags for portfolio items."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:219
-msgid "Tags list"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:218
-msgid "Tags list navigation"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1065
-msgid "Taxonomy Archive"
-msgstr ""
-
-#. translators: %s: DinoFolio PRO plugin URL.
-#: includes/admin/settings/class-dinofolio-settings-page.php:1046
-#, php-format
-msgid ""
-"These widgets are available in <a href=\"%s\" target=\"_blank\">DinoFolio "
-"PRO</a>. Upgrade to unlock these powerful features."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:837
-msgid "This is the Featured Image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-video-admin.php:95
-msgid "Thumbnail saved, but featured image could not be updated."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1294
-#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:178
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:375
-msgid "Title"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1073
-msgid "Tools"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1577
-msgid "Turn your projects into a powerful visual story."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-video-admin.php:69
-msgid "Unable to fetch a thumbnail for this video URL."
-msgstr ""
-
-#: includes/class-dinofolio-display.php:330
-msgid "Unable to load more projects. Please try again."
-msgstr ""
-
-#: includes/integrations/gutenberg/blocks/portfolio/block.js:483
-msgid "Unable to load portfolio preview. Try refreshing the editor."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-video-admin.php:89
-msgid "Unable to save the video thumbnail."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:838
-msgid "Unable to set featured image from video."
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:342
-msgid ""
-"Unlock advanced AI-powered widgets and premium features to take your "
-"Elementor designs to the next level."
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:180
-msgid "Update Category"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:210
-msgid "Update Tag"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:341
-msgid "Upgrade to DinoFolio PRO"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:57
-msgid "Upgrade to PRO"
-msgstr ""
-
-#: includes/class-dinofolio-admin-menus.php:91
-msgid "Upgrade to Pro"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:306
-msgid "Upload Custom Icon"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1433
-msgid "Upload a settings file to restore your configuration."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:418
-msgid "Upload multiple images and drag them to reorder."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:381
-msgid "Upload or choose an MP4 video from the Media Library."
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:307
-msgid "Use Default Icon"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-settings-page.php:1179
-msgid "Use Plugin Taxonomy Template"
-msgstr ""
-
-#: includes/admin/settings/class-dinofolio-field-renderer.php:508
-msgid "Use This Image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:854
-msgid "Use Video"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:366
-#: includes/class-dinofolio-portfolio-meta-boxes.php:836
-msgid "Use as Featured Image"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-category-icon.php:396
-msgid "Use this icon"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:206
-msgid "Value"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:137
-msgid "Video"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:349
-msgid "Video Type"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:359
-msgid "Video URL"
-msgstr ""
-
-#: includes/class-dinofolio-portfolio-meta-boxes.php:261
-msgid "Video in Lightbox"
-msgstr ""
-
-#: includes/class-dinofolio-block.php:249
-#: includes/class-dinofolio-display.php:863
-#: includes/class-dinofolio-display.php:2298
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:69
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:328
-msgid "View All"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:325
-msgid "View All Label"
-msgstr ""
-
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:332
-msgid "View All Link"
-msgstr ""
-
-#: includes/class-dinofolio-custom-post.php:181
-msgid "View Category"
+#: includes/class-dinofolio-custom-post.php:127
+msgctxt "Post type singular name"
+msgid "Portfolio Post"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:128
+msgctxt ""
+"Overrides the \"Uploaded to this post\" phrase (used when viewing media "
+"attached to a post). Added in 4.4"
+msgid "Uploaded to this portfolio item"
 msgstr ""
 
 #: includes/class-dinofolio-custom-post.php:129
@@ -1580,31 +854,786 @@ msgstr ""
 msgid "View Portfolio Posts"
 msgstr ""
 
-#: includes/class-dinofolio-display.php:562
-#: includes/class-dinofolio-display.php:609
-#: includes/class-dinofolio-display.php:852
-#: includes/class-dinofolio-display.php:1293
-#: includes/admin/settings/class-dinofolio-settings-page.php:1254
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:59
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:224
-msgid "View Project"
+#: includes/class-dinofolio-custom-post.php:157
+msgid "Categories for portfolio items."
 msgstr ""
 
-#: includes/class-dinofolio-display.php:1721
-msgid "View image in lightbox"
+#: includes/class-dinofolio-custom-post.php:161
+msgid "Add New Category"
 msgstr ""
 
-#: includes/class-dinofolio-display.php:1568
+#: includes/class-dinofolio-custom-post.php:162
+msgid "Add or remove categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:163
+msgid "All Categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:164
+msgid "&larr; Back to Categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:165
+msgid "Choose from the most used categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:166
+msgid "Edit Category"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:167
+msgid "Categories list"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:168
+msgid "Categories list navigation"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:169
+msgctxt "categories"
+msgid "Most Used"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:170
+msgctxt "taxonomy general name"
+msgid "Categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:171
+msgid "New Category Name"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:172
+msgid "No categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:173
+msgid "No categories found."
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:174
+msgid "Parent Category"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:175
+msgid "Parent Category:"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:176
+msgid "Popular Categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:177
+msgid "Search Categories"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:178
+msgid "Separate categories with commas"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:179
+msgctxt "taxonomy singular name"
+msgid "Category"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:180
+msgid "Update Category"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:181
+msgid "View Category"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:200
+msgid "Tags for portfolio items."
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:204
+msgctxt "taxonomy general name"
+msgid "Tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:205
+msgctxt "taxonomy singular name"
+msgid "Tag"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:206
+msgid "Search Tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:207
+msgid "Popular Tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:208
+msgid "All Tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:209
+msgid "Edit Tag"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:210
+msgid "Update Tag"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:211
+msgid "Add New Tag"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:212
+msgid "New Tag Name"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:213
+msgid "Separate tags with commas"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:214
+msgid "Add or remove tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:215
+msgid "Choose from the most used tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:216
+msgid "No tags found."
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:217
+msgid "No tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:218
+msgid "Tags list navigation"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:219
+msgid "Tags list"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:220
+msgid "&larr; Back to Tags"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:246
+#: includes/class-dinofolio-custom-post.php:354
+msgid "Image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:271
+#: includes/class-dinofolio-custom-post.php:312
+msgid "Click to edit featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:280
+#: includes/class-dinofolio-custom-post.php:321
+msgid "Change featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:281
+#: includes/class-dinofolio-custom-post.php:322
+msgid "Remove featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:286
+#: includes/class-dinofolio-custom-post.php:329
+msgid "Click to add featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:288
+#: includes/class-dinofolio-custom-post.php:331
+msgid "Add featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:356
+msgid "— No Change —"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:357
+msgid "Remove Image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:374
+#: includes/class-dinofolio-custom-post.php:519
+msgid "You do not have permission to perform this action"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:382
+#: includes/class-dinofolio-custom-post.php:524
+msgid "Invalid post ID"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:388
+msgid "Invalid post"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:394
+msgid "Featured image removed"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:400
+msgid "Featured image updated"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:404
+msgid "Failed to set featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:450
+msgid "Select Featured Image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:451
+msgid "Set Featured Image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:452
+msgid "Error updating featured image"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:453
+msgid "Are you sure you want to remove the featured image?"
+msgstr ""
+
+#: includes/class-dinofolio-custom-post.php:454
+msgid "Error removing featured image"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:331
+msgid "Loading..."
+msgstr ""
+
+#: includes/class-dinofolio-display.php:332
+msgid "Unable to load more projects. Please try again."
+msgstr ""
+
+#: includes/class-dinofolio-display.php:984
+#: includes/class-dinofolio-display.php:2504
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:69
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:340
+msgid "View All"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:988
+#: includes/class-dinofolio-display.php:1028
+#: includes/class-dinofolio-display.php:2683
+#: includes/class-dinofolio-display.php:2851
+#: includes/class-dinofolio-display.php:2884
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:66
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:306
+msgid "Load More"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:1719
+#: includes/class-dinofolio-display.php:1857
+msgid "Play video in lightbox"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:1736
+msgid "Open in lightbox"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:1743
 msgid "View project"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:354
+#: includes/class-dinofolio-display.php:1908
+msgid "View image in lightbox"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2023
+#: templates/single-portfolio-meta.php:39
+msgid "Previous image"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2067
+#: templates/single-portfolio-meta.php:55
+msgid "Next image"
+msgstr ""
+
+#. translators: %d: number of portfolio items in this category
+#: includes/class-dinofolio-display.php:2269
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-dinofolio-display.php:2311
+msgid "Filter portfolio by category"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2317
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:178
+msgid "All"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2397
+#: includes/class-dinofolio-display.php:2413
+msgid "Previous"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2398
+#: includes/class-dinofolio-display.php:2463
+msgid "Next"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2406
+#: includes/class-dinofolio-display.php:2477
+msgid "Portfolio pagination"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2523
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:477
+msgid "No portfolio items found."
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2541
+#: includes/class-dinofolio-portfolio-category-icon.php:125
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:295
+msgid "None"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2542
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:296
+msgid "Pagination"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2543
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:297
+msgid "Load More (AJAX)"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2706
+msgid "Loading"
+msgstr ""
+
+#: includes/class-dinofolio-display.php:2744
+msgid "No more portfolio items found."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:64
+msgid "Web Design"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:68
+msgid "Branding"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:72
+msgid "Photography"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:76
+msgid "Illustration"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:80
+msgid "3D & Motion"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:88
+msgid "Camera"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:92
+msgid "Layers"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:96
+msgid "Brush"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:100
+msgid "Code"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:104
+msgid "Chart"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:108
+msgid "Globe"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:112
+msgid "Idea"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:307
+#: includes/class-dinofolio-portfolio-category-icon.php:310
+msgid "Category Icon"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:325
+msgid ""
+"Choose a preset icon or upload a custom image. Select None to hide the "
+"category icon on portfolio listings."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:327
+msgid "Preset category icons"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:345
+msgid "Upload Custom Icon"
+msgstr ""
+
+#. translators: %s: SVG Support plugin URL on WordPress.org.
+#: includes/class-dinofolio-portfolio-category-icon.php:351
+#, php-format
+msgid ""
+"SVG files require upload support in WordPress. Install a plugin such as <a "
+"href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">SVG Support</a> "
+"before uploading SVG icons."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:488
+msgid "Select Category Icon"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-category-icon.php:489
+msgid "Use this icon"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:72
+msgid "Portfolio Meta"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:81
+msgid "Portfolio Gallery"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:135
+msgid "Portfolio item settings"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:137
+msgid "Video"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:189
+msgid "Label of Date"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:201
+msgid "Label of Button"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:205
+msgid "Attributes"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:214
+#: includes/class-dinofolio-portfolio-meta-boxes.php:864
+msgid "Label"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:215
+#: includes/class-dinofolio-portfolio-meta-boxes.php:865
+msgid "Value"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:220
+msgid "Add More"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:253
+msgid "Video in Lightbox"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:254
+msgid ""
+"Opens the selected video in the listing lightbox instead of the featured "
+"image. Requires the listing lightbox option to be enabled. You can also use "
+"the video thumbnail as the portfolio featured image."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:258
+msgid "Enable Video in Lightbox"
+msgstr ""
+
+#. translators: %d: media attachment ID.
+#: includes/class-dinofolio-portfolio-meta-boxes.php:305
+#, php-format
+msgid "Attachment #%d"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:341
+msgid "Video Type"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:344
+msgid "MP4 file"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:345
+msgid "YouTube"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:346
 msgid "Vimeo"
 msgstr ""
 
-#: includes/class-dinofolio-block.php:93
-#: includes/admin/settings/class-dinofolio-settings-page.php:1762
-msgid "WPDINO"
+#: includes/class-dinofolio-portfolio-meta-boxes.php:351
+msgid "Video URL"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:354
+msgid "Paste a public YouTube or Vimeo URL."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:358
+#: includes/class-dinofolio-portfolio-meta-boxes.php:845
+msgid "Use as Featured Image"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:365
+msgid "MP4 File"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:370
+msgid "Select MP4"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:373
+msgid "Upload or choose an MP4 video from the Media Library."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:395
+msgid "Gallery Display"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:410
+msgid "Upload multiple images and drag them to reorder."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:420
+#: includes/class-dinofolio-portfolio-meta-boxes.php:861
+msgid "Drag to reorder"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:422
+#: includes/class-dinofolio-portfolio-meta-boxes.php:860
+msgid "Remove image"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:428
+#: includes/class-dinofolio-portfolio-meta-boxes.php:857
+msgid "Add Images"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:846
+msgid "This is the Featured Image"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:847
+msgid "Unable to set featured image from video."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:858
+msgid "Select Gallery Images"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:859
+msgid "Add to Gallery"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:862
+msgid "Select MP4 Video"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:863
+msgid "Use Video"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1043
+msgid "Slider"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-meta-boxes.php:1225
+msgid "Default"
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-video-admin.php:41
+msgid "Invalid security token."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-video-admin.php:47
+msgid "You are not allowed to edit this item."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-video-admin.php:69
+msgid "Unable to fetch a thumbnail for this video URL."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-video-admin.php:82
+msgid "You are not allowed to upload files."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-video-admin.php:89
+msgid "Unable to save the video thumbnail."
+msgstr ""
+
+#: includes/class-dinofolio-portfolio-video-admin.php:95
+msgid "Thumbnail saved, but featured image could not be updated."
+msgstr ""
+
+#: includes/class-dinofolio-rest-api.php:114
+#: includes/class-dinofolio-util.php:1125
+msgid "Full Size"
+msgstr ""
+
+#: includes/class-dinofolio-rest-api.php:199
+msgid "Number of posts to retrieve."
+msgstr ""
+
+#: includes/class-dinofolio-rest-api.php:206
+msgid "Sort posts by field."
+msgstr ""
+
+#: includes/class-dinofolio-rest-api.php:212
+msgid "Order sort attribute ascending or descending."
+msgstr ""
+
+#: includes/class-dinofolio-rest-api.php:218
+msgid "Limit result set to posts assigned to specific categories."
+msgstr ""
+
+#: includes/class-dinofolio-util.php:120 includes/class-dinofolio-util.php:201
+msgid "Yes"
+msgstr ""
+
+#: includes/class-dinofolio-util.php:121
+msgid "No"
+msgstr ""
+
+#. translators: 1: minimum allowed value, 2: maximum allowed value
+#: includes/class-dinofolio-util.php:313
+#, php-format
+msgid "Allowed range: %1$d–%2$d."
+msgstr ""
+
+#. translators: %d: minimum allowed value
+#: includes/class-dinofolio-util.php:320
+#, php-format
+msgid "Minimum: %d."
+msgstr ""
+
+#. translators: %d: maximum allowed value
+#: includes/class-dinofolio-util.php:326
+#, php-format
+msgid "Maximum: %d."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:32
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:43
+#: includes/integrations/elementor/class-dinofolio-elementor-widget-base.php:90
+msgid "Portfolio Listing"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:41
+msgid ""
+"Display a filterable portfolio grid or masonry gallery with standard or "
+"overlay cards."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:159
+msgid "Color Scheme"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:163
+msgid "Light"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:164
+msgid "Dark"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:173
+msgid "Only 2, 3, or 4 columns are supported in this listing."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:215
+msgid "Maximum number of characters shown in the excerpt."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:267
+msgid "Show Category Filter"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:270
+msgid "Display a filter bar above the listing."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:275
+msgid "Show Category Counts"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:278
+msgid "Show the number of projects in each filter tab."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:291
+msgid "Pagination Type"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:303
+msgid "Load More Label"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:314
+msgid "Load More Trigger"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:317
+msgid ""
+"Load items when the button is clicked or automatically when the loader "
+"enters the viewport."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:319
+msgid "On Button Click"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:320
+msgid "When In Viewport"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:330
+msgid "Show View All Button"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:337
+msgid "View All Label"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:344
+msgid "View All Link"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:351
+msgid "Categories"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:356
+msgid "Limit results to selected categories. Leave empty to show all."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:361
+msgid "Tags"
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:366
+msgid "Limit results to selected tags. Leave empty to show all."
+msgstr ""
+
+#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:374
+msgid "Number of portfolio items displayed per page."
 msgstr ""
 
 #: includes/elementor/class-dinofolio-elementor-widgets.php:146
@@ -1612,62 +1641,67 @@ msgstr ""
 msgid "WPDINO - DinoFolio"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-category-icon.php:64
-msgid "Web Design"
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:91
+msgid "Content"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1572
-msgid "Welcome to DinoFolio!"
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:151
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:163
+msgid "Show"
 msgstr ""
 
-#: includes/components/items/portfolio/class-dinofolio-portfolio-component.php:308
-msgid "When In Viewport"
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:152
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:164
+msgid "Hide"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1032
-msgid "Widgets"
+#: includes/elementor/widgets/portfolio-listing/portfolio-listing.php:217
+#: templates/archive-wpdino_portfolio.php:50
+#: templates/taxonomy-portfolio-category.php:43
+msgid "Portfolio display module is not available."
 msgstr ""
 
-#: includes/class-dinofolio-util.php:120 includes/class-dinofolio-util.php:201
-msgid "Yes"
+#: includes/integrations/class-dinofolio-gutenberg-integration.php:74
+#: includes/integrations/wpbakery/class-dinofolio-wpbakery-module-base.php:59
+msgid "DinoFolio"
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-video-admin.php:47
-msgid "You are not allowed to edit this item."
+#: includes/integrations/elementor/class-dinofolio-elementor-widget-base.php:258
+msgid "DinoFolio component is not available."
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-video-admin.php:82
-msgid "You are not allowed to upload files."
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:24
+msgid "Align left"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:374
-#: includes/class-dinofolio-custom-post.php:582
-msgid "You do not have permission to perform this action"
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:25
+msgid "Align center"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:510
-#: includes/admin/settings/class-dinofolio-settings-page.php:528
-#: includes/admin/settings/class-dinofolio-settings-page.php:544
-msgid "You do not have sufficient permissions."
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:26
+msgid "Align right"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:498
-msgid ""
-"You have unsaved changes. Please save your changes before leaving this page."
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:187
+msgid "Multiple selections allowed. Choose All to show every item."
 msgstr ""
 
-#: includes/class-dinofolio-portfolio-meta-boxes.php:353
-msgid "YouTube"
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:365
+msgid "Hex color, e.g. #1a8960"
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1115
-msgid "Zoom"
+#: includes/integrations/gutenberg/blocks/portfolio/block.js:483
+msgid "Unable to load portfolio preview. Try refreshing the editor."
 msgstr ""
 
-#: includes/admin/settings/class-dinofolio-settings-page.php:1581
-msgid "v"
+#: templates/single-portfolio-meta.php:98
+msgid "Project Details"
 msgstr ""
 
-#: includes/class-dinofolio-custom-post.php:356
-msgid "— No Change —"
+#: templates/single-portfolio-meta.php:153
+msgid "Previous projects"
+msgstr ""
+
+#: templates/single-portfolio-meta.php:165
+msgid "Next projects"
 msgstr ""

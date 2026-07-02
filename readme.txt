@@ -137,9 +137,33 @@ Initial release of DinoFolio. Install to create portfolio items and display them
 
 For support, documentation, and updates, visit [wpdino.com](https://www.wpdino.com).
 
+== External services ==
+
+DinoFolio can connect to third-party video services (YouTube and Vimeo) when you use its optional video features. It does not send any data to external services unless you add a YouTube or Vimeo video to a portfolio item. No data is sent for portfolio items that do not use a video.
+
+= YouTube (provided by Google LLC) =
+
+The plugin uses YouTube in two situations:
+
+* **Fetching a video thumbnail (admin).** When you add a YouTube video to a portfolio item and choose to use its thumbnail as the featured image, the plugin sends the video ID to YouTube by requesting thumbnail image URLs (for example `https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg`) and, where available, the WordPress oEmbed endpoint, to determine the best available thumbnail. The image is then downloaded to your own Media Library. This happens only when you trigger the thumbnail action in the editor.
+* **Playing a video (front end).** When a visitor opens a portfolio item that uses a YouTube video in the lightbox player, their browser loads the YouTube embed directly from YouTube. This sends the visitor's IP address and player/browser data to YouTube, subject to YouTube's own policies.
+
+YouTube terms of service: https://www.youtube.com/t/terms
+Google privacy policy: https://policies.google.com/privacy
+
+= Vimeo (provided by Vimeo.com, Inc.) =
+
+The plugin uses Vimeo in two situations:
+
+* **Fetching a video thumbnail (admin).** When you add a Vimeo video to a portfolio item and choose to use its thumbnail as the featured image, the plugin sends the video URL to Vimeo through the WordPress oEmbed endpoint to retrieve the thumbnail URL. The image is then downloaded to your own Media Library. This happens only when you trigger the thumbnail action in the editor.
+* **Playing a video (front end).** When a visitor opens a portfolio item that uses a Vimeo video in the lightbox player, their browser loads the Vimeo embed directly from Vimeo. This sends the visitor's IP address and player/browser data to Vimeo, subject to Vimeo's own policies.
+
+Vimeo terms of service: https://vimeo.com/terms
+Vimeo privacy policy: https://vimeo.com/privacy
+
 == Privacy Policy ==
 
-This plugin does not collect, store, or transmit personal data to external servers by default.
+By default, this plugin does not collect, store, or transmit personal data to external servers. External requests are made only when you use the optional video features described in the **External services** section above.
 
 **Data stored on your site:**
 * Portfolio posts, categories, tags, and media you create in WordPress
@@ -147,7 +171,7 @@ This plugin does not collect, store, or transmit personal data to external serve
 * Block and widget settings stored in post content
 
 **Third-party libraries:**
-* GLightbox (bundled) is used on the front end when the image lightbox option is enabled. Images are loaded from your own site; no third-party API calls are made for the lightbox.
+* GLightbox (bundled) is used on the front end when the image lightbox option is enabled. For image lightboxes, images are loaded from your own site and no third-party API calls are made. For video lightboxes, GLightbox loads the YouTube or Vimeo embed from those services (see the **External services** section).
 
 **Optional integrations:**
 * Elementor and WPBakery are optional. When used, their respective editors load only on pages where you build content with those tools.
