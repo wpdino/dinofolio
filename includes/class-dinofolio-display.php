@@ -171,6 +171,118 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Sanitize rendered portfolio HTML returned by callbacks.
+	 *
+	 * @param string $html HTML markup.
+	 * @return string
+	 */
+	public static function sanitize_rendered_html( $html ) {
+		$html = is_string( $html ) ? $html : '';
+
+		if ( '' === $html ) {
+			return '';
+		}
+
+		return wp_kses( $html, self::get_rendered_html_allowlist() );
+	}
+
+	/**
+	 * Allowed HTML tags for rendered listing output.
+	 *
+	 * @return array<string, array<string, bool>>
+	 */
+	private static function get_rendered_html_allowlist() {
+		static $allowed = null;
+
+		if ( null !== $allowed ) {
+			return $allowed;
+		}
+
+		$allowed = wp_kses_allowed_html( 'post' );
+
+		// WordPress post KSES strips SVG by default; listing UI uses inline icons.
+		$allowed['svg'] = array(
+			'class'            => true,
+			'xmlns'            => true,
+			'width'            => true,
+			'height'           => true,
+			'viewBox'          => true,
+			'fill'             => true,
+			'stroke'           => true,
+			'stroke-width'     => true,
+			'stroke-linecap'   => true,
+			'stroke-linejoin'  => true,
+			'aria-hidden'      => true,
+			'focusable'        => true,
+			'role'             => true,
+			'preserveAspectRatio' => true,
+		);
+		$allowed['path'] = array(
+			'd'               => true,
+			'fill'            => true,
+			'stroke'          => true,
+			'stroke-width'    => true,
+			'stroke-linecap'  => true,
+			'stroke-linejoin' => true,
+		);
+		$allowed['circle'] = array(
+			'cx'           => true,
+			'cy'           => true,
+			'r'            => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		);
+		$allowed['line'] = array(
+			'x1'           => true,
+			'y1'           => true,
+			'x2'           => true,
+			'y2'           => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		);
+		$allowed['polyline'] = array(
+			'points'           => true,
+			'fill'             => true,
+			'stroke'           => true,
+			'stroke-width'     => true,
+			'stroke-linecap'   => true,
+			'stroke-linejoin'  => true,
+		);
+		$allowed['polygon'] = array(
+			'points' => true,
+			'fill'   => true,
+			'stroke' => true,
+		);
+
+		$common_data_tags = array(
+			'a',
+			'button',
+			'div',
+			'figure',
+			'img',
+			'input',
+			'label',
+			'li',
+			'nav',
+			'section',
+			'span',
+			'ul',
+		);
+
+		foreach ( $common_data_tags as $tag ) {
+			if ( ! isset( $allowed[ $tag ] ) || ! is_array( $allowed[ $tag ] ) ) {
+				$allowed[ $tag ] = array();
+			}
+
+			$allowed[ $tag ]['data-*'] = true;
+			$allowed[ $tag ]['aria-*'] = true;
+		}
+
+		return apply_filters( 'dinofolio_rendered_html_allowlist', $allowed );
+	}
+
+	/**
 	 * Register portfolio listing styles (shared by all builders).
 	 *
 	 * @return void
@@ -650,7 +762,9 @@ class WPDINO_Portfolio_Display {
 		 * @param array    $attributes      Merged listing attributes.
 		 * @param WP_Query $portfolio_query Portfolio query instance.
 		 */
-		return apply_filters( 'dinofolio_listing_output', $output, $attributes, $portfolio_query );
+		$output = apply_filters( 'dinofolio_listing_output', $output, $attributes, $portfolio_query );
+
+		return self::sanitize_rendered_html( $output );
 	}
 
 	/**

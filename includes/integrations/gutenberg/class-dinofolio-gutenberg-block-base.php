@@ -147,6 +147,12 @@ class Gutenberg_Block_Base {
 		 * @param array          $attributes Normalized block attributes.
 		 * @param Component_Base $component  Component instance.
 		 */
-		return apply_filters( 'dinofolio_render_block_output', $output, $attributes, $this->component );
+		$output = apply_filters( 'dinofolio_render_block_output', $output, $attributes, $this->component );
+
+		if ( class_exists( '\WPDINO_Portfolio_Display' ) && method_exists( '\WPDINO_Portfolio_Display', 'sanitize_rendered_html' ) ) {
+			return \WPDINO_Portfolio_Display::sanitize_rendered_html( $output );
+		}
+
+		return wp_kses_post( (string) $output );
 	}
 }

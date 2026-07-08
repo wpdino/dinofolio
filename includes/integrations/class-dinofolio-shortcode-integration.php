@@ -79,7 +79,13 @@ class Shortcode_Integration {
 						 * @param string         $tag       Shortcode tag.
 						 * @param Component_Base $component Component instance.
 						 */
-						return apply_filters( 'dinofolio_shortcode_output', $output, $atts, $tag, $component );
+						$output = apply_filters( 'dinofolio_shortcode_output', $output, $atts, $tag, $component );
+
+						if ( class_exists( '\WPDINO_Portfolio_Display' ) && method_exists( '\WPDINO_Portfolio_Display', 'sanitize_rendered_html' ) ) {
+							return \WPDINO_Portfolio_Display::sanitize_rendered_html( $output );
+						}
+
+						return wp_kses_post( (string) $output );
 					}
 				);
 			}
