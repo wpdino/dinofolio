@@ -207,6 +207,7 @@ class WPDINO_Portfolio_Display {
 			'width'            => true,
 			'height'           => true,
 			'viewBox'          => true,
+			'viewbox'          => true,
 			'fill'             => true,
 			'stroke'           => true,
 			'stroke-width'     => true,
@@ -216,6 +217,18 @@ class WPDINO_Portfolio_Display {
 			'focusable'        => true,
 			'role'             => true,
 			'preserveAspectRatio' => true,
+			'preserveaspectratio' => true,
+		);
+		$allowed['rect'] = array(
+			'x'            => true,
+			'y'            => true,
+			'width'        => true,
+			'height'       => true,
+			'rx'           => true,
+			'ry'           => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
 		);
 		$allowed['path'] = array(
 			'd'               => true,
