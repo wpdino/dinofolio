@@ -18,6 +18,7 @@
 		init: function() {
 			this.bindEvents();
 			this.initTabs();
+			this.initThemeCarousel();
 			this.initMediaUploader();
 			this.initImageSelect();
 			this.initToggleRadios();
@@ -29,6 +30,89 @@
 			this.initPasswordToggle();
 			this.initUnsavedChangesTracking();
 			this.showNotices();
+		},
+
+		/**
+		 * Initialize theme preview carousel in settings sidebar.
+		 */
+		initThemeCarousel: function() {
+			const $carousel = $('.wpdino-theme-carousel');
+			if (!$carousel.length) {
+				return;
+			}
+
+			const getSlides = function() {
+				return $carousel.find('.wpdino-theme-carousel-slide');
+			};
+
+			const getDots = function() {
+				return $carousel.find('.wpdino-theme-carousel-dot');
+			};
+
+			if (getSlides().length < 2) {
+				return;
+			}
+
+			const setActiveSlide = function(index) {
+				const $slides = getSlides();
+				const $dots = getDots();
+
+				$slides.removeClass('is-active');
+				$slides.eq(index).addClass('is-active');
+				$dots.removeClass('is-active').attr('aria-current', 'false');
+				$dots.eq(index).addClass('is-active').attr('aria-current', 'true');
+				$carousel.data('active-index', index);
+			};
+
+			const goToNextSlide = function() {
+				const $slides = getSlides();
+				const currentIndex = parseInt($carousel.data('active-index'), 10) || 0;
+				const nextIndex = (currentIndex + 1) % $slides.length;
+				setActiveSlide(nextIndex);
+			};
+
+			const startAutoRotate = function() {
+				const timer = window.setInterval(function() {
+					goToNextSlide();
+				}, 5000);
+				$carousel.data('auto-rotate-timer', timer);
+			};
+
+			const stopAutoRotate = function() {
+				const timer = $carousel.data('auto-rotate-timer');
+				if (timer) {
+					window.clearInterval(timer);
+					$carousel.removeData('auto-rotate-timer');
+				}
+			};
+
+			$carousel.find('.wpdino-theme-carousel-dot').on('click', function() {
+				const slideIndex = parseInt($(this).data('slide-index'), 10);
+				if (!Number.isNaN(slideIndex)) {
+					setActiveSlide(slideIndex);
+				}
+			});
+
+			$carousel.find('img').on('error', function() {
+				const $img = $(this);
+				$img.addClass('is-missing').attr('alt', 'Preview image unavailable');
+				$img.closest('.wpdino-theme-carousel-slide').addClass('is-missing');
+			});
+
+			$carousel.on('mouseenter focusin', function() {
+				stopAutoRotate();
+			});
+
+			$carousel.on('mouseleave focusout', function() {
+				const focusInsideCarousel = $carousel.find(':focus').length > 0;
+				if (!focusInsideCarousel && $carousel.find('.wpdino-theme-carousel-slide').length > 1) {
+					stopAutoRotate();
+					startAutoRotate();
+				}
+			});
+
+			setActiveSlide(0);
+			startAutoRotate();
 		},
 
 		/**
@@ -47,6 +131,9 @@
 			// Import settings
 			$(document).on('click', '#import-settings', this.triggerImport);
 			$(document).on('change', '#import-file', this.importSettings);
+
+			// Accepta theme install/activate
+			$(document).on('click', '.js-wpdino-accepta-theme-action', this.manageAcceptaTheme);
 			
 			// Media uploader
 			$(document).on('click', '.wpdino-media-upload', this.openMediaUploader);
@@ -1233,6 +1320,76 @@
 		},
 
 		/**
+		 * Install and/or activate Accepta theme.
+		 */
+		manageAcceptaTheme: function(e) {
+			e.preventDefault();
+
+			const $btn = $(this);
+			const status = $btn.data('theme-status');
+
+			if (status === 'active' || $btn.prop('disabled')) {
+				return;
+			}
+
+			$btn.addClass('loading').prop('disabled', true);
+
+			$.ajax({
+				url: wpdinoAdmin.ajaxUrl,
+				type: 'POST',
+				data: {
+					action: 'wpdino_manage_accepta_theme',
+					nonce: wpdinoAdmin.nonce
+				},
+				success: function(response) {
+					if (response.success && response.data && response.data.status) {
+						const nextStatus = response.data.status;
+						const $statusPill = $('.wpdino-theme-status-pill');
+						const $label = $btn.find('.wpdino-theme-action-label');
+
+						if (nextStatus.is_active) {
+							$btn
+								.data('theme-status', 'active')
+								.addClass('inactive')
+								.prop('disabled', true);
+							$label.text(wpdinoAdmin.strings.themeActive);
+							$statusPill.text('Live now');
+						} else if (nextStatus.is_installed) {
+							$btn
+								.data('theme-status', 'installed')
+								.removeClass('inactive')
+								.prop('disabled', false);
+							$label.text(wpdinoAdmin.strings.themeActivate);
+							$statusPill.text('Installed');
+						} else {
+							$btn
+								.data('theme-status', 'not-installed')
+								.removeClass('inactive')
+								.prop('disabled', false);
+							$label.text(wpdinoAdmin.strings.themeInstallActivate);
+							$statusPill.text('Not installed');
+						}
+
+						WPDinoAdmin.showNotice(response.data.message || wpdinoAdmin.strings.error, 'success');
+					} else {
+						const message = response && response.data && response.data.message
+							? response.data.message
+							: wpdinoAdmin.strings.error;
+						WPDinoAdmin.showNotice(message, 'error');
+						$btn.prop('disabled', false);
+					}
+				},
+				error: function() {
+					WPDinoAdmin.showNotice(wpdinoAdmin.strings.error, 'error');
+					$btn.prop('disabled', false);
+				},
+				complete: function() {
+					$btn.removeClass('loading');
+				}
+			});
+		},
+
+		/**
 		 * Show notice message (custom notices only for save/reset actions)
 		 */
 		showNotice: function(message, type, action) {
@@ -1255,8 +1412,13 @@
 				</div>
 			`);
 			
-			// Insert notice after .wpdino-content container
-			$('.wpdino-content').after($notice);
+			// Insert notice above the main grid so it does not occupy a sidebar grid cell.
+			const $main = $('.wpdino-main');
+			if ($main.length) {
+				$main.before($notice);
+			} else {
+				$('.wpdino-settings-wrap').prepend($notice);
+			}
 			
 			// Auto-hide success notices
 			if (type === 'success') {

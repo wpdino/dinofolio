@@ -9,7 +9,7 @@
 	flex-wrap: wrap;
 	gap: 0;
 	border: 1px solid #d6e1dc;
-	border-radius: 8px;
+	border-radius: 2px;
 	overflow: hidden;
 	width: fit-content;
 }
@@ -110,7 +110,7 @@
 
 .wpdino-portfolio-meta-table {
 	border: 1px solid #d6e1dc;
-	border-radius: 8px;
+	border-radius: 2px;
 	background: #fff;
 }
 
@@ -162,8 +162,8 @@
 	font-weight: 600;
 	color: #14694a;
 	background: #e9f6f0;
-	border: 1px solid #c5e6d8;
-	border-radius: 6px;
+	border: 1px solid #dedede;
+	border-radius: 2px;
 }
 
 .wpdino-portfolio-meta-table input[type="text"],
@@ -172,7 +172,7 @@
 .wpdino-portfolio-meta-table input[type="range"],
 .wpdino-portfolio-meta-table select {
 	border-color: #c8d5cf;
-	border-radius: 6px;
+	border-radius: 2px;
 }
 
 .wpdino-portfolio-meta-table input[type="text"]:focus,
@@ -188,8 +188,8 @@
 	flex-wrap: nowrap;
 	gap: 0;
 	overflow: hidden;
-	border: 1px solid #d5e2dc;
-	border-radius: 8px;
+	border: 1px solid #dedede;
+	border-radius: 2px;
 }
 
 .wpdino-toggle-group label {
@@ -212,13 +212,13 @@
 }
 
 .wpdino-toggle-group label:first-child {
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
 }
 
 .wpdino-toggle-group label:last-child {
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
 }
 
 .wpdino-toggle-group input[type="radio"] {
@@ -258,7 +258,7 @@
 	padding: 8px;
 	background: #f9fbfa;
 	border: 1px solid #e1ebe6;
-	border-radius: 6px;
+	border-radius: 2px;
 }
 
 .wpdino-attr-row input[type="text"] {
@@ -310,7 +310,7 @@
 	text-align: center;
 	background: #fff;
 	border: 1px solid #d6e1dc;
-	border-radius: 8px;
+	border-radius: 2px;
 	cursor: pointer;
 	transition: all 0.2s ease;
 }
@@ -318,7 +318,6 @@
 .wpdino-image-select-option:hover {
 	border-color: #1a8960;
 	box-shadow: 0 2px 8px rgba(26, 137, 96, 0.15);
-	transform: translateY(-1px);
 }
 
 .wpdino-image-select-option input[type="radio"] {
@@ -334,7 +333,7 @@
 	height: 80px;
 	object-fit: cover;
 	border: 1px solid #eef3f1;
-	border-radius: 6px;
+	border-radius: 2px;
 }
 
 .wpdino-image-select-group--compact .wpdino-image-select-option img {
@@ -385,7 +384,7 @@
 	padding: 8px;
 	background: #fff;
 	border: 1px solid #c3d7cf;
-	border-radius: 6px;
+	border-radius: 2px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
@@ -404,7 +403,7 @@
 	color: #fff;
 	background: #1a8960;
 	border: 1px solid #14694a;
-	border-radius: 4px;
+	border-radius: 2px;
 }
 
 .ui-datepicker .ui-datepicker-title {
@@ -426,7 +425,7 @@
 	color: #1d2327;
 	background-color: #fff;
 	border-color: #8c8f94;
-	border-radius: 3px;
+	border-radius: 2px;
 }
 
 .ui-datepicker .ui-datepicker-prev,
@@ -496,7 +495,7 @@
 	font-size: 13px;
 	line-height: 1.3;
 	text-decoration: none;
-	border-radius: 3px;
+	border-radius: 2px;
 }
 
 .ui-datepicker td a {
@@ -599,7 +598,7 @@
 	color: #14694a;
 	background: #e9f6f0;
 	border: 1px solid #c5e6d8;
-	border-radius: 6px;
+	border-radius: 2px;
 	flex-shrink: 0;
 }
 
@@ -611,7 +610,7 @@
 	flex: 0 0 auto;
 	justify-self: start;
 	border: 1px solid #e0e0e0;
-	border-radius: 8px;
+	border-radius: 2px;
 	overflow: hidden;
 	background: #f8f9fa;
 	box-shadow: none;
@@ -668,7 +667,7 @@
 	gap: 0;
 	overflow: hidden;
 	border: 1px solid #c8d5cf;
-	border-radius: 6px;
+	border-radius: 2px;
 	background: #fff;
 }
 
@@ -728,7 +727,7 @@
 	height: 96px;
 	margin: 0;
 	border: 1px solid #c8d5cf;
-	border-radius: 8px;
+	border-radius: 2px;
 	overflow: hidden;
 	background: #f8fbfa;
 	cursor: grab;
@@ -802,6 +801,6 @@
 	width: 96px;
 	height: 96px;
 	border: 2px dashed #1a8960;
-	border-radius: 8px;
+	border-radius: 2px;
 	background: #e9f6f0;
 }

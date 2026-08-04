@@ -73,6 +73,7 @@ class DinoFolio_Settings {
 		add_action( 'wp_ajax_wpdino_reset_settings', array( $this, 'ajax_reset_settings' ) );
 		add_action( 'wp_ajax_wpdino_export_settings', array( $this, 'ajax_export_settings' ) );
 		add_action( 'wp_ajax_wpdino_import_settings', array( $this, 'ajax_import_settings' ) );
+		add_action( 'wp_ajax_wpdino_manage_accepta_theme', array( $this, 'ajax_manage_accepta_theme' ) );
 
 		// Defer settings loading until init (when translations are safe)
 		add_action( 'init', array( $this, 'init_settings' ) );
@@ -423,6 +424,9 @@ class DinoFolio_Settings {
 				'error'         => esc_html__( 'An error occurred. Please try again.', 'dinofolio' ),
 				'invalidFile'   => esc_html__( 'Please select a valid JSON file.', 'dinofolio' ),
 				'unsavedChanges' => esc_html__( 'You have unsaved changes. Please save your changes before leaving this page.', 'dinofolio' ),
+				'themeInstallActivate' => esc_html__( 'Install & Activate Accepta', 'dinofolio' ),
+				'themeActivate' => esc_html__( 'Activate Accepta', 'dinofolio' ),
+				'themeActive' => esc_html__( 'Accepta Active', 'dinofolio' ),
 			)
 		) );
 	}
@@ -487,6 +491,91 @@ class DinoFolio_Settings {
 		wp_send_json_success( array(
 			'message' => esc_html__( 'Settings imported successfully!', 'dinofolio' )
 		) );
+	}
+
+	/**
+	 * AJAX: Install and/or activate the Accepta theme.
+	 */
+	public function ajax_manage_accepta_theme() {
+		check_ajax_referer( 'wpdino_admin_action', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'You do not have sufficient permissions.', 'dinofolio' ) ) );
+		}
+
+		$status = $this->get_accepta_theme_status();
+
+		if ( $status['is_active'] ) {
+			wp_send_json_success( array(
+				'message' => esc_html__( 'Accepta is already active.', 'dinofolio' ),
+				'status'  => $this->get_accepta_theme_status(),
+			) );
+		}
+
+		if ( ! $status['is_installed'] ) {
+			if ( ! current_user_can( 'install_themes' ) ) {
+				wp_send_json_error( array( 'message' => esc_html__( 'You are not allowed to install themes on this site.', 'dinofolio' ) ) );
+			}
+
+			require_once ABSPATH . 'wp-admin/includes/theme.php';
+			require_once ABSPATH . 'wp-admin/includes/theme-install.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+			$api = themes_api(
+				'theme_information',
+				array(
+					'slug'   => 'accepta',
+					'fields' => array( 'sections' => false ),
+				)
+			);
+
+			if ( is_wp_error( $api ) || empty( $api->download_link ) ) {
+				wp_send_json_error( array( 'message' => esc_html__( 'Could not fetch Accepta from WordPress.org right now.', 'dinofolio' ) ) );
+			}
+
+			$upgrader = new \Theme_Upgrader( new \WP_Ajax_Upgrader_Skin() );
+			$result   = $upgrader->install( $api->download_link );
+
+			if ( is_wp_error( $result ) || ! $result ) {
+				wp_send_json_error( array( 'message' => esc_html__( 'Accepta installation failed. Please try again.', 'dinofolio' ) ) );
+			}
+		}
+
+		if ( ! current_user_can( 'switch_themes' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'You are not allowed to activate themes on this site.', 'dinofolio' ) ) );
+		}
+
+		switch_theme( 'accepta' );
+		$status = $this->get_accepta_theme_status();
+
+		if ( ! $status['is_active'] ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Accepta could not be activated. Please activate it from Appearance > Themes.', 'dinofolio' ) ) );
+		}
+
+		wp_send_json_success( array(
+			'message' => esc_html__( 'Accepta is now active. Your portfolio can use the full theme styling.', 'dinofolio' ),
+			'status'  => $status,
+		) );
+	}
+
+	/**
+	 * Get Accepta theme install/activation status for UI.
+	 *
+	 * @return array
+	 */
+	private function get_accepta_theme_status() {
+		$theme      = wp_get_theme( 'accepta' );
+		$stylesheet = get_stylesheet();
+		$template   = get_template();
+
+		$is_installed = $theme instanceof \WP_Theme && $theme->exists();
+		$is_active    = ( 'accepta' === $stylesheet || 'accepta' === $template );
+
+		return array(
+			'is_installed' => $is_installed,
+			'is_active'    => $is_active,
+		);
 	}
 
 	/**
@@ -901,8 +990,8 @@ class DinoFolio_Settings {
 
 		$general_fields = array_merge( $general_fields, $default_settings_fields );
 
-		// Add widgets subsection
-		if ( ! empty( $widget_fields ) ) {
+		// Add widgets subsection only when Elementor is active.
+		if ( ! empty( $widget_fields ) && did_action( 'elementor/loaded' ) ) {
 			$general_fields[] = array(
 				'type' => 'subsection',
 				'id'   => 'widgets_subsection',
@@ -1345,6 +1434,86 @@ class DinoFolio_Settings {
 	}
 
 	/**
+	 * Render settings sidebar content.
+	 */
+	private function render_settings_sidebar() {
+		$accepta_theme_url = 'https://wordpress.org/themes/accepta/preview/';
+		$carousel_slides   = array(
+			array(
+				'image' => DINOFOLIO_URL . 'includes/admin/assets/images/accepta-preview.jpg',
+				'alt'   => esc_html__( 'Accepta theme homepage preview', 'dinofolio' ),
+				'label' => esc_html__( 'Accepta Theme', 'dinofolio' ),
+			),
+			array(
+				'image' => DINOFOLIO_URL . 'includes/admin/assets/images/single-portfolio-preview.jpg',
+				'alt'   => esc_html__( 'DinoFolio single portfolio page preview', 'dinofolio' ),
+				'label' => esc_html__( 'Single Portfolio Page', 'dinofolio' ),
+			),
+		);
+		$theme_status      = $this->get_accepta_theme_status();
+		$is_active         = ! empty( $theme_status['is_active'] );
+		$is_installed      = ! empty( $theme_status['is_installed'] );
+
+		$button_label = $is_active
+			? esc_html__( 'Accepta Active', 'dinofolio' )
+			: ( $is_installed ? esc_html__( 'Activate Accepta', 'dinofolio' ) : esc_html__( 'Install & Activate Accepta', 'dinofolio' ) );
+
+		$status_label = $is_active
+			? esc_html__( 'Live now', 'dinofolio' )
+			: ( $is_installed ? esc_html__( 'Installed', 'dinofolio' ) : esc_html__( 'Not installed', 'dinofolio' ) );
+		?>
+		<aside class="wpdino-sidebar" aria-label="<?php esc_attr_e( 'Settings sidebar', 'dinofolio' ); ?>">
+			<div class="wpdino-card wpdino-theme-recommendation-card">
+				<?php if ( ! empty( $carousel_slides ) ) : ?>
+				<div class="wpdino-theme-carousel" aria-label="<?php esc_attr_e( 'Theme and portfolio previews', 'dinofolio' ); ?>">
+					<div class="wpdino-theme-carousel-track">
+						<?php foreach ( $carousel_slides as $index => $slide ) : ?>
+						<figure class="wpdino-theme-carousel-slide<?php echo esc_attr( 0 === $index ? ' is-active' : '' ); ?>">
+							<img src="<?php echo esc_url( $slide['image'] ); ?>" alt="<?php echo esc_attr( $slide['alt'] ); ?>" loading="lazy" />
+							<figcaption><?php echo esc_html( $slide['label'] ); ?></figcaption>
+						</figure>
+						<?php endforeach; ?>
+					</div>
+					<?php if ( count( $carousel_slides ) > 1 ) : ?>
+					<div class="wpdino-theme-carousel-controls">
+						<?php foreach ( $carousel_slides as $index => $slide ) : ?>
+						<button
+							type="button"
+							class="wpdino-theme-carousel-dot<?php echo esc_attr( 0 === $index ? ' is-active' : '' ); ?>"
+							data-slide-index="<?php echo esc_attr( $index ); ?>"
+							aria-label="<?php echo esc_attr( sprintf( __( 'Show preview image %d', 'dinofolio' ), $index + 1 ) ); ?>"
+						></button>
+						<?php endforeach; ?>
+					</div>
+					<?php endif; ?>
+				</div>
+				<?php endif; ?>
+				<div class="wpdino-theme-recommendation-header">
+					<span class="wpdino-theme-recommendation-kicker"><?php esc_html_e( 'Theme Match', 'dinofolio' ); ?></span>
+					<span class="wpdino-theme-status-pill"><?php echo esc_html( $status_label ); ?></span>
+				</div>
+				<h3><?php esc_html_e( 'Make your portfolio look finished in minutes', 'dinofolio' ); ?></h3>
+				<p><?php esc_html_e( 'Pair DinoFolio with Accepta to get tighter layouts, cleaner project cards, and a stronger visual flow right away.', 'dinofolio' ); ?></p>
+				<div class="wpdino-sidebar-cta">
+					<button
+						type="button"
+						class="wpdino-btn wpdino-btn-primary wpdino-btn-block js-wpdino-accepta-theme-action<?php echo esc_attr( $is_active ? ' inactive' : '' ); ?>"
+						<?php disabled( $is_active ); ?>
+						data-theme-status="<?php echo esc_attr( $is_active ? 'active' : ( $is_installed ? 'installed' : 'not-installed' ) ); ?>"
+					>
+						<span class="dashicons dashicons-admin-appearance"></span>
+						<span class="wpdino-theme-action-label"><?php echo esc_html( $button_label ); ?></span>
+					</button>
+					<a href="<?php echo esc_url( $accepta_theme_url ); ?>" target="_blank" rel="noopener noreferrer" class="wpdino-theme-secondary-link">
+						<?php esc_html_e( 'Preview on WordPress.org', 'dinofolio' ); ?>
+					</a>
+				</div>
+			</div>
+		</aside>
+		<?php
+	}
+
+	/**
 	 * Get system information for debugging
 	 */
 	private function get_system_info() {
@@ -1469,7 +1638,7 @@ class DinoFolio_Settings {
 			<!-- Admin Notices -->
 			<?php $this->render_admin_notices(); ?>
 
-			<div class="wpdino-main wpdino-main-no-sidebar">
+			<div class="wpdino-main">
 				
 				<!-- Settings Content -->
 				<div class="wpdino-content">
@@ -1578,7 +1747,7 @@ class DinoFolio_Settings {
 						</form>
 					</div>
 				</div>
-				
+				<?php $this->render_settings_sidebar(); ?>
 			</div>
 
 			<!-- Footer -->
