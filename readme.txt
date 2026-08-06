@@ -5,7 +5,7 @@ Tags: portfolio, gutenberg, elementor, gallery, showcase
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,14 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 
 == Changelog ==
 
+= 1.0.1 =
+* Added a settings sidebar card recommending the Accepta theme, with preview carousel and one-click install/activate from WordPress.org
+* Show the Elementor widgets settings section only when Elementor is active
+* Improved the Date of Work field with a calendar icon trigger in settings and portfolio metaboxes, while keeping manual text input
+* Fixed admin notice placement on the settings page after AJAX actions
+* Improved settings sidebar carousel navigation (dot controls and auto-rotate)
+* Added missing translators comment for an accessibility label (PHPCS/i18n)
+
 = 1.0.0 =
 * Initial release on WordPress.org
 * Portfolio custom post type with categories and tags
@@ -129,6 +137,9 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 * Translation-ready with `languages/dinofolio.pot`
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Settings UX improvements: Accepta theme recommendation sidebar, smarter Elementor widgets section visibility, and a better Date of Work picker in admin.
 
 = 1.0.0 =
 Initial release of DinoFolio. Install to create portfolio items and display them with the block editor, Elementor, WPBakery, or shortcodes.

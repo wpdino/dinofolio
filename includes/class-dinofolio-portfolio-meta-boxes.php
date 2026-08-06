@@ -191,7 +191,14 @@ class Portfolio_Meta_Boxes {
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_date_of_work"><?php esc_html_e( 'Date of Work', 'dinofolio' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="wpdino_date_of_work" name="wpdino_date_of_work" value="<?php echo esc_attr( $values['date_of_work'] ); ?>"></td>
+					<td>
+						<div class="wpdino-date-field">
+							<input type="text" class="regular-text wpdino-date-picker" id="wpdino_date_of_work" name="wpdino_date_of_work" value="<?php echo esc_attr( $values['date_of_work'] ); ?>">
+							<button type="button" class="wpdino-date-picker-trigger" aria-label="<?php esc_attr_e( 'Open calendar', 'dinofolio' ); ?>">
+								<span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span>
+							</button>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_external_url"><?php esc_html_e( 'External URL', 'dinofolio' ); ?></label></th>
@@ -800,6 +807,7 @@ class Portfolio_Meta_Boxes {
 			return;
 		}
 
+		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style(
 			'dinofolio-portfolio-meta-admin',
 			DINOFOLIO_URL . 'includes/admin/assets/css/admin-portfolio-meta.css',

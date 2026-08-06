@@ -1481,7 +1481,10 @@ class DinoFolio_Settings {
 							type="button"
 							class="wpdino-theme-carousel-dot<?php echo esc_attr( 0 === $index ? ' is-active' : '' ); ?>"
 							data-slide-index="<?php echo esc_attr( $index ); ?>"
-							aria-label="<?php echo esc_attr( sprintf( __( 'Show preview image %d', 'dinofolio' ), $index + 1 ) ); ?>"
+							aria-label="<?php
+							/* translators: %d: preview image number. */
+							echo esc_attr( sprintf( __( 'Show preview image %d', 'dinofolio' ), $index + 1 ) );
+							?>"
 						></button>
 						<?php endforeach; ?>
 					</div>

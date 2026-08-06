@@ -181,15 +181,25 @@ class DinoFolio_Field_Renderer {
 	 * Render text field
 	 */
 	private function render_text_field( $field, $field_id, $field_name, $value, $field_class ) {
+		$is_date_picker = false !== strpos( ' ' . $field_class . ' ', ' wpdino-date-picker ' );
 		?>
 		<div class="wpdino-field-group">
 			<label for="<?php echo esc_attr( $field_id ); ?>" class="wpdino-label">
 				<?php echo esc_html( $field['label'] ); ?>
 			</label>
+			<?php if ( $is_date_picker ) : ?>
+			<div class="wpdino-date-field">
+			<?php endif; ?>
 			<input type="text" id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $field_name ); ?>" 
 				   value="<?php echo esc_attr( $value ); ?>" 
 				   class="wpdino-input <?php echo esc_attr( $field_class ); ?>"
 				   <?php if ( isset( $field['placeholder'] ) ) echo 'placeholder="' . esc_attr( $field['placeholder'] ) . '"'; ?> />
+			<?php if ( $is_date_picker ) : ?>
+				<button type="button" class="wpdino-date-picker-trigger" aria-label="<?php esc_attr_e( 'Open calendar', 'dinofolio' ); ?>">
+					<span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span>
+				</button>
+			</div>
+			<?php endif; ?>
 			<?php $this->render_field_description( $field ); ?>
 		</div>
 		<?php

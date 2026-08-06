@@ -317,17 +317,38 @@
 			}
 
 			$('.wpdino-date-picker').each(function() {
-				var $input = $(this);
-				if ($input.hasClass('hasDatepicker')) {
-					return;
-				}
+				WPDinoAdmin.initDateField($(this));
+			});
+		},
 
-				$input.datepicker({
-					dateFormat: 'dd.mm.yy',
-					changeMonth: true,
-					changeYear: true,
-					yearRange: '1900:2100'
-				});
+		/**
+		 * Initialize a single date field with manual input and calendar trigger.
+		 */
+		initDateField: function($input) {
+			if (!$input.length || !$.fn.datepicker || $input.data('wpdinoDatepickerInit')) {
+				return;
+			}
+
+			$input.data('wpdinoDatepickerInit', true);
+
+			var $field = $input.closest('.wpdino-date-field');
+			var $trigger = $field.find('.wpdino-date-picker-trigger');
+
+			$input.datepicker({
+				dateFormat: 'dd.mm.yy',
+				changeMonth: true,
+				changeYear: true,
+				yearRange: '1900:2100',
+				constrainInput: false
+			});
+
+			// Allow manual typing; open the calendar only from the icon button.
+			$input.off('focus');
+			$input.prop('readonly', false).removeAttr('readonly');
+
+			$trigger.on('click', function(event) {
+				event.preventDefault();
+				$input.datepicker('show');
 			});
 		},
 

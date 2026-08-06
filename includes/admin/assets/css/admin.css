@@ -407,6 +407,7 @@
 	font-size: 14px;
 	background: white;
 	transition: all 0.8s ease;
+	line-height: 1.5;
 }
 
 /* Distinctive styling for select inputs */
@@ -1426,7 +1427,6 @@
 .wpdino-image-select-option:hover {
 	border-color: #1A8960;
 	box-shadow: 0 2px 8px rgba(111, 156, 80, 0.2);
-	transform: translateY(-2px);
 }
 
 .wpdino-image-select-option input[type="radio"] {
@@ -1731,6 +1731,57 @@
 .dinopack_page_dinopack-docs div.error {
 	margin: 5px 0 15px !important;
 	margin-right: 20px !important;
+}
+
+/* Date Field */
+.wpdino-date-field {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	max-width: 45%;
+}
+
+.wpdino-field-row .wpdino-date-field {
+	max-width: 90%;
+}
+
+.wpdino-date-field .wpdino-input,
+.wpdino-date-field .wpdino-date-picker {
+	width: 100%;
+	padding-right: 40px;
+	max-width: 100%;
+}
+
+.wpdino-date-picker-trigger {
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 0;
+	border-radius: 2px;
+	background: transparent;
+	color: #666;
+	cursor: pointer;
+}
+
+.wpdino-date-picker-trigger:hover,
+.wpdino-date-picker-trigger:focus {
+	color: #1A8960;
+	background: rgba(26, 137, 96, 0.1);
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(26, 137, 96, 0.2);
+}
+
+.wpdino-date-picker-trigger .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
 }
 
 /* Password Field Toggle */

@@ -8,7 +8,6 @@
 	display: inline-flex;
 	flex-wrap: wrap;
 	gap: 0;
-	border: 1px solid #d6e1dc;
 	border-radius: 2px;
 	overflow: hidden;
 	width: fit-content;
@@ -18,8 +17,7 @@
 	margin: 0;
 	padding: 10px 18px;
 	border: 0;
-	border-right: 1px solid #d6e1dc;
-	background: #f4f8f6;
+	background: #f0f0f0;
 	color: #1f2933;
 	font-size: 13px;
 	font-weight: 600;
@@ -34,10 +32,8 @@
 
 .wpdino-portfolio-meta-tabs__tab:hover,
 .wpdino-portfolio-meta-tabs__tab:focus {
-	background: #e9f6f0;
-	color: #14694a;
+	background: #e7e5e5;
 	outline: none;
-	box-shadow: inset 0 0 0 1px #1a8960;
 }
 
 .wpdino-portfolio-meta-tabs__tab.is-active {
@@ -160,9 +156,8 @@
 	padding: 0 8px;
 	font-size: 13px;
 	font-weight: 600;
-	color: #14694a;
-	background: #e9f6f0;
-	border: 1px solid #dedede;
+	color: #23282d;
+	background: #f0f0f0;
 	border-radius: 2px;
 }
 
@@ -188,7 +183,6 @@
 	flex-wrap: nowrap;
 	gap: 0;
 	overflow: hidden;
-	border: 1px solid #dedede;
 	border-radius: 2px;
 }
 
@@ -200,8 +194,8 @@
 	margin: 0;
 	padding: 8px 14px;
 	font-weight: 500;
-	background: #f4f8f6;
-	border-right: 1px solid #d5e2dc;
+	background: #f0f0f0;
+	border-right: 1px solid #dfdcdc;
 	cursor: pointer;
 	transition: background-color 0.2s ease, color 0.2s ease;
 	user-select: none;
@@ -237,7 +231,7 @@
 }
 
 .wpdino-toggle-group label:hover {
-	background: #e9f6f0;
+	background: #e7e5e5;
 }
 
 .wpdino-toggle-group label.is-checked {
@@ -375,6 +369,51 @@
 	color: #fff;
 	background: #1a8960;
 	border-color: #1a8960;
+}
+
+.wpdino-date-field {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	max-width: 25em;
+}
+
+.wpdino-date-field .regular-text,
+.wpdino-date-field .wpdino-date-picker {
+	width: 100%;
+	padding-right: 40px;
+}
+
+.wpdino-date-picker-trigger {
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 0;
+	border-radius: 2px;
+	background: transparent;
+	color: #666;
+	cursor: pointer;
+}
+
+.wpdino-date-picker-trigger:hover,
+.wpdino-date-picker-trigger:focus {
+	color: #1a8960;
+	background: rgba(26, 137, 96, 0.1);
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(26, 137, 96, 0.2);
+}
+
+.wpdino-date-picker-trigger .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
 }
 
 #ui-datepicker-div {
@@ -595,9 +634,9 @@
 	padding: 0 8px;
 	font-size: 13px;
 	font-weight: 600;
-	color: #14694a;
-	background: #e9f6f0;
-	border: 1px solid #c5e6d8;
+	color: #23282d;
+	background: #f0f0f0;
+	border: 0;
 	border-radius: 2px;
 	flex-shrink: 0;
 }
@@ -609,7 +648,7 @@
 	max-width: 100%;
 	flex: 0 0 auto;
 	justify-self: start;
-	border: 1px solid #e0e0e0;
+	border: 0;
 	border-radius: 2px;
 	overflow: hidden;
 	background: #f8f9fa;
@@ -622,8 +661,7 @@
 	min-width: 1.5rem;
 	justify-content: center;
 	padding: 8px 16px;
-	background: #f8f9fa;
-	border-right: 1px solid #e0e0e0;
+	background: #f0f0f0;
 	color: #23282d;
 }
 
@@ -634,7 +672,7 @@
 
 .wpdino-settings-wrap .wpdino-field-group--toggle .wpdino-toggle-group label:hover,
 .wpdino-settings-wrap .wpdino-field-group:has([name*="portfolio_meta_default_"]) .wpdino-toggle-group label:hover {
-	background: #f0f0f0;
+	background: #e7e5e5;
 	color: #23282d;
 }
 
@@ -666,7 +704,6 @@
 	flex-wrap: nowrap;
 	gap: 0;
 	overflow: hidden;
-	border: 1px solid #c8d5cf;
 	border-radius: 2px;
 	background: #fff;
 }
@@ -675,14 +712,12 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-width: 96px;
 	margin: 0;
-	padding: 8px 14px;
+	padding: 10px 18px;
 	font-size: 13px;
-	font-weight: 500;
+	font-weight: 600;
 	color: #374151;
-	background: #fff;
-	border-right: 1px solid #c8d5cf;
+	background: #f0f0f0;
 	cursor: pointer;
 	transition: background 0.15s ease, color 0.15s ease;
 }
@@ -692,8 +727,7 @@
 }
 
 .wpdino-gallery-metabox .wpdino-format-group label:hover {
-	background: #f0f7f4;
-	color: #14694a;
+	background: #e7e5e5;
 }
 
 .wpdino-gallery-metabox .wpdino-format-group label.is-checked {

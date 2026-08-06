@@ -185,6 +185,14 @@ This plugin is licensed under GPL v2 or later.
 
 ## Changelog
 
+### 1.0.1
+- Added settings sidebar card recommending the Accepta theme, with preview carousel and one-click install/activate
+- Show Elementor widgets settings section only when Elementor is active
+- Improved Date of Work field with calendar icon trigger (settings + portfolio metabox); manual typing still supported
+- Fixed admin notice placement on settings page after AJAX actions
+- Improved settings sidebar carousel navigation (dot controls and auto-rotate)
+- Added missing translators comment for accessibility label (PHPCS/i18n)
+
 ### 1.0.0
 - Initial release
 - Portfolio custom post type
