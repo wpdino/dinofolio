@@ -105,12 +105,11 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 
 == Screenshots ==
 
-1. Portfolio grid layout on the front end
-2. Portfolio Listing block in the Gutenberg editor
-3. Display and Query settings in the block sidebar
-4. Elementor Portfolio Listing widget controls
-5. DinoFolio admin settings page
-6. Single portfolio project page with meta and related items
+1. Portfolio Masony layout on the front end
+2. Portfolio Grid layout with dark overlay style
+3. Display video in lightbox
+4. Porfolio with Ajax add more button
+5. Single portfolio page with meta and related items
 
 == Changelog ==
 
