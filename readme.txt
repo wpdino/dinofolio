@@ -28,6 +28,7 @@ After activation, you can add portfolio items, organize them with categories and
 * **Query Controls** - Filter by portfolio category or tag, set item count, and control sort order
 * **Display Options** - Toggle title, categories, excerpt, read more button, pagination, and view-all link
 * **Image Lightbox** - Optional lightbox on thumbnails with zoom icon on hover
+* **Video Lightbox** - Play YouTube, Vimeo, or self-hosted MP4 videos from portfolio listing thumbnails
 * **Category Filter Bar** - Optional front-end filter tabs by portfolio category
 * **Single Portfolio Templates** - Rich single-project meta (attributes, social links, related projects) with theme override support
 * **Admin Settings** - Global defaults for layout, columns, image size, lightbox, permalinks, and more
@@ -114,12 +115,10 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 == Changelog ==
 
 = 1.0.1 =
-* Added a settings sidebar card recommending the Accepta theme, with preview carousel and one-click install/activate from WordPress.org
-* Show the Elementor widgets settings section only when Elementor is active
-* Improved the Date of Work field with a calendar icon trigger in settings and portfolio metaboxes, while keeping manual text input
-* Fixed admin notice placement on the settings page after AJAX actions
-* Improved settings sidebar carousel navigation (dot controls and auto-rotate)
-* Added missing translators comment for an accessibility label (PHPCS/i18n)
+* Added video lightbox support on portfolio listings for YouTube, Vimeo, and self-hosted MP4 videos
+* Added play icon indicator on listing thumbnails when a video lightbox is enabled
+* Added video play action on overlay-style listing cards when lightbox video is configured
+* Added gallery image carousel on listing cards for gallery-format portfolio items
 
 = 1.0.0 =
 * Initial release on WordPress.org
@@ -139,7 +138,7 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 == Upgrade Notice ==
 
 = 1.0.1 =
-Settings UX improvements: Accepta theme recommendation sidebar, smarter Elementor widgets section visibility, and a better Date of Work picker in admin.
+Play portfolio videos in listing lightboxes with support for YouTube, Vimeo, and MP4, plus gallery carousel support on listing cards.
 
 = 1.0.0 =
 Initial release of DinoFolio. Install to create portfolio items and display them with the block editor, Elementor, WPBakery, or shortcodes.
