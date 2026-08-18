@@ -454,6 +454,13 @@ class Util {
 				$control['hierarchical'] = ! empty( $param['hierarchical'] );
 			}
 
+			if ( ! empty( $param['dependency']['element'] ) && isset( $param['dependency']['value'] ) ) {
+				$control['condition'] = array(
+					'field'  => $param['dependency']['element'],
+					'values' => (array) $param['dependency']['value'],
+				);
+			}
+
 			$controls[] = $control;
 		}
 

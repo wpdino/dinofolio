@@ -91,7 +91,7 @@
 	min-width: 100%;
 }
 
-.dinofolio-listing--editor-preview.dinofolio-layout-grid .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide {
+.dinofolio-listing--editor-preview:not(.dinofolio-layout-masonry) .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide {
 	height: 100%;
 	aspect-ratio: auto;
 }
@@ -106,7 +106,7 @@
 	cursor: default;
 }
 
-.dinofolio-listing--editor-preview.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image,
+.dinofolio-listing--editor-preview:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image,
 .dinofolio-listing--editor-preview.dinofolio-layout-masonry .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image {
 	transform: scale(1.04);
 }

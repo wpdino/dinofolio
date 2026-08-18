@@ -28,6 +28,8 @@ $dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 
 ?>
 <div class="dinofolio-single-meta">
+	<div class="dinofolio-single-meta-columns">
+	<div class="dinofolio-single-meta-main">
 	<?php if ( ! empty( $dinofolio_gallery_images ) ) : ?>
 		<div
 			class="dinofolio-portfolio-gallery is-<?php echo esc_attr( $dinofolio_gallery_style ); ?>"
@@ -93,6 +95,8 @@ $dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 			?>
 		</div>
 	<?php endif; ?>
+	<div class="dinofolio-sticky-scroll-spacer" aria-hidden="true"></div>
+	</div>
 
 	<section class="dinofolio-project-details">
 		<h2 class="dinofolio-section-heading"><?php esc_html_e( 'Project Details', 'dinofolio' ); ?></h2>
@@ -128,10 +132,11 @@ $dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 			</div>
 		</div>
 	</section>
+	</div>
 
 	<?php
 	/**
-	 * Fires after single portfolio project details.
+	 * Fires after single portfolio project details (below the main columns layout).
 	 *
 	 * @param array $dinofolio_data Template data.
 	 */
@@ -139,43 +144,43 @@ $dinofolio_gallery_slider  = ( 'slider' === $dinofolio_gallery_style );
 	?>
 
 	<?php if ( ! empty( $dinofolio_data['related_projects'] ) && is_array( $dinofolio_data['related_projects'] ) ) : ?>
-		<div
-			class="dinofolio-related-projects is-<?php echo esc_attr( $dinofolio_related_style ); ?> dinofolio-related-columns-<?php echo esc_attr( $dinofolio_related_columns ); ?>"
-			style="--dinofolio-related-columns: <?php echo esc_attr( $dinofolio_related_columns ); ?>;"
-		>
-			<?php if ( ! empty( $dinofolio_data['related_projects_title'] ) ) : ?>
-				<h2 class="dinofolio-section-heading dinofolio-related-projects-title"><?php echo esc_html( $dinofolio_data['related_projects_title'] ); ?></h2>
-			<?php endif; ?>
+	<div
+		class="dinofolio-related-projects is-<?php echo esc_attr( $dinofolio_related_style ); ?> dinofolio-related-columns-<?php echo esc_attr( $dinofolio_related_columns ); ?>"
+		style="--dinofolio-related-columns: <?php echo esc_attr( $dinofolio_related_columns ); ?>;"
+	>
+		<?php if ( ! empty( $dinofolio_data['related_projects_title'] ) ) : ?>
+			<h2 class="dinofolio-section-heading dinofolio-related-projects-title"><?php echo esc_html( $dinofolio_data['related_projects_title'] ); ?></h2>
+		<?php endif; ?>
 
-			<?php if ( $dinofolio_is_carousel ) : ?>
-				<div class="dinofolio-related-carousel-shell">
-					<div class="dinofolio-related-carousel" data-dinofolio-carousel data-columns="<?php echo esc_attr( $dinofolio_related_columns ); ?>">
-						<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-prev" aria-label="<?php esc_attr_e( 'Previous projects', 'dinofolio' ); ?>">
-							<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-								<path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
-						</button>
-						<div class="dinofolio-related-carousel-viewport">
-							<ul class="dinofolio-related-list dinofolio-related-carousel-track">
-								<?php foreach ( $dinofolio_data['related_projects'] as $dinofolio_related_item ) : ?>
-									<?php require DINOFOLIO_PATH . 'templates/parts/related-project-card.php'; ?>
-								<?php endforeach; ?>
-							</ul>
-						</div>
-						<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-next" aria-label="<?php esc_attr_e( 'Next projects', 'dinofolio' ); ?>">
-							<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-								<path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
-						</button>
+		<?php if ( $dinofolio_is_carousel ) : ?>
+			<div class="dinofolio-related-carousel-shell">
+				<div class="dinofolio-related-carousel" data-dinofolio-carousel data-columns="<?php echo esc_attr( $dinofolio_related_columns ); ?>">
+					<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-prev" aria-label="<?php esc_attr_e( 'Previous projects', 'dinofolio' ); ?>">
+						<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+							<path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</button>
+					<div class="dinofolio-related-carousel-viewport">
+						<ul class="dinofolio-related-list dinofolio-related-carousel-track">
+							<?php foreach ( $dinofolio_data['related_projects'] as $dinofolio_related_item ) : ?>
+								<?php require DINOFOLIO_PATH . 'templates/parts/related-project-card.php'; ?>
+							<?php endforeach; ?>
+						</ul>
 					</div>
+					<button type="button" class="dinofolio-carousel-nav dinofolio-carousel-next" aria-label="<?php esc_attr_e( 'Next projects', 'dinofolio' ); ?>">
+						<svg class="dinofolio-carousel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+							<path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</button>
 				</div>
-			<?php else : ?>
-				<ul class="dinofolio-related-list dinofolio-related-grid">
-					<?php foreach ( $dinofolio_data['related_projects'] as $dinofolio_related_item ) : ?>
-						<?php require DINOFOLIO_PATH . 'templates/parts/related-project-card.php'; ?>
-					<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
-		</div>
+			</div>
+		<?php else : ?>
+			<ul class="dinofolio-related-list dinofolio-related-grid">
+				<?php foreach ( $dinofolio_data['related_projects'] as $dinofolio_related_item ) : ?>
+					<?php require DINOFOLIO_PATH . 'templates/parts/related-project-card.php'; ?>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
+	</div>
 	<?php endif; ?>
 </div>

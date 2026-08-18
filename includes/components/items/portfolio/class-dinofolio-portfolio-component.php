@@ -177,6 +177,10 @@ class Portfolio_Component extends Component_Base {
 					4 => '4',
 				),
 				'std'         => 3,
+				'dependency'  => array(
+					'element' => 'layout',
+					'value'   => array( 'grid', 'masonry', 'metro' ),
+				),
 			),
 			array(
 				'type'       => 'dropdown',
@@ -277,6 +281,10 @@ class Portfolio_Component extends Component_Base {
 				'section'     => 'content',
 				'description' => esc_html__( 'Show the number of projects in each filter tab.', 'dinofolio' ),
 				'std'         => 'no',
+				'dependency'  => array(
+					'element' => 'showFilter',
+					'value'   => array( true, 'true', '1', 1, 'yes' ),
+				),
 			),
 			array(
 				'type'        => 'checkbox',
@@ -285,6 +293,10 @@ class Portfolio_Component extends Component_Base {
 				'section'     => 'content',
 				'description' => esc_html__( 'Subtle parallax movement on portfolio thumbnails.', 'dinofolio' ),
 				'std'         => 'no',
+				'dependency'  => array(
+					'element' => 'layout',
+					'value'   => array( 'grid', 'masonry', 'metro', 'carousel', 'horizontal' ),
+				),
 			),
 			array(
 				'type'       => 'dropdown',
@@ -297,6 +309,10 @@ class Portfolio_Component extends Component_Base {
 					'load_more'  => esc_html__( 'Load More (AJAX)', 'dinofolio' ),
 				),
 				'std'        => 'pagination',
+				'dependency' => array(
+					'element' => 'layout',
+					'value'   => array( 'grid', 'masonry', 'metro', 'timeline' ),
+				),
 			),
 			array(
 				'type'       => 'textfield',
@@ -338,6 +354,10 @@ class Portfolio_Component extends Component_Base {
 				'param_name' => 'viewAllText',
 				'section'    => 'content',
 				'std'        => esc_html__( 'View All', 'dinofolio' ),
+				'dependency' => array(
+					'element' => 'showViewAll',
+					'value'   => array( true, 'true', '1', 1, 'yes' ),
+				),
 			),
 			array(
 				'type'       => 'textfield',
@@ -345,6 +365,10 @@ class Portfolio_Component extends Component_Base {
 				'param_name' => 'viewAllLink',
 				'section'    => 'content',
 				'std'        => '',
+				'dependency' => array(
+					'element' => 'showViewAll',
+					'value'   => array( true, 'true', '1', 1, 'yes' ),
+				),
 			),
 			array(
 				'type'        => 'taxonomy',

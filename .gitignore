@@ -5,3 +5,5 @@ package-lock.json
 .DS_Store
 package-lock.json
 node_modules
+AGENTS.md
+FEATURES.md

@@ -278,7 +278,9 @@ class WPDINO_Portfolio_Display {
 			'label',
 			'li',
 			'nav',
+			'option',
 			'section',
+			'select',
 			'span',
 			'ul',
 		);
@@ -288,9 +290,24 @@ class WPDINO_Portfolio_Display {
 				$allowed[ $tag ] = array();
 			}
 
+			$allowed[ $tag ]['class']  = true;
+			$allowed[ $tag ]['id']     = true;
 			$allowed[ $tag ]['data-*'] = true;
 			$allowed[ $tag ]['aria-*'] = true;
+			$allowed[ $tag ]['role']   = true;
 		}
+
+		$allowed['button']['type']     = true;
+		$allowed['button']['disabled'] = true;
+		$allowed['button']['name']     = true;
+		$allowed['label']['for']       = true;
+		$allowed['select']['name']     = true;
+		$allowed['select']['disabled'] = true;
+		$allowed['select']['multiple'] = true;
+		$allowed['select']['required'] = true;
+		$allowed['option']['value']    = true;
+		$allowed['option']['selected'] = true;
+		$allowed['option']['disabled'] = true;
 
 		return apply_filters( 'dinofolio_rendered_html_allowlist', $allowed );
 	}
@@ -1298,6 +1315,65 @@ class WPDINO_Portfolio_Display {
 	}
 
 	/**
+	 * Whether a listing should render and bind the category filter bar.
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @return bool
+	 */
+	private function listing_has_filter( $attributes ) {
+		/**
+		 * Filter whether a listing shows the frontend filter bar.
+		 *
+		 * @param bool  $has_filter Whether the free category filter is enabled.
+		 * @param array $attributes Merged listing attributes.
+		 */
+		return (bool) apply_filters( 'dinofolio_listing_has_filter', ! empty( $attributes['showFilter'] ), $attributes );
+	}
+
+	/**
+	 * Public wrapper for listing filter markup (used by extensions).
+	 *
+	 * @param array         $attributes Merged listing attributes.
+	 * @param WP_Query|null $query      Portfolio query.
+	 * @return string
+	 */
+	public function get_listing_filter_html( $attributes, $query = null ) {
+		return $this->get_filter_html( $attributes, $query );
+	}
+
+	/**
+	 * Empty-state notice when active filters hide every listing item.
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @return string
+	 */
+	public function get_filter_empty_notice_html( $attributes = array() ) {
+		/**
+		 * Filter the message shown when no portfolio items match active filters.
+		 *
+		 * @param string $message    Notice text.
+		 * @param array  $attributes Merged listing attributes.
+		 */
+		$message = apply_filters(
+			'dinofolio_filter_empty_message',
+			esc_html__( 'No projects match the current filters.', 'dinofolio' ),
+			$attributes
+		);
+
+		return '<div class="dinofolio-filter-empty" hidden aria-live="polite">' . esc_html( $message ) . '</div>';
+	}
+
+	/**
+	 * Public wrapper for listing JS config (used by extensions).
+	 *
+	 * @param array $attributes Merged listing attributes.
+	 * @return array
+	 */
+	public function get_listing_frontend_config( $attributes ) {
+		return $this->get_listing_js_config( $attributes );
+	}
+
+	/**
 	 * Frontend JS config for a listing instance.
 	 *
 	 * @param array $attributes Merged listing attributes.
@@ -1305,22 +1381,24 @@ class WPDINO_Portfolio_Display {
 	 */
 	private function get_listing_js_config( $attributes ) {
 		$pagination_mode = isset( $attributes['paginationMode'] ) ? $attributes['paginationMode'] : 'none';
-		// Isotope is only required when the category filter reflows items (grid or masonry).
-		$uses_isotope    = ! empty( $attributes['showFilter'] );
+		$has_filter      = $this->listing_has_filter( $attributes );
+		$layout          = isset( $attributes['layout'] ) ? $attributes['layout'] : 'grid';
+		// Isotope is only required when the filter reflows grid or masonry items.
+		$uses_isotope    = $has_filter && in_array( $layout, array( 'grid', 'masonry' ), true );
 		$needs_script    = $uses_isotope
 			|| ! empty( $attributes['enableParallax'] )
-			|| ! empty( $attributes['showFilter'] )
+			|| $has_filter
 			|| 'load_more' === $pagination_mode;
 
 		if ( ! $needs_script ) {
-			return array();
+			return apply_filters( 'dinofolio_listing_js_config', array(), $attributes );
 		}
 
 		$config = array(
 			'layout'          => $attributes['layout'],
 			'columns'         => (int) $attributes['columns'],
 			'gap'             => (int) $attributes['gap'],
-			'filter'          => (bool) $attributes['showFilter'],
+			'filter'          => $has_filter,
 			'showFilterCount' => ! empty( $attributes['showFilterCount'] ),
 			'isotope'         => $uses_isotope,
 			'parallax'        => ! empty( $attributes['enableParallax'] ),
@@ -1417,7 +1495,7 @@ class WPDINO_Portfolio_Display {
 			$container_classes[] = 'dinofolio-listing--editor-preview';
 		}
 
-		if ( $attributes['showFilter'] ) {
+		if ( $this->listing_has_filter( $attributes ) ) {
 			$container_classes[] = 'dinofolio-has-category-filter';
 
 			if ( ! empty( $attributes['showFilterCount'] ) ) {
@@ -1445,8 +1523,8 @@ class WPDINO_Portfolio_Display {
 		// Start container
 		$output .= '<div class="' . esc_attr( implode( ' ', $container_classes ) ) . '"' . $this->get_listing_inline_style_attr( $attributes ) . $gallery_attr . $config_attr . '>';
 
-		// Add filter if enabled
-		if ( $attributes['showFilter'] ) {
+		// Add filter if enabled (extensions may inject extra groups via dinofolio_filter_html).
+		if ( $this->listing_has_filter( $attributes ) ) {
 			$output .= $this->get_filter_html( $attributes, $query );
 		}
 
@@ -1456,6 +1534,10 @@ class WPDINO_Portfolio_Display {
 		$output .= $this->get_portfolio_items_html( $query, $attributes );
 
 		$output .= '</div>'; // Close portfolio grid
+
+		if ( $this->listing_has_filter( $attributes ) ) {
+			$output .= $this->get_filter_empty_notice_html( $attributes );
+		}
 
 		$pagination_mode = isset( $attributes['paginationMode'] ) ? $attributes['paginationMode'] : 'none';
 
@@ -1522,6 +1604,15 @@ class WPDINO_Portfolio_Display {
 		if ( ! empty( $gallery_image_ids ) ) {
 			$classes[] = 'dinofolio-item--has-gallery';
 		}
+
+		/**
+		 * Filter CSS classes on a portfolio listing item.
+		 *
+		 * @param array $classes    Item class names.
+		 * @param array $attributes Merged listing attributes.
+		 * @param int   $post_id    Portfolio post ID.
+		 */
+		$classes = apply_filters( 'dinofolio_portfolio_item_classes', $classes, $attributes, $post_id );
 
 		if ( ! empty( $attributes['style'] ) && 'overlay' === $attributes['style'] ) {
 			if ( ! empty( $attributes['layout'] ) && 'masonry' === $attributes['layout'] ) {
@@ -2357,14 +2448,14 @@ class WPDINO_Portfolio_Display {
 			return $counts;
 		}
 
-		$counts['__all__'] = count( $query->posts );
-
 		foreach ( $query->posts as $post ) {
 			$post_terms = get_the_terms( $post->ID, $this->taxonomies[0] );
 
 			if ( ! $post_terms || is_wp_error( $post_terms ) ) {
 				continue;
 			}
+
+			++$counts['__all__'];
 
 			foreach ( $post_terms as $term ) {
 				if ( ! isset( $counts[ $term->slug ] ) ) {
@@ -2388,7 +2479,20 @@ class WPDINO_Portfolio_Display {
 	 * @return string
 	 */
 	private function get_filter_link_html( $label, $filter, $count, $show_count ) {
-		$output  = '<a href="#" class="dinofolio-filter-link" data-filter="' . esc_attr( $filter ) . '">';
+		$is_disabled = $show_count && null !== $count && (int) $count <= 0;
+		$classes     = array( 'dinofolio-filter-link' );
+
+		if ( $is_disabled ) {
+			$classes[] = 'dinofolio-filter-link--disabled';
+		}
+
+		$attrs = 'class="' . esc_attr( implode( ' ', $classes ) ) . '" data-filter="' . esc_attr( $filter ) . '"';
+
+		if ( $is_disabled ) {
+			$attrs .= ' aria-disabled="true" tabindex="-1"';
+		}
+
+		$output = '<a href="#" ' . $attrs . '>';
 		$output .= '<span class="dinofolio-filter-label">' . esc_html( $label ) . '</span>';
 
 		if ( $show_count && null !== $count ) {
@@ -2421,47 +2525,60 @@ class WPDINO_Portfolio_Display {
 			);
 		}
 
-		if ( is_wp_error( $terms ) || empty( $terms ) ) {
-			return '';
-		}
+		$output = '';
 
-		$show_count = ! empty( $attributes['showFilterCount'] );
-		$counts     = $show_count ? $this->get_category_counts_for_query( $query ) : array();
+		if ( ! empty( $attributes['showFilter'] ) && ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			$show_count = ! empty( $attributes['showFilterCount'] );
+			$counts     = $show_count ? $this->get_category_counts_for_query( $query ) : array();
 
-		$filter_classes = array( 'dinofolio-filter' );
+			$filter_classes = array( 'dinofolio-filter' );
 
-		if ( $show_count ) {
-			$filter_classes[] = 'dinofolio-show-filter-count';
-		}
+			if ( $show_count ) {
+				$filter_classes[] = 'dinofolio-show-filter-count';
+			}
 
-		$output  = '<div class="dinofolio-filter-categories">';
-		$output .= '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
-		$output .= '<ul role="list">';
+			$output  = '<div class="dinofolio-filter-categories">';
+			$output .= '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" data-filter-group="category" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
+			$output .= '<ul role="list">';
 
-		$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
+			$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
+			$all_class = 'dinofolio-current-cat';
 
-		$output .= '<li class="dinofolio-current-cat" role="listitem">';
-		$output .= $this->get_filter_link_html( __( 'All', 'dinofolio' ), '*', $all_count, $show_count );
-		$output .= '</li>';
+			if ( $show_count && 0 === (int) $all_count ) {
+				$all_class .= ' is-disabled';
+			}
 
-		foreach ( $terms as $term ) {
-			$term_count = isset( $counts[ $term->slug ] ) ? (int) $counts[ $term->slug ] : 0;
-
-			$output .= '<li role="listitem">';
-			$output .= $this->get_filter_link_html(
-				$term->name,
-				'.dinofolio-cat-' . $term->slug,
-				$term_count,
-				$show_count
-			);
+			$output .= '<li class="' . esc_attr( $all_class ) . '" role="listitem">';
+			$output .= $this->get_filter_link_html( __( 'All', 'dinofolio' ), '*', $all_count, $show_count );
 			$output .= '</li>';
+
+			foreach ( $terms as $term ) {
+				$term_count = isset( $counts[ $term->slug ] ) ? (int) $counts[ $term->slug ] : 0;
+				$li_class   = ( $show_count && 0 === $term_count ) ? 'is-disabled' : '';
+
+				$output .= '<li' . ( $li_class ? ' class="' . esc_attr( $li_class ) . '"' : '' ) . ' role="listitem">';
+				$output .= $this->get_filter_link_html(
+					$term->name,
+					'.dinofolio-cat-' . $term->slug,
+					$term_count,
+					$show_count
+				);
+				$output .= '</li>';
+			}
+
+			$output .= '</ul>';
+			$output .= '</nav>';
+			$output .= '</div>';
 		}
 
-		$output .= '</ul>';
-		$output .= '</nav>';
-		$output .= '</div>';
-
-		return $output;
+		/**
+		 * Filter listing filter bar HTML.
+		 *
+		 * @param string        $output     Filter markup.
+		 * @param array         $attributes Merged listing attributes.
+		 * @param WP_Query|null $query      Portfolio query.
+		 */
+		return apply_filters( 'dinofolio_filter_html', $output, $attributes, $query );
 	}
 
 	/**

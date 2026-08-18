@@ -249,19 +249,31 @@
 	function renderControl(control, attributes, setAttributes) {
 		var value = getAttributeValue(attributes, control);
 		var style = attributes.style || 'standard';
+		var layout = attributes.layout || 'grid';
 		var isOverlayStyle = style === 'overlay';
-		var hideReadMoreLabel = control.name === 'readMoreLabel' && !attributes.showReadMore;
-		var hideReadMoreAlign = control.name === 'readMoreAlign' && !attributes.showReadMore;
-		var hideExcerptLength = control.name === 'excerptLength' && !attributes.showExcerpt;
-		var hideLoadMoreLabel = control.name === 'loadMoreLabel' && attributes.paginationMode !== 'load_more';
-		var hideLoadMoreTrigger = control.name === 'loadMoreTrigger' && attributes.paginationMode !== 'load_more';
-		var hideViewAllFields =
-			(control.name === 'viewAllText' || control.name === 'viewAllLink') && !attributes.showViewAll;
+
+		// Declarative condition from PHP dependency — { field, values }.
+		if (control.condition) {
+			var fieldVal = attributes[control.condition.field];
+			var allowed = control.condition.values;
+			var match = false;
+
+			for (var ci = 0; ci < allowed.length; ci++) {
+				var av = allowed[ci];
+				if (av === fieldVal) { match = true; break; }
+				if (av === true && (fieldVal === true || fieldVal === 'yes' || fieldVal === '1' || fieldVal === 1)) { match = true; break; }
+				if (typeof av === 'string' && String(fieldVal) === av) { match = true; break; }
+			}
+
+			if (!match) { return null; }
+		}
+
+		// Overlay style hides card-specific fields that don't apply.
 		var hideOverlayFields =
 			isOverlayStyle &&
 			(control.name === 'showReadMore' || control.name === 'readMoreLabel' || control.name === 'readMoreAlign' || control.name === 'showCategories');
 
-		if (hideReadMoreLabel || hideReadMoreAlign || hideExcerptLength || hideLoadMoreLabel || hideLoadMoreTrigger || hideViewAllFields || hideOverlayFields) {
+		if (hideOverlayFields) {
 			return null;
 		}
 

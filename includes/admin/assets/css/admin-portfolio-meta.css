@@ -132,6 +132,22 @@
 	vertical-align: top;
 }
 
+.wpdino-portfolio-meta-table .description {
+	margin: 6px 0 0;
+	color: #646970;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.wpdino-portfolio-meta-section-intro td {
+	padding-top: 0;
+	padding-bottom: 8px;
+}
+
+.wpdino-portfolio-meta-section-intro .description {
+	margin: 0;
+}
+
 .wpdino-range-control {
 	display: flex;
 	align-items: center;

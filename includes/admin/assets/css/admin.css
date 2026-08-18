@@ -102,6 +102,8 @@
 
 /* Cards */
 .wpdino-card {
+	background: #fff;
+	border-radius: 12px;
 	box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
 	overflow: hidden;
 }
@@ -264,6 +266,9 @@
 	margin: 0 0 10px 0;
 	padding-bottom: 12px;
 	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .wpdino-section-title::before {
@@ -274,12 +279,6 @@
 	width: 60px;
 	height: 2px;
 	background: #111;
-}
-
-.wpdino-section-title {
-	display: flex;
-	align-items: center;
-	gap: 10px;
 }
 
 .wpdino-section-title .dashicons {

@@ -167,15 +167,15 @@
 	}
 }
 
-/* Classic grid cards — image + visible details below */
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) {
+/* Classic cards (all layouts except masonry) — fixed-ratio thumbnail + details below */
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) {
 	display: flex;
 	flex-direction: column;
 	border-radius: var(--dinofolio-radius);
 	box-shadow: var(--dinofolio-shadow);
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail {
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail {
 	position: relative;
 	aspect-ratio: 4 / 3;
 	overflow: hidden;
@@ -183,12 +183,12 @@
 	border-radius: var(--dinofolio-radius) var(--dinofolio-radius) 0 0;
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail > a {
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail > a {
 	display: block;
 	height: 100%;
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail .dinofolio-item-image {
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail .dinofolio-item-image {
 	position: absolute;
 	inset: 0;
 	width: 100%;
@@ -285,12 +285,12 @@
 	object-fit: cover;
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide {
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide {
 	height: 100%;
 	aspect-ratio: auto;
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide .dinofolio-item-image {
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-thumbnail--gallery .dinofolio-item-gallery-slide .dinofolio-item-image {
 	width: 100%;
 	height: 100%;
 }
@@ -410,7 +410,7 @@
 	position: relative;
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-details {
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-item-details {
 	flex: 0 0 auto;
 	display: block;
 }
@@ -543,7 +543,7 @@
 	height: auto;
 }
 
-.dinofolio.dinofolio-parallax-enabled.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-parallax-target {
+.dinofolio.dinofolio-parallax-enabled:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay) .dinofolio-parallax-target {
 	height: 100%;
 }
 
@@ -649,7 +649,7 @@
 	height: auto;
 }
 
-.dinofolio.dinofolio-layout-grid .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image,
+.dinofolio:not(.dinofolio-layout-masonry) .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image,
 .dinofolio.dinofolio-layout-masonry .dinofolio-item:not(.dinofolio-item--overlay):hover .dinofolio-item-image {
 	transform: scale(1.04);
 }
@@ -1089,10 +1089,21 @@
 }
 
 /* Category filter — scoped under listing root so theme link styles do not bleed in */
-.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories {
+.dinofolio-portfolio-listing.dinofolio-has-category-filter > .dinofolio-filter-categories {
 	width: 100%;
-	max-width: 1200px;
-	margin: 0 auto 1.25rem;
+	max-width: none;
+	margin: 0 0 1.25rem;
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter > .dinofolio-items-list,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter > .dinofolio-pro-items-list,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter > .dinofolio-pagination,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter > .dinofolio-load-more,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter > .dinofolio-view-all {
+	width: 100%;
+	max-width: none;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter {
@@ -1203,6 +1214,39 @@
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter.dinofolio-show-filter-count .dinofolio-current-cat .dinofolio-filter-count {
 	background: rgba(255, 255, 255, 0.28);
 	color: inherit;
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:visited,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled.dinofolio-current-cat a.dinofolio-filter-link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled.dinofolio-current-cat a.dinofolio-filter-link:link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled.dinofolio-current-cat a.dinofolio-filter-link:visited {
+	background: #fff;
+	border-color: #ddd;
+	color: var(--dinofolio-muted, #888);
+	opacity: 0.55;
+	cursor: not-allowed;
+	pointer-events: none;
+	transform: none;
+	box-shadow: none;
+}
+
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:visited,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled.dinofolio-current-cat a.dinofolio-filter-link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled.dinofolio-current-cat a.dinofolio-filter-link:link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled.dinofolio-current-cat a.dinofolio-filter-link:visited {
+	background: #12181d;
+	border-color: #1f2a33;
+	color: var(--dinofolio-muted, #9ca3af);
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:hover,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:focus,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:focus-visible {
+	transform: none;
 }
 
 /* Pagination */
@@ -1327,6 +1371,48 @@
 	padding: 2rem;
 	text-align: center;
 	color: var(--dinofolio-muted);
+}
+
+.dinofolio .dinofolio-filter-empty {
+	display: none;
+	margin: 0;
+	padding: 2rem 1.5rem;
+	text-align: center;
+	color: var(--dinofolio-muted, #666);
+	border: 1px dashed #d8dee6;
+	border-radius: var(--dinofolio-radius, 10px);
+	background: rgba(0, 0, 0, 0.02);
+}
+
+.dinofolio .dinofolio-filter-empty:not([hidden]) {
+	display: block;
+}
+
+.dinofolio.dinofolio-has-filter-empty > .dinofolio-items-list,
+.dinofolio.dinofolio-has-filter-empty > .dinofolio-pro-items-list {
+	min-height: 0;
+	margin-bottom: 0;
+}
+
+.dinofolio.dinofolio-has-filter-empty.dinofolio-filter-position-sidebar > .dinofolio-items-list,
+.dinofolio.dinofolio-has-filter-empty.dinofolio-filter-position-sidebar > .dinofolio-pro-items-list,
+.dinofolio.dinofolio-has-filter-empty.dinofolio-filter-style-sidebar > .dinofolio-items-list,
+.dinofolio.dinofolio-has-filter-empty.dinofolio-filter-style-sidebar > .dinofolio-pro-items-list {
+	height: 0;
+	overflow: hidden;
+	padding: 0;
+	border: 0;
+}
+
+.dinofolio.dinofolio-has-filter-empty > .dinofolio-pagination,
+.dinofolio.dinofolio-has-filter-empty > .dinofolio-load-more,
+.dinofolio.dinofolio-has-filter-empty > .dinofolio-view-all {
+	display: none !important;
+}
+
+.dinofolio.dinofolio-color-scheme-dark .dinofolio-filter-empty {
+	border-color: #1f2a33;
+	background: rgba(255, 255, 255, 0.03);
 }
 
 @media (max-width: 1024px) {

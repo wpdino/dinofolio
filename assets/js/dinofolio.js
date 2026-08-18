@@ -155,6 +155,38 @@
 		}
 	}
 
+	function getFilterGroups( block ) {
+		var wrap = block.querySelector( '.dinofolio-filter-categories' );
+
+		if ( wrap ) {
+			var groups = wrap.querySelectorAll( '.dinofolio-filter' );
+
+			if ( groups.length ) {
+				return Array.prototype.slice.call( groups );
+			}
+		}
+
+		var single = block.querySelector( '.dinofolio-filter' );
+
+		return single ? [ single ] : [];
+	}
+
+	function getGroupFilterValue( group ) {
+		var select = group.querySelector( 'select.dinofolio-filter-select' );
+
+		if ( select ) {
+			return select.value || '*';
+		}
+
+		var activeLink = group.querySelector( 'li.dinofolio-current-cat a[data-filter]' );
+
+		return activeLink ? activeLink.getAttribute( 'data-filter' ) || '*' : '*';
+	}
+
+	function getActiveFilterValues( block ) {
+		return getFilterGroups( block ).map( getGroupFilterValue );
+	}
+
 	function getFilterSlug( filterValue ) {
 		if ( ! filterValue || '*' === filterValue ) {
 			return '__all__';
@@ -170,13 +202,11 @@
 			return '*';
 		}
 
-		var activeLink = filterBar.querySelector( 'li.dinofolio-current-cat a[data-filter]' );
-
-		return activeLink ? activeLink.getAttribute( 'data-filter' ) || '*' : '*';
+		return getGroupFilterValue( filterBar );
 	}
 
 	function itemMatchesFilter( item, filterValue ) {
-		if ( '*' === filterValue ) {
+		if ( ! filterValue || '*' === filterValue ) {
 			return true;
 		}
 
@@ -185,53 +215,230 @@
 		return item.classList.contains( className );
 	}
 
+	function itemMatchesFilters( item, selectors ) {
+		if ( ! selectors || ! selectors.length ) {
+			return true;
+		}
+
+		return selectors.every( function ( selector ) {
+			return itemMatchesFilter( item, selector );
+		} );
+	}
+
+	function countVisibleListingItems( block ) {
+		var list = block.querySelector( '.dinofolio-items-list, .dinofolio-pro-items-list' );
+
+		if ( ! list ) {
+			return 0;
+		}
+
+		var count = 0;
+
+		list.querySelectorAll( '.dinofolio-item' ).forEach( function ( item ) {
+			if ( ! item.classList.contains( 'dinofolio-filter-hidden' ) ) {
+				count += 1;
+			}
+		} );
+
+		return count;
+	}
+
+	function updateFilterEmptyState( block ) {
+		if ( ! block.classList.contains( 'dinofolio-has-category-filter' ) ) {
+			return;
+		}
+
+		var notice = block.querySelector( '.dinofolio-filter-empty' );
+		var isEmpty = countVisibleListingItems( block ) === 0;
+
+		block.classList.toggle( 'dinofolio-has-filter-empty', isEmpty );
+
+		if ( notice ) {
+			notice.hidden = ! isEmpty;
+		}
+	}
+
 	function applyCssFilter( block, filterValue ) {
+		var selectors = Array.isArray( filterValue ) ? filterValue : [ filterValue || '*' ];
+
 		block.querySelectorAll( '.dinofolio-items-list .dinofolio-item' ).forEach( function ( item ) {
-			var show = itemMatchesFilter( item, filterValue );
+			var show = itemMatchesFilters( item, selectors );
 
 			item.classList.toggle( 'dinofolio-filter-hidden', ! show );
 			item.setAttribute( 'aria-hidden', show ? 'false' : 'true' );
 		} );
 	}
 
+	function applyListingFilter( block ) {
+		var selectors = getActiveFilterValues( block );
+
+		applyCssFilter( block, selectors );
+
+		if ( block.dinofolioIsotope ) {
+			block.dinofolioIsotope.arrange( {
+				filter: function ( itemElem ) {
+					return itemElem && ! itemElem.classList.contains( 'dinofolio-filter-hidden' );
+				},
+			} );
+			block.dinofolioIsotope.layout();
+		}
+
+		if ( updateFilterCounts( block ) ) {
+			selectors = getActiveFilterValues( block );
+			applyCssFilter( block, selectors );
+
+			if ( block.dinofolioIsotope ) {
+				block.dinofolioIsotope.arrange( {
+					filter: function ( itemElem ) {
+						return itemElem && ! itemElem.classList.contains( 'dinofolio-filter-hidden' );
+					},
+				} );
+				block.dinofolioIsotope.layout();
+			}
+		}
+
+		updateFilterEmptyState( block );
+
+		if ( typeof block.dispatchEvent === 'function' ) {
+			block.dispatchEvent(
+				new CustomEvent( 'dinofolio:filter', {
+					bubbles: true,
+				} )
+			);
+		}
+	}
+
 	function countCategoryItems( block ) {
 		var counts = { __all__: 0 };
 
 		block.querySelectorAll( '.dinofolio-items-list .dinofolio-item' ).forEach( function ( item ) {
-			counts.__all__ += 1;
+			var hasCategory = false;
 
 			Array.prototype.forEach.call( item.classList, function ( className ) {
 				if ( 0 === className.indexOf( 'dinofolio-cat-' ) ) {
+					hasCategory = true;
 					var slug = className.slice( 'dinofolio-cat-'.length );
 					counts[ slug ] = ( counts[ slug ] || 0 ) + 1;
 				}
 			} );
+
+			if ( hasCategory ) {
+				counts.__all__ += 1;
+			}
 		} );
 
 		return counts;
 	}
 
-	function updateFilterCounts( block ) {
-		var filterBar = block.querySelector( '.dinofolio-filter' );
+	function getGroupTermSelectors( group ) {
+		var selectors = [];
 
-		if ( ! filterBar || ! filterBar.classList.contains( 'dinofolio-show-filter-count' ) ) {
-			return;
+		group.querySelectorAll( 'a[data-filter]' ).forEach( function ( link ) {
+			var selector = link.getAttribute( 'data-filter' ) || '*';
+
+			if ( selector && '*' !== selector ) {
+				selectors.push( selector );
+			}
+		} );
+
+		group.querySelectorAll( 'select.dinofolio-filter-select option' ).forEach( function ( option ) {
+			var selector = option.value || '*';
+
+			if ( selector && '*' !== selector ) {
+				selectors.push( selector );
+			}
+		} );
+
+		return selectors;
+	}
+
+	function getOtherGroupSelectors( block, currentGroup ) {
+		return getFilterGroups( block )
+			.filter( function ( group ) {
+				return group !== currentGroup;
+			} )
+			.map( getGroupFilterValue )
+			.filter( function ( selector ) {
+				return selector && '*' !== selector;
+			} );
+	}
+
+	function setFilterLinkDisabled( link, isDisabled ) {
+		var li = link.closest( 'li' );
+
+		if ( isDisabled ) {
+			link.classList.add( 'dinofolio-filter-link--disabled' );
+			link.setAttribute( 'aria-disabled', 'true' );
+			link.setAttribute( 'tabindex', '-1' );
+
+			if ( li ) {
+				li.classList.add( 'is-disabled' );
+			}
+		} else {
+			link.classList.remove( 'dinofolio-filter-link--disabled' );
+			link.removeAttribute( 'aria-disabled' );
+			link.removeAttribute( 'tabindex' );
+
+			if ( li ) {
+				li.classList.remove( 'is-disabled' );
+			}
 		}
+	}
 
-		var counts = countCategoryItems( block );
+	function updateFilterCounts( block ) {
+		var activeChanged = false;
 
-		filterBar.querySelectorAll( 'a[data-filter]' ).forEach( function ( link ) {
-			var countEl = link.querySelector( '.dinofolio-filter-count' );
-
-			if ( ! countEl ) {
+		getFilterGroups( block ).forEach( function ( filterBar ) {
+			if ( ! filterBar.classList.contains( 'dinofolio-show-filter-count' ) ) {
 				return;
 			}
 
-			var slug = getFilterSlug( link.getAttribute( 'data-filter' ) || '*' );
-			var count = '__all__' === slug ? counts.__all__ : counts[ slug ] || 0;
+			var groupSelectors = getGroupTermSelectors( filterBar );
+			var otherSelectors = getOtherGroupSelectors( block, filterBar );
 
-			countEl.textContent = String( count );
+			filterBar.querySelectorAll( 'a[data-filter]' ).forEach( function ( link ) {
+				var countEl = link.querySelector( '.dinofolio-filter-count' );
+
+				if ( ! countEl ) {
+					return;
+				}
+
+				var selector = link.getAttribute( 'data-filter' ) || '*';
+				var count = 0;
+
+				block.querySelectorAll( '.dinofolio-items-list .dinofolio-item' ).forEach( function ( item ) {
+					if ( ! itemMatchesFilters( item, otherSelectors ) ) {
+						return;
+					}
+
+					var matches = ( '*' === selector )
+						? groupSelectors.some( function ( termSelector ) {
+							return itemMatchesFilter( item, termSelector );
+						} )
+						: itemMatchesFilter( item, selector );
+
+					if ( matches ) {
+						count += 1;
+					}
+				} );
+
+				countEl.textContent = String( count );
+				setFilterLinkDisabled( link, count <= 0 );
+			} );
+
+			var activeLink = filterBar.querySelector( 'li.dinofolio-current-cat a[data-filter]' );
+
+			if ( activeLink && activeLink.classList.contains( 'dinofolio-filter-link--disabled' ) ) {
+				var allLink = filterBar.querySelector( 'a[data-filter="*"]' );
+
+				if ( allLink && ! allLink.classList.contains( 'dinofolio-filter-link--disabled' ) ) {
+					setActiveFilter( filterBar, allLink );
+					activeChanged = true;
+				}
+			}
 		} );
+
+		return activeChanged;
 	}
 
 	function getExistingFilterSlugs( filterBar ) {
@@ -268,6 +475,10 @@
 			link.appendChild( countEl );
 		}
 
+		if ( showCount && ( count || 0 ) <= 0 ) {
+			setFilterLinkDisabled( link, true );
+		}
+
 		li.appendChild( link );
 
 		return li;
@@ -278,7 +489,7 @@
 			return;
 		}
 
-		var filterBar = block.querySelector( '.dinofolio-filter' );
+		var filterBar = block.querySelector( '.dinofolio-filter[data-filter-group="category"]' ) || block.querySelector( '.dinofolio-filter' );
 		var list = filterBar ? filterBar.querySelector( 'ul' ) : null;
 
 		if ( ! list ) {
@@ -308,42 +519,45 @@
 
 		mergeFilterTerms( block, config, filterTerms );
 		updateFilterCounts( block );
-
-		var filterBar = block.querySelector( '.dinofolio-filter' );
-		var filterValue = getActiveFilterValue( filterBar );
-
-		if ( block.dinofolioIsotope ) {
-			block.dinofolioIsotope.arrange( { filter: filterValue } );
-			block.dinofolioIsotope.layout();
-			return;
-		}
-
-		applyCssFilter( block, filterValue );
+		applyListingFilter( block );
 	}
 
-	function initCssFilter( block ) {
-		var filterBar = block.querySelector( '.dinofolio-filter' );
+	function bindListingFilter( block ) {
+		var wrap = block.querySelector( '.dinofolio-filter-categories' ) || block.querySelector( '.dinofolio-filter' );
 
-		if ( ! filterBar || filterBar.dataset.dinofolioFilterBound === '1' ) {
+		if ( ! wrap || wrap.dataset.dinofolioFilterBound === '1' ) {
 			return;
 		}
 
-		filterBar.dataset.dinofolioFilterBound = '1';
+		wrap.dataset.dinofolioFilterBound = '1';
 
-		filterBar.addEventListener( 'click', function ( event ) {
+		wrap.addEventListener( 'click', function ( event ) {
 			var link = event.target.closest( 'a[data-filter]' );
 
-			if ( ! link || ! filterBar.contains( link ) ) {
+			if ( ! link || ! wrap.contains( link ) || link.classList.contains( 'dinofolio-filter-link--disabled' ) ) {
 				return;
 			}
 
 			event.preventDefault();
 
-			var selector = link.getAttribute( 'data-filter' ) || '*';
+			var group = link.closest( '.dinofolio-filter' ) || wrap;
 
-			applyCssFilter( block, selector );
-			setActiveFilter( filterBar, link );
+			setActiveFilter( group, link );
+			applyListingFilter( block );
 		} );
+
+		wrap.addEventListener( 'change', function ( event ) {
+			if ( ! event.target.closest( 'select.dinofolio-filter-select' ) ) {
+				return;
+			}
+
+			applyListingFilter( block );
+		} );
+	}
+
+	function initCssFilter( block ) {
+		bindListingFilter( block );
+		updateFilterEmptyState( block );
 	}
 
 	function initIsotope( block, config ) {
@@ -407,25 +621,7 @@
 		}, true );
 
 		if ( config.filter ) {
-			var filterBar = block.querySelector( '.dinofolio-filter' );
-
-			if ( filterBar ) {
-				filterBar.addEventListener( 'click', function ( event ) {
-					var link = event.target.closest( 'a[data-filter]' );
-
-					if ( ! link || ! filterBar.contains( link ) ) {
-						return;
-					}
-
-					event.preventDefault();
-
-					var filterValue = link.getAttribute( 'data-filter' ) || '*';
-
-					isotope.arrange( { filter: filterValue } );
-					isotope.layout();
-					setActiveFilter( filterBar, link );
-				} );
-			}
+			bindListingFilter( block );
 		}
 
 		var resizeTimer;
@@ -745,10 +941,10 @@
 			delete loadMore.dataset.dinofolioLoadMoreLoading;
 		}
 
-		var filterBar = block.querySelector( '.dinofolio-filter' );
+		var filterWrap = block.querySelector( '.dinofolio-filter-categories' ) || block.querySelector( '.dinofolio-filter' );
 
-		if ( filterBar ) {
-			delete filterBar.dataset.dinofolioFilterBound;
+		if ( filterWrap ) {
+			delete filterWrap.dataset.dinofolioFilterBound;
 		}
 
 		var parallaxIndex = parallaxBlocks.indexOf( block );

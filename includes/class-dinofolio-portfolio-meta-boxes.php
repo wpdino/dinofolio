@@ -147,11 +147,15 @@ class Portfolio_Meta_Boxes {
 			</div>
 
 			<div class="wpdino-portfolio-meta-tabs__panel is-active" role="tabpanel" id="wpdino-portfolio-meta-panel-general" aria-labelledby="wpdino-portfolio-meta-tab-general" data-wpdino-meta-panel="general">
+		<p class="description" style="margin: 0 0 1rem;"><?php esc_html_e( 'Controls what appears on this project\'s single page: media, related projects, the Project Details sidebar, and the Launch button.', 'dinofolio' ); ?></p>
 		<table class="form-table wpdino-portfolio-meta-table" role="presentation">
 			<tbody>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Featured Image', 'dinofolio' ); ?></th>
-					<td><?php $this->render_toggle_field( 'featured_image_display', $values['featured_image_display'] ); ?></td>
+					<td>
+						<?php $this->render_toggle_field( 'featured_image_display', $values['featured_image_display'] ); ?>
+						<?php $this->render_field_description( __( 'Shows the featured image on the single project page when no gallery is attached. Automatically hidden when a gallery exists.', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr class="wpdino-featured-image-size-row"<?php if ( ! $show_featured_size_row ) : ?> style="display:none;"<?php endif; ?>>
 					<th scope="row"><label for="wpdino_featured_image_size"><?php esc_html_e( 'Featured Image Size', 'dinofolio' ); ?></label></th>
@@ -161,33 +165,50 @@ class Portfolio_Meta_Boxes {
 								<option value="<?php echo esc_attr( $size_key ); ?>" <?php selected( $values['featured_image_size'], $size_key ); ?>><?php echo esc_html( $size_label ); ?></option>
 							<?php endforeach; ?>
 						</select>
+						<?php $this->render_field_description( __( 'Image size used for the featured image on the single project page.', 'dinofolio' ) ); ?>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Related Projects', 'dinofolio' ); ?></th>
-					<td><?php $this->render_toggle_field( 'related_projects', $values['related_projects'] ); ?></td>
+					<td>
+						<?php $this->render_toggle_field( 'related_projects', $values['related_projects'] ); ?>
+						<?php $this->render_field_description( __( 'Shows a related projects section at the bottom of the single project page. Turn Off to hide it for this project.', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_related_projects_style"><?php esc_html_e( 'Related Projects Style', 'dinofolio' ); ?></label></th>
 					<td>
 						<?php $this->render_related_projects_style_picker( $values['related_projects_style'] ); ?>
+						<?php $this->render_field_description( __( 'Choose a grid or carousel layout for the related projects section.', 'dinofolio' ) ); ?>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_related_projects_title"><?php esc_html_e( 'Related Projects Title', 'dinofolio' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="wpdino_related_projects_title" name="wpdino_related_projects_title" value="<?php echo esc_attr( $values['related_projects_title'] ); ?>"></td>
+					<td>
+						<input type="text" class="regular-text" id="wpdino_related_projects_title" name="wpdino_related_projects_title" value="<?php echo esc_attr( $values['related_projects_title'] ); ?>">
+						<?php $this->render_field_description( __( 'Heading displayed above the related projects list.', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_related_projects_number"><?php esc_html_e( 'Number of Related Projects', 'dinofolio' ); ?></label></th>
-					<td><?php $this->render_related_projects_count_field( $values['related_projects_number'] ); ?></td>
+					<td>
+						<?php $this->render_related_projects_count_field( $values['related_projects_number'] ); ?>
+						<?php $this->render_field_description( __( 'How many related projects to show in grid layout. Carousel shows all matches and scrolls horizontally.', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Date', 'dinofolio' ); ?></th>
-					<td><?php $this->render_toggle_field( 'date_display', $values['date_display'] ); ?></td>
+					<td>
+						<?php $this->render_toggle_field( 'date_display', $values['date_display'] ); ?>
+						<?php $this->render_field_description( __( 'Shows a date row in the Project Details table on the single project page.', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_date_label"><?php esc_html_e( 'Label of Date', 'dinofolio' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="wpdino_date_label" name="wpdino_date_label" value="<?php echo esc_attr( $values['date_label'] ); ?>"></td>
+					<td>
+						<input type="text" class="regular-text" id="wpdino_date_label" name="wpdino_date_label" value="<?php echo esc_attr( $values['date_label'] ); ?>">
+						<?php $this->render_field_description( __( 'Column label for the date row (for example: Date or Completed).', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_date_of_work"><?php esc_html_e( 'Date of Work', 'dinofolio' ); ?></label></th>
@@ -198,15 +219,28 @@ class Portfolio_Meta_Boxes {
 								<span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span>
 							</button>
 						</div>
+						<?php $this->render_field_description( __( 'Custom project date. When set, it replaces the WordPress publish date in Project Details.', 'dinofolio' ) ); ?>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_external_url"><?php esc_html_e( 'External URL', 'dinofolio' ); ?></label></th>
-					<td><input type="url" class="regular-text" id="wpdino_external_url" name="wpdino_external_url" value="<?php echo esc_attr( $values['external_url'] ); ?>"></td>
+					<td>
+						<input type="url" class="regular-text" id="wpdino_external_url" name="wpdino_external_url" value="<?php echo esc_attr( $values['external_url'] ); ?>">
+						<?php
+						if ( defined( 'DINOFOLIO_PRO_VERSION' ) ) {
+							$this->render_field_description( __( 'Link for the Launch button in Project Details. Can be overridden per project in Layout & Project Info → Custom CTA.', 'dinofolio' ) );
+						} else {
+							$this->render_field_description( __( 'Link for the Launch button in Project Details.', 'dinofolio' ) );
+						}
+						?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="wpdino_button_label"><?php esc_html_e( 'Label of Button', 'dinofolio' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="wpdino_button_label" name="wpdino_button_label" value="<?php echo esc_attr( $values['button_label'] ); ?>"></td>
+					<td>
+						<input type="text" class="regular-text" id="wpdino_button_label" name="wpdino_button_label" value="<?php echo esc_attr( $values['button_label'] ); ?>">
+						<?php $this->render_field_description( __( 'Button text for the Launch link in Project Details (for example: Launch, View Live Site).', 'dinofolio' ) ); ?>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Attributes', 'dinofolio' ); ?></th>
@@ -225,6 +259,13 @@ class Portfolio_Meta_Boxes {
 							<?php endforeach; ?>
 						</div>
 						<p><button type="button" class="button button-secondary" id="wpdino-add-attribute"><?php esc_html_e( 'Add More', 'dinofolio' ); ?></button></p>
+						<?php
+						if ( defined( 'DINOFOLIO_PRO_VERSION' ) ) {
+							$this->render_field_description( __( 'Custom label/value rows in the Project Details table. PRO fields in Layout & Project Info are added automatically to the same table.', 'dinofolio' ) );
+						} else {
+							$this->render_field_description( __( 'Custom label/value rows added to the Project Details table on the single project page.', 'dinofolio' ) );
+						}
+						?>
 					</td>
 				</tr>
 			</tbody>
@@ -1233,6 +1274,21 @@ class Portfolio_Meta_Boxes {
 			<label><input type="radio" name="wpdino_<?php echo esc_attr( $key ); ?>" value="default" <?php checked( $value, 'default' ); ?>> <?php esc_html_e( 'Default', 'dinofolio' ); ?></label>
 			<label><input type="radio" name="wpdino_<?php echo esc_attr( $key ); ?>" value="off" <?php checked( $value, 'off' ); ?>> <?php esc_html_e( 'Off', 'dinofolio' ); ?></label>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Render helper text below a metabox field.
+	 *
+	 * @param string $text Description text.
+	 * @return void
+	 */
+	private function render_field_description( $text ) {
+		if ( '' === $text ) {
+			return;
+		}
+		?>
+		<p class="description"><?php echo esc_html( $text ); ?></p>
 		<?php
 	}
 

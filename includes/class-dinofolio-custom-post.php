@@ -56,6 +56,9 @@ class Custom_Post {
 		// Admin columns
 		add_filter( 'manage_wpdino_portfolio_posts_columns', array( $this, 'add_featured_image_column' ) );
 		add_action( 'manage_wpdino_portfolio_posts_custom_column', array( $this, 'display_featured_image_column' ), 10, 2 );
+		add_filter( 'manage_edit-wpdino_portfolio_sortable_columns', array( $this, 'add_sortable_taxonomy_columns' ) );
+		add_action( 'pre_get_posts', array( $this, 'sort_posts_by_taxonomy_column' ) );
+		add_filter( 'posts_clauses', array( $this, 'taxonomy_sort_posts_clauses' ), 10, 2 );
 
 		// Featured image AJAX for column actions and admin assets
 		add_action( 'wp_ajax_wpdino_portfolio_save_featured_image', array( $this, 'save_featured_image_ajax' ) );
@@ -248,6 +251,107 @@ class Custom_Post {
 			$new_columns[ $key ] = $title;
 		}
 		return $new_columns;
+	}
+
+	/**
+	 * Taxonomy admin columns that should be sortable.
+	 *
+	 * @return array Map of column id => taxonomy slug.
+	 */
+	private function get_sortable_taxonomy_columns() {
+		$columns = array(
+			'taxonomy-wpdino_portfolio_category' => 'wpdino_portfolio_category',
+			'taxonomy-wpdino_portfolio_tag'      => 'wpdino_portfolio_tag',
+		);
+
+		/**
+		 * Filter sortable taxonomy columns on the portfolio posts list.
+		 *
+		 * @param array $columns Map of column id => taxonomy slug.
+		 */
+		return apply_filters( 'dinofolio_sortable_taxonomy_columns', $columns );
+	}
+
+	/**
+	 * Register taxonomy columns as sortable in the posts list table.
+	 *
+	 * @param array $columns Sortable columns.
+	 * @return array
+	 */
+	public function add_sortable_taxonomy_columns( $columns ) {
+		foreach ( $this->get_sortable_taxonomy_columns() as $column_id => $taxonomy ) {
+			$columns[ $column_id ] = $column_id;
+		}
+
+		return $columns;
+	}
+
+	/**
+	 * Prepare portfolio list query when sorting by a taxonomy column.
+	 *
+	 * @param \WP_Query $query Query instance.
+	 */
+	public function sort_posts_by_taxonomy_column( $query ) {
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || 'wpdino_portfolio' !== $query->get( 'post_type' ) ) {
+			return;
+		}
+
+		$orderby  = $query->get( 'orderby' );
+		$sortable = $this->get_sortable_taxonomy_columns();
+
+		if ( empty( $orderby ) || ! isset( $sortable[ $orderby ] ) ) {
+			return;
+		}
+
+		$query->set( 'dinofolio_taxonomy_sort', $sortable[ $orderby ] );
+	}
+
+	/**
+	 * Apply SQL clauses for taxonomy column sorting.
+	 *
+	 * @param array     $clauses Query clauses.
+	 * @param \WP_Query $query   Query instance.
+	 * @return array
+	 */
+	public function taxonomy_sort_posts_clauses( $clauses, $query ) {
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return $clauses;
+		}
+
+		$taxonomy = $query->get( 'dinofolio_taxonomy_sort' );
+		if ( empty( $taxonomy ) ) {
+			return $clauses;
+		}
+
+		$sortable = $this->get_sortable_taxonomy_columns();
+		if ( ! in_array( $taxonomy, $sortable, true ) ) {
+			return $clauses;
+		}
+
+		global $wpdb;
+
+		$order    = strtoupper( $query->get( 'order' ) ) === 'DESC' ? 'DESC' : 'ASC';
+		$taxonomy = esc_sql( $taxonomy );
+
+		$clauses['join'] .= " LEFT JOIN {$wpdb->term_relationships} AS dinofolio_tr ON ({$wpdb->posts}.ID = dinofolio_tr.object_id)";
+		$clauses['join'] .= " LEFT JOIN {$wpdb->term_taxonomy} AS dinofolio_tt ON (dinofolio_tr.term_taxonomy_id = dinofolio_tt.term_taxonomy_id AND dinofolio_tt.taxonomy = '{$taxonomy}')";
+		$clauses['join'] .= " LEFT JOIN {$wpdb->terms} AS dinofolio_t ON (dinofolio_tt.term_id = dinofolio_t.term_id)";
+
+		if ( empty( $clauses['groupby'] ) ) {
+			$clauses['groupby'] = "{$wpdb->posts}.ID";
+		} elseif ( strpos( $clauses['groupby'], "{$wpdb->posts}.ID" ) === false ) {
+			$clauses['groupby'] .= ", {$wpdb->posts}.ID";
+		}
+
+		$clauses['orderby'] = "MIN(dinofolio_t.name) {$order}";
+
+		return $clauses;
 	}
 
 	/**

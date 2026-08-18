@@ -192,4 +192,55 @@
 	carousels.forEach(function (carousel) {
 		initHorizontalCarousel(carousel);
 	});
+
+	var initStickyProjectSidebar = function () {
+		if (!document.body.classList.contains('dinofolio-pro-single-layout-sticky-sidebar')) {
+			return;
+		}
+
+		var columns = document.querySelector('.dinofolio-single-meta-columns');
+		var details = columns ? columns.querySelector('.dinofolio-project-details') : null;
+		var related = document.querySelector('.dinofolio-single-meta .dinofolio-related-projects');
+
+		if (!details) {
+			return;
+		}
+
+		var mq = window.matchMedia('(min-width: 900px)');
+		var stickyTop = 32;
+		var gap = 16;
+
+		var resetOffset = function () {
+			details.style.transform = '';
+		};
+
+		var update = function () {
+			if (!mq.matches) {
+				resetOffset();
+				return;
+			}
+
+			if (!related) {
+				resetOffset();
+				return;
+			}
+
+			var detailsRect = details.getBoundingClientRect();
+			var relatedRect = related.getBoundingClientRect();
+			var overflow = detailsRect.bottom + gap - relatedRect.top;
+
+			if (overflow > 0 && detailsRect.top <= stickyTop + 1) {
+				details.style.transform = 'translate3d(0, ' + (-overflow) + 'px, 0)';
+			} else {
+				resetOffset();
+			}
+		};
+
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+		mq.addEventListener('change', update);
+		update();
+	};
+
+	initStickyProjectSidebar();
 })();
