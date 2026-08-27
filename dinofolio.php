@@ -3,11 +3,11 @@
  * Plugin Name: DinoFolio
  * Plugin URI:  https://www.wpdino.com/plugins/dinofolio/
  * Description: Create and display portfolio projects with a custom post type, Gutenberg block, Elementor widget, shortcodes, and category archive templates.
- * Version:     1.0.1
+ * Version:     1.0.2
  * Author:      WPDINO
  * Author URI:  https://www.wpdino.com
  * Requires at least:   6.6
- * Tested up to:        7.0
+ * Tested up to:        7.1
  * Requires PHP: 7.0
  * License:     GPL-2.0+ or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html

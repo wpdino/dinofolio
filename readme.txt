@@ -3,9 +3,9 @@ Contributors: wpdino
 Donate link: https://paypal.me/dinostd/10usd
 Tags: portfolio, gutenberg, elementor, gallery, showcase
 Requires at least: 6.6
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,12 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 
 == Changelog ==
 
+
+= 1.0.2 =
+* Compatibility WordPress version 7.1
+* Aligned the filter bar with the portfolio grid so filters, items, and pagination share the same content width
+* Fixed category and dropdown filters on masonry and grid listings so items reflow after a filter is applied
+
 = 1.0.1 =
 * Added video lightbox support on portfolio listings for YouTube, Vimeo, and self-hosted MP4 videos
 * Added play icon indicator on listing thumbnails when a video lightbox is enabled
@@ -135,6 +141,11 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 * Translation-ready with `languages/dinofolio.pot`
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Compatibility WordPress version 7.1
+Aligns the filter bar with the portfolio grid content.
+Fixes listing filters on masonry and grid layouts.
 
 = 1.0.1 =
 Play portfolio videos in listing lightboxes with support for YouTube, Vimeo, and MP4, plus gallery carousel support on listing cards.
