@@ -36,6 +36,9 @@ phpcs.xml
 phpcs.xml.dist
 phpstan.neon.dist
 README.md
+instructions.md
+AGENTS.md
+DESCRIPTION.md
 tests
 webpack.config.js
 .wordpress-org
