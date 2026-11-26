@@ -3,7 +3,7 @@ Contributors: wpdino
 Donate link: https://paypal.me/dinostd/10usd
 Tags: portfolio, gutenberg, elementor, gallery, showcase
 Requires at least: 6.6
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 7.0
 Stable tag: 1.0.3
 License: GPLv2 or later
@@ -121,6 +121,7 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 * Added block patterns for a portfolio grid and a listing with category and tag filters
 * Added video duration badge on listing thumbnails for self-hosted MP4 and Vimeo lightbox videos (saved when you update the project)
 * Tag filters use a distinct dashed chip style; category filters keep the filled pill style
+* Compatibility WordPress version 7.2
 
 = 1.0.2 =
 * Compatibility WordPress version 7.1
