@@ -5,7 +5,7 @@ Tags: portfolio, gutenberg, elementor, gallery, showcase
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,9 @@ After activation, you can add portfolio items, organize them with categories and
 * **Display Options** - Toggle title, categories, excerpt, read more button, pagination, and view-all link
 * **Image Lightbox** - Optional lightbox on thumbnails with zoom icon on hover
 * **Video Lightbox** - Play YouTube, Vimeo, or self-hosted MP4 videos from portfolio listing thumbnails
-* **Category Filter Bar** - Optional front-end filter tabs by portfolio category
+* **Category & Tag Filter Bars** - Optional front-end filter tabs by portfolio category and/or tag
+* **Block Patterns** - Ready-made Portfolio Listing block patterns in the editor
+* **Video Duration Badge** - Optional duration label on listing thumbnails for MP4 and Vimeo lightbox videos
 * **Single Portfolio Templates** - Rich single-project meta (attributes, social links, related projects) with theme override support
 * **Admin Settings** - Global defaults for layout, columns, image size, lightbox, permalinks, and more
 * **Translation Ready** - Text domain `dinofolio` with POT file included
@@ -114,6 +116,12 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 == Changelog ==
 
 
+= 1.0.3 =
+* Added optional tag filter bar on portfolio listings (works alongside or without the category filter)
+* Added block patterns for a portfolio grid and a listing with category and tag filters
+* Added video duration badge on listing thumbnails for self-hosted MP4 and Vimeo lightbox videos (saved when you update the project)
+* Tag filters use a distinct dashed chip style; category filters keep the filled pill style
+
 = 1.0.2 =
 * Compatibility WordPress version 7.1
 * Aligned the filter bar with the portfolio grid so filters, items, and pagination share the same content width
@@ -141,6 +149,9 @@ Support and documentation are available at [wpdino.com](https://www.wpdino.com).
 * Translation-ready with `languages/dinofolio.pot`
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Optional tag filter on listings, editor block patterns, and video duration badges on MP4 and Vimeo lightbox thumbnails.
 
 = 1.0.2 =
 Compatibility WordPress version 7.1
@@ -177,6 +188,7 @@ The plugin uses Vimeo in two situations:
 
 * **Fetching a video thumbnail (admin).** When you add a Vimeo video to a portfolio item and choose to use its thumbnail as the featured image, the plugin sends the video URL to Vimeo through the WordPress oEmbed endpoint to retrieve the thumbnail URL. The image is then downloaded to your own Media Library. This happens only when you trigger the thumbnail action in the editor.
 * **Playing a video (front end).** When a visitor opens a portfolio item that uses a Vimeo video in the lightbox player, their browser loads the Vimeo embed directly from Vimeo. This sends the visitor's IP address and player/browser data to Vimeo, subject to Vimeo's own policies.
+* **Video duration (admin).** When you save a portfolio item with a Vimeo lightbox video, the plugin may request Vimeo's oEmbed API (`https://vimeo.com/api/oembed.json`) to store the video duration for optional listing badges. This happens only when the item is saved in the admin.
 
 Vimeo terms of service: https://vimeo.com/terms
 Vimeo privacy policy: https://vimeo.com/privacy

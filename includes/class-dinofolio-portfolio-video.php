@@ -198,4 +198,135 @@ class Portfolio_Video {
 
 		return $attachment_id;
 	}
+
+	/**
+	 * Store cached lightbox video duration (seconds) for listing badges.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	public static function update_lightbox_duration_meta( $post_id ) {
+		$post_id = absint( $post_id );
+		if ( $post_id < 1 ) {
+			return;
+		}
+
+		$settings = self::get_lightbox_settings( $post_id );
+		$seconds  = self::resolve_lightbox_duration_seconds( $settings );
+
+		if ( $seconds > 0 ) {
+			update_post_meta( $post_id, '_wpdino_video_lightbox_duration', $seconds );
+			return;
+		}
+
+		delete_post_meta( $post_id, '_wpdino_video_lightbox_duration' );
+	}
+
+	/**
+	 * Human-readable duration for lightbox video badges.
+	 *
+	 * @param int        $post_id  Post ID.
+	 * @param array|null $settings Optional lightbox settings.
+	 * @return string
+	 */
+	public static function get_lightbox_duration_label( $post_id, $settings = null ) {
+		$post_id = absint( $post_id );
+		$seconds = absint( get_post_meta( $post_id, '_wpdino_video_lightbox_duration', true ) );
+
+		if ( $seconds < 1 ) {
+			$settings = is_array( $settings ) ? $settings : self::get_lightbox_settings( $post_id );
+			$seconds  = self::resolve_lightbox_duration_seconds( $settings );
+		}
+
+		if ( $seconds < 1 ) {
+			return '';
+		}
+
+		return self::format_duration( $seconds );
+	}
+
+	/**
+	 * Resolve video duration in seconds.
+	 *
+	 * @param array $settings Lightbox settings.
+	 * @return int
+	 */
+	private static function resolve_lightbox_duration_seconds( $settings ) {
+		if ( empty( $settings['enabled'] ) ) {
+			return 0;
+		}
+
+		$type = isset( $settings['type'] ) ? self::normalize_type( $settings['type'] ) : 'mp4';
+
+		if ( 'mp4' === $type ) {
+			$mp4_id = isset( $settings['mp4_id'] ) ? absint( $settings['mp4_id'] ) : 0;
+			if ( $mp4_id < 1 ) {
+				return 0;
+			}
+
+			$meta = wp_get_attachment_metadata( $mp4_id );
+			if ( ! is_array( $meta ) || empty( $meta['length'] ) ) {
+				return 0;
+			}
+
+			return max( 0, (int) round( (float) $meta['length'] ) );
+		}
+
+		if ( 'vimeo' === $type ) {
+			return self::fetch_vimeo_duration_seconds( isset( $settings['url'] ) ? $settings['url'] : '' );
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Fetch Vimeo duration via oEmbed.
+	 *
+	 * @param string $url Video URL.
+	 * @return int
+	 */
+	private static function fetch_vimeo_duration_seconds( $url ) {
+		$url = trim( (string) $url );
+		if ( '' === $url ) {
+			return 0;
+		}
+
+		$endpoint = 'https://vimeo.com/api/oembed.json?url=' . rawurlencode( esc_url_raw( $url ) );
+		$response = wp_remote_get(
+			$endpoint,
+			array(
+				'timeout' => 5,
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return 0;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $response ), true );
+		if ( ! is_array( $body ) || empty( $body['duration'] ) ) {
+			return 0;
+		}
+
+		return max( 0, (int) $body['duration'] );
+	}
+
+	/**
+	 * Format seconds as m:ss or h:mm:ss.
+	 *
+	 * @param int $seconds Duration.
+	 * @return string
+	 */
+	private static function format_duration( $seconds ) {
+		$seconds = max( 0, (int) $seconds );
+		$hours   = (int) floor( $seconds / 3600 );
+		$minutes = (int) floor( ( $seconds % 3600 ) / 60 );
+		$secs    = $seconds % 60;
+
+		if ( $hours > 0 ) {
+			return sprintf( '%d:%02d:%02d', $hours, $minutes, $secs );
+		}
+
+		return sprintf( '%d:%02d', $minutes, $secs );
+	}
 }

@@ -242,13 +242,13 @@ class Custom_Post {
 	 * @return array Modified columns
 	 */
 	public function add_featured_image_column( $columns ) {
-		// Insert featured image column before date column
 		$new_columns = array();
 		foreach ( $columns as $key => $title ) {
-			if ( $key === 'date' ) {
+			$new_columns[ $key ] = $title;
+
+			if ( 'date' === $key ) {
 				$new_columns['featured_image'] = esc_html__( 'Image', 'dinofolio' );
 			}
-			$new_columns[ $key ] = $title;
 		}
 		return $new_columns;
 	}

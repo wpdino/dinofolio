@@ -634,6 +634,25 @@
 	transition: transform 0.3s ease;
 }
 
+.dinofolio-video-duration-badge {
+	position: absolute;
+	right: 0.5rem;
+	bottom: 0.5rem;
+	z-index: 3;
+	padding: 0.2rem 0.45rem;
+	border-radius: 0.25rem;
+	font-size: 0.6875rem;
+	font-weight: 600;
+	line-height: 1.25;
+	color: #fff;
+	background: rgba(0, 0, 0, 0.72);
+	pointer-events: none;
+}
+
+.dinofolio-item-thumbnail--overlay .dinofolio-video-duration-badge {
+	z-index: 4;
+}
+
 .dinofolio-item-thumbnail.dinofolio-lightbox:hover .dinofolio-play-icon,
 .dinofolio-item:hover .dinofolio-item-thumbnail.dinofolio-lightbox .dinofolio-play-icon {
 	transform: scale(1);
@@ -1110,6 +1129,10 @@
 	margin-bottom: 0;
 }
 
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter + .dinofolio-filter {
+	margin-top: 0.75rem;
+}
+
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul {
 	display: flex;
 	flex-wrap: wrap;
@@ -1178,11 +1201,11 @@
 	transform: translateY(-1px);
 }
 
-.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.dinofolio-current-cat a.dinofolio-filter-link,
-.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.dinofolio-current-cat a.dinofolio-filter-link:link,
-.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.dinofolio-current-cat a.dinofolio-filter-link:visited,
-.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:hover,
-.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li a.dinofolio-filter-link:focus-visible {
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter:not(.dinofolio-filter--tag) ul li.dinofolio-current-cat a.dinofolio-filter-link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter:not(.dinofolio-filter--tag) ul li.dinofolio-current-cat a.dinofolio-filter-link:link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter:not(.dinofolio-filter--tag) ul li.dinofolio-current-cat a.dinofolio-filter-link:visited,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter:not(.dinofolio-filter--tag) ul li a.dinofolio-filter-link:hover,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter:not(.dinofolio-filter--tag) ul li a.dinofolio-filter-link:focus-visible {
 	background: var(--dinofolio-accent, #1a8960);
 	border-color: var(--dinofolio-accent, #1a8960);
 	color: #fff;
@@ -1247,6 +1270,80 @@
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:focus,
 .dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter ul li.is-disabled a.dinofolio-filter-link:focus-visible {
 	transform: none;
+}
+
+/* Tag filter — dashed chips with its own contrast (filters sit on the page, not on cards) */
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag {
+	--dinofolio-tag-filter-text: #1a1a1a;
+	--dinofolio-tag-filter-bg: #eceff1;
+	--dinofolio-tag-filter-border: #9aa3ab;
+	--dinofolio-tag-filter-count-bg: rgba(0, 0, 0, 0.1);
+}
+
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag {
+	--dinofolio-tag-filter-text: #f3f4f6;
+	--dinofolio-tag-filter-bg: #12181d;
+	--dinofolio-tag-filter-border: #4b5563;
+	--dinofolio-tag-filter-count-bg: rgba(255, 255, 255, 0.14);
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul {
+	gap: 0.35rem 0.55rem;
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link:link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link:visited {
+	padding: 0.3rem 0.65rem;
+	border-radius: 0.35rem;
+	border: 1px dashed var(--dinofolio-tag-filter-border);
+	font-size: 0.78rem;
+	font-weight: 600;
+	letter-spacing: 0.015em;
+	color: var(--dinofolio-tag-filter-text);
+	background: var(--dinofolio-tag-filter-bg);
+	box-shadow: none;
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link .dinofolio-filter-label,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link .dinofolio-filter-count {
+	color: inherit;
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag.dinofolio-show-filter-count .dinofolio-filter-count {
+	background: var(--dinofolio-tag-filter-count-bg);
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link:hover,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link:focus-visible {
+	border-style: solid;
+	border-color: var(--dinofolio-accent, #1a8960);
+	background: color-mix(in srgb, var(--dinofolio-accent, #1a8960) 16%, var(--dinofolio-tag-filter-bg));
+	color: var(--dinofolio-accent, #1a8960);
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li.dinofolio-current-cat a.dinofolio-filter-link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li.dinofolio-current-cat a.dinofolio-filter-link:link,
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li.dinofolio-current-cat a.dinofolio-filter-link:visited {
+	border-style: solid;
+	border-color: var(--dinofolio-accent, #1a8960);
+	background: color-mix(in srgb, var(--dinofolio-accent, #1a8960) 24%, var(--dinofolio-tag-filter-bg));
+	color: var(--dinofolio-accent, #1a8960);
+	transform: none;
+}
+
+.dinofolio-portfolio-listing.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag.dinofolio-show-filter-count .dinofolio-current-cat .dinofolio-filter-count {
+	background: color-mix(in srgb, var(--dinofolio-accent, #1a8960) 28%, transparent);
+	color: var(--dinofolio-accent, #1a8960);
+}
+
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link:hover,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li a.dinofolio-filter-link:focus-visible,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li.dinofolio-current-cat a.dinofolio-filter-link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li.dinofolio-current-cat a.dinofolio-filter-link:link,
+.dinofolio.dinofolio-color-scheme-dark.dinofolio-has-category-filter .dinofolio-filter-categories .dinofolio-filter--tag ul li.dinofolio-current-cat a.dinofolio-filter-link:visited {
+	color: var(--dinofolio-accent, #34d399);
+	border-color: var(--dinofolio-accent, #34d399);
 }
 
 /* Pagination */

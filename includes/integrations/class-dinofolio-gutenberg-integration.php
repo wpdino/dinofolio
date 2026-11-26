@@ -44,6 +44,9 @@ class Gutenberg_Integration {
 
 		add_filter( 'block_categories_all', array( $this, 'register_category' ), 10, 2 );
 		add_action( 'init', array( $this, 'register_blocks' ), 15 );
+
+		require_once DINOFOLIO_PATH . 'includes/class-dinofolio-block-patterns.php';
+		Block_Patterns::init();
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
 	}

@@ -1122,6 +1122,7 @@ class WPDINO_Portfolio_Display {
 			'categories'     => array(),
 			'tags'           => array(),
 			'showFilter'      => false,
+			'showTagFilter'   => false,
 			'showFilterCount' => false,
 			'filterDynamic'   => false,
 			'showViewAll'    => false,
@@ -1164,6 +1165,7 @@ class WPDINO_Portfolio_Display {
 		$merged['showTitle']    = (bool) $merged['showTitle'];
 		$merged['showCategories'] = (bool) $merged['showCategories'];
 		$merged['showFilter']      = (bool) $merged['showFilter'];
+		$merged['showTagFilter']   = (bool) $merged['showTagFilter'];
 		$merged['showFilterCount'] = (bool) $merged['showFilterCount'];
 		$merged['showViewAll']  = (bool) $merged['showViewAll'];
 		$merged['paginationMode'] = $this->normalize_pagination_mode( isset( $merged['paginationMode'] ) ? $merged['paginationMode'] : 'pagination' );
@@ -1327,7 +1329,9 @@ class WPDINO_Portfolio_Display {
 		 * @param bool  $has_filter Whether the free category filter is enabled.
 		 * @param array $attributes Merged listing attributes.
 		 */
-		return (bool) apply_filters( 'dinofolio_listing_has_filter', ! empty( $attributes['showFilter'] ), $attributes );
+		$has_filter = ! empty( $attributes['showFilter'] ) || ! empty( $attributes['showTagFilter'] );
+
+		return (bool) apply_filters( 'dinofolio_listing_has_filter', $has_filter, $attributes );
 	}
 
 	/**
@@ -1498,6 +1502,10 @@ class WPDINO_Portfolio_Display {
 		if ( $this->listing_has_filter( $attributes ) ) {
 			$container_classes[] = 'dinofolio-has-category-filter';
 
+			if ( ! empty( $attributes['showTagFilter'] ) ) {
+				$container_classes[] = 'dinofolio-has-tag-filter';
+			}
+
 			if ( ! empty( $attributes['showFilterCount'] ) ) {
 				$container_classes[] = 'dinofolio-show-filter-count';
 			}
@@ -1588,11 +1596,20 @@ class WPDINO_Portfolio_Display {
 		$post_id = get_the_ID();
 		$classes = array( 'dinofolio-item' );
 		
-		// Add categories as classes for filtering
+		// Add categories and tags as classes for filtering.
 		$terms = get_the_terms( $post_id, $this->taxonomies[0] );
 		if ( $terms && ! is_wp_error( $terms ) ) {
 			foreach ( $terms as $term ) {
 				$classes[] = 'dinofolio-cat-' . $term->slug;
+			}
+		}
+
+		if ( isset( $this->taxonomies[1] ) ) {
+			$tag_terms = get_the_terms( $post_id, $this->taxonomies[1] );
+			if ( $tag_terms && ! is_wp_error( $tag_terms ) ) {
+				foreach ( $tag_terms as $term ) {
+					$classes[] = 'dinofolio-tag-' . $term->slug;
+				}
 			}
 		}
 
@@ -1927,6 +1944,10 @@ class WPDINO_Portfolio_Display {
 			);
 		}
 
+		if ( $use_video_lightbox ) {
+			$output .= $this->get_video_duration_badge_html( $post_id, $lightbox_video );
+		}
+
 		$output .= '<div class="dinofolio-overlay-panel">';
 
 		$output .= '<div class="dinofolio-overlay-actions">';
@@ -2080,6 +2101,22 @@ class WPDINO_Portfolio_Display {
 		}
 
 		return $this->build_html_attributes( $atts );
+	}
+
+	/**
+	 * Duration badge for listing video thumbnails.
+	 *
+	 * @param int   $post_id        Post ID.
+	 * @param array $lightbox_video Lightbox video settings.
+	 * @return string
+	 */
+	private function get_video_duration_badge_html( $post_id, $lightbox_video ) {
+		$label = \DinoFolio\Portfolio_Video::get_lightbox_duration_label( $post_id, $lightbox_video );
+		if ( '' === $label ) {
+			return '';
+		}
+
+		return '<span class="dinofolio-video-duration-badge" aria-hidden="true">' . esc_html( $label ) . '</span>';
 	}
 
 	/**
@@ -2378,6 +2415,7 @@ class WPDINO_Portfolio_Display {
 			$output .= '<a ' . $this->get_video_lightbox_link_attributes( $lightbox_video, get_the_title() ) . '>';
 			$output .= wp_get_attachment_image( $thumbnail_id, $image_size, false, $image_attrs );
 			$output .= $this->get_lightbox_video_icon_html();
+			$output .= $this->get_video_duration_badge_html( $post_id, $lightbox_video );
 			$output .= '</a>';
 		} elseif ( $attributes['lightbox'] ) {
 			$full_image = wp_get_attachment_image_src( $thumbnail_id, 'full' );
@@ -2403,6 +2441,17 @@ class WPDINO_Portfolio_Display {
 	 * @return array<int, WP_Term>
 	 */
 	private function get_filter_terms_for_query( $query ) {
+		return $this->get_filter_terms_for_taxonomy( $query, $this->taxonomies[0] );
+	}
+
+	/**
+	 * Collect taxonomy terms used by posts in a listing query.
+	 *
+	 * @param WP_Query|null $query    Portfolio query.
+	 * @param string        $taxonomy Taxonomy slug.
+	 * @return array<int, WP_Term>
+	 */
+	private function get_filter_terms_for_taxonomy( $query, $taxonomy ) {
 		$terms_by_id = array();
 
 		if ( ! $query instanceof WP_Query || empty( $query->posts ) ) {
@@ -2410,7 +2459,7 @@ class WPDINO_Portfolio_Display {
 		}
 
 		foreach ( $query->posts as $post ) {
-			$post_terms = get_the_terms( $post->ID, $this->taxonomies[0] );
+			$post_terms = get_the_terms( $post->ID, $taxonomy );
 
 			if ( ! $post_terms || is_wp_error( $post_terms ) ) {
 				continue;
@@ -2440,6 +2489,17 @@ class WPDINO_Portfolio_Display {
 	 * @return array{__all__: int, string: int}
 	 */
 	private function get_category_counts_for_query( $query ) {
+		return $this->get_term_counts_for_taxonomy( $query, $this->taxonomies[0] );
+	}
+
+	/**
+	 * Count portfolio items per term slug in a listing query.
+	 *
+	 * @param WP_Query|null $query    Portfolio query.
+	 * @param string        $taxonomy Taxonomy slug.
+	 * @return array{__all__: int, string: int}
+	 */
+	private function get_term_counts_for_taxonomy( $query, $taxonomy ) {
 		$counts = array(
 			'__all__' => 0,
 		);
@@ -2449,7 +2509,7 @@ class WPDINO_Portfolio_Display {
 		}
 
 		foreach ( $query->posts as $post ) {
-			$post_terms = get_the_terms( $post->ID, $this->taxonomies[0] );
+			$post_terms = get_the_terms( $post->ID, $taxonomy );
 
 			if ( ! $post_terms || is_wp_error( $post_terms ) ) {
 				continue;
@@ -2514,61 +2574,49 @@ class WPDINO_Portfolio_Display {
 	 * @return string Filter HTML
 	 */
 	private function get_filter_html( $attributes, $query = null ) {
-		$terms = $this->get_filter_terms_for_query( $query );
+		$output   = '';
+		$sections = '';
+		$groups   = array();
 
-		if ( empty( $terms ) ) {
-			$terms = get_terms(
-				array(
-					'taxonomy'   => $this->taxonomies[0],
-					'hide_empty' => true,
-				)
+		if ( ! empty( $attributes['showFilter'] ) ) {
+			$groups[] = array(
+				'group'        => 'category',
+				'taxonomy'     => $this->taxonomies[0],
+				'class_prefix' => 'dinofolio-cat-',
+				'label'        => __( 'Filter portfolio by category', 'dinofolio' ),
 			);
 		}
 
-		$output = '';
+		if ( ! empty( $attributes['showTagFilter'] ) && isset( $this->taxonomies[1] ) ) {
+			$groups[] = array(
+				'group'        => 'tag',
+				'taxonomy'     => $this->taxonomies[1],
+				'class_prefix' => 'dinofolio-tag-',
+				'label'        => __( 'Filter portfolio by tag', 'dinofolio' ),
+			);
+		}
 
-		if ( ! empty( $attributes['showFilter'] ) && ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-			$show_count = ! empty( $attributes['showFilterCount'] );
-			$counts     = $show_count ? $this->get_category_counts_for_query( $query ) : array();
+		foreach ( $groups as $group ) {
+			$terms = $this->get_filter_terms_for_taxonomy( $query, $group['taxonomy'] );
 
-			$filter_classes = array( 'dinofolio-filter' );
-
-			if ( $show_count ) {
-				$filter_classes[] = 'dinofolio-show-filter-count';
-			}
-
-			$output  = '<div class="dinofolio-filter-categories">';
-			$output .= '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" data-filter-group="category" aria-label="' . esc_attr__( 'Filter portfolio by category', 'dinofolio' ) . '">';
-			$output .= '<ul role="list">';
-
-			$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
-			$all_class = 'dinofolio-current-cat';
-
-			if ( $show_count && 0 === (int) $all_count ) {
-				$all_class .= ' is-disabled';
-			}
-
-			$output .= '<li class="' . esc_attr( $all_class ) . '" role="listitem">';
-			$output .= $this->get_filter_link_html( __( 'All', 'dinofolio' ), '*', $all_count, $show_count );
-			$output .= '</li>';
-
-			foreach ( $terms as $term ) {
-				$term_count = isset( $counts[ $term->slug ] ) ? (int) $counts[ $term->slug ] : 0;
-				$li_class   = ( $show_count && 0 === $term_count ) ? 'is-disabled' : '';
-
-				$output .= '<li' . ( $li_class ? ' class="' . esc_attr( $li_class ) . '"' : '' ) . ' role="listitem">';
-				$output .= $this->get_filter_link_html(
-					$term->name,
-					'.dinofolio-cat-' . $term->slug,
-					$term_count,
-					$show_count
+			if ( empty( $terms ) ) {
+				$terms = get_terms(
+					array(
+						'taxonomy'   => $group['taxonomy'],
+						'hide_empty' => true,
+					)
 				);
-				$output .= '</li>';
 			}
 
-			$output .= '</ul>';
-			$output .= '</nav>';
-			$output .= '</div>';
+			if ( is_wp_error( $terms ) || empty( $terms ) ) {
+				continue;
+			}
+
+			$sections .= $this->render_taxonomy_filter_nav( $terms, $query, $group, $attributes );
+		}
+
+		if ( '' !== $sections ) {
+			$output = '<div class="dinofolio-filter-categories">' . $sections . '</div>';
 		}
 
 		/**
@@ -2579,6 +2627,62 @@ class WPDINO_Portfolio_Display {
 		 * @param WP_Query|null $query      Portfolio query.
 		 */
 		return apply_filters( 'dinofolio_filter_html', $output, $attributes, $query );
+	}
+
+	/**
+	 * Render a taxonomy filter navigation group.
+	 *
+	 * @param array         $terms      Terms for this filter.
+	 * @param WP_Query|null $query      Portfolio query.
+	 * @param array         $group      Group config.
+	 * @param array         $attributes Listing attributes.
+	 * @return string
+	 */
+	private function render_taxonomy_filter_nav( $terms, $query, $group, $attributes ) {
+		$show_count     = ! empty( $attributes['showFilterCount'] );
+		$counts         = $show_count ? $this->get_term_counts_for_taxonomy( $query, $group['taxonomy'] ) : array();
+		$filter_classes = array( 'dinofolio-filter' );
+
+		if ( $show_count ) {
+			$filter_classes[] = 'dinofolio-show-filter-count';
+		}
+
+		if ( 'tag' === $group['group'] ) {
+			$filter_classes[] = 'dinofolio-filter--tag';
+		}
+
+		$output  = '<nav class="' . esc_attr( implode( ' ', $filter_classes ) ) . '" data-filter-group="' . esc_attr( $group['group'] ) . '" aria-label="' . esc_attr( $group['label'] ) . '">';
+		$output .= '<ul role="list">';
+
+		$all_count = isset( $counts['__all__'] ) ? (int) $counts['__all__'] : null;
+		$all_class = 'dinofolio-current-cat';
+
+		if ( $show_count && 0 === (int) $all_count ) {
+			$all_class .= ' is-disabled';
+		}
+
+		$output .= '<li class="' . esc_attr( $all_class ) . '" role="listitem">';
+		$output .= $this->get_filter_link_html( __( 'All', 'dinofolio' ), '*', $all_count, $show_count );
+		$output .= '</li>';
+
+		foreach ( $terms as $term ) {
+			$term_count = isset( $counts[ $term->slug ] ) ? (int) $counts[ $term->slug ] : 0;
+			$li_class   = ( $show_count && 0 === $term_count ) ? 'is-disabled' : '';
+
+			$output .= '<li' . ( $li_class ? ' class="' . esc_attr( $li_class ) . '"' : '' ) . ' role="listitem">';
+			$output .= $this->get_filter_link_html(
+				$term->name,
+				'.' . $group['class_prefix'] . $term->slug,
+				$term_count,
+				$show_count
+			);
+			$output .= '</li>';
+		}
+
+		$output .= '</ul>';
+		$output .= '</nav>';
+
+		return $output;
 	}
 
 	/**
@@ -2887,6 +2991,7 @@ class WPDINO_Portfolio_Display {
 			'mutedColor',
 			'className',
 			'showFilter',
+			'showTagFilter',
 			'showFilterCount',
 		);
 
@@ -3085,6 +3190,7 @@ class WPDINO_Portfolio_Display {
 			'order'          => 'desc',
 			'categories'     => '',
 			'show_filter'       => 'false',
+			'show_tag_filter'   => 'false',
 			'show_filter_count' => 'false',
 			'show_view_all'  => 'false',
 			'view_all_text'  => 'View All',
@@ -3115,6 +3221,7 @@ class WPDINO_Portfolio_Display {
 			'orderBy'        => sanitize_text_field( $attributes['order_by'] ),
 			'order'          => sanitize_text_field( $attributes['order'] ),
 			'showFilter'      => filter_var( $attributes['show_filter'], FILTER_VALIDATE_BOOLEAN ),
+			'showTagFilter'   => filter_var( $attributes['show_tag_filter'], FILTER_VALIDATE_BOOLEAN ),
 			'showFilterCount' => filter_var( $attributes['show_filter_count'], FILTER_VALIDATE_BOOLEAN ),
 			'showViewAll'    => filter_var( $attributes['show_view_all'], FILTER_VALIDATE_BOOLEAN ),
 			'viewAllText'    => sanitize_text_field( $attributes['view_all_text'] ),

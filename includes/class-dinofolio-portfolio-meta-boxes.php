@@ -596,6 +596,8 @@ class Portfolio_Meta_Boxes {
 		update_post_meta( $post_id, '_wpdino_video_lightbox_type', $type );
 		update_post_meta( $post_id, '_wpdino_video_lightbox_url', Portfolio_Video::sanitize_video_url( $type, isset( $fields['url'] ) ? $fields['url'] : '' ) );
 		update_post_meta( $post_id, '_wpdino_video_lightbox_mp4_id', isset( $fields['mp4_id'] ) ? absint( $fields['mp4_id'] ) : 0 );
+
+		Portfolio_Video::update_lightbox_duration_meta( $post_id );
 	}
 
 	/**
